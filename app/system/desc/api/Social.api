@@ -1,0 +1,299 @@
+info(
+    desc: "社会化关系"
+    author: "atlas"
+    email: "ut1221@icloud.com"
+)
+
+type (
+    // 添加社会化关系请求参数
+    AddSocialReq {
+        Id int64 `json:"id"`                                       //主键
+        UserId int64 `json:"userId"`                               //用户ID
+        TenantId string `json:"tenantId,optional"`                 //租户id
+        AuthId string `json:"authId"`                              //平台+平台唯一id
+        Source string `json:"source"`                              //用户来源
+        OpenId string `json:"openId,optional"`                     //平台编号唯一id
+        UserName string `json:"userName"`                          //登录账号
+        NickName string `json:"nickName,optional"`                 //用户昵称
+        Email string `json:"email,optional"`                       //用户邮箱
+        Avatar string `json:"avatar,optional"`                     //头像地址
+        AccessToken string `json:"accessToken"`                    //用户的授权令牌
+        ExpireIn int32 `json:"expireIn,optional"`                  //用户的授权令牌的有效期，部分平台可能没有
+        RefreshToken string `json:"refreshToken,optional"`         //刷新令牌，部分平台可能没有
+        AccessCode string `json:"accessCode,optional"`             //平台的授权信息，部分平台可能没有
+        UnionId string `json:"unionId,optional"`                   //用户的 unionid
+        Scope string `json:"scope,optional"`                       //授予的权限，部分平台可能没有
+        TokenType string `json:"tokenType,optional"`               //个别平台的授权信息，部分平台可能没有
+        IdToken string `json:"idToken,optional"`                   //id token，部分平台可能没有
+        MacAlgorithm string `json:"macAlgorithm,optional"`         //小米平台用户的附带属性，部分平台可能没有
+        MacKey string `json:"macKey,optional"`                     //小米平台用户的附带属性，部分平台可能没有
+        Code string `json:"code,optional"`                         //用户的授权code，部分平台可能没有
+        OauthToken string `json:"oauthToken,optional"`             //Twitter平台用户的附带属性，部分平台可能没有
+        OauthTokenSecret string `json:"oauthTokenSecret,optional"` //Twitter平台用户的附带属性，部分平台可能没有
+        DelFlag string `json:"delFlag,optional"`                   //删除标志（0代表存在 1代表删除）
+    }
+    AddSocialResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 删除社会化关系请求参数
+    DeleteSocialReq {
+        Ids []int64 `form:"ids"`
+    }
+    DeleteSocialResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 更新社会化关系请求参数
+    UpdateSocialReq {
+        Id int64 `json:"id"`                                       //主键
+        UserId int64 `json:"userId"`                               //用户ID
+        TenantId string `json:"tenantId,optional"`                 //租户id
+        AuthId string `json:"authId"`                              //平台+平台唯一id
+        Source string `json:"source"`                              //用户来源
+        OpenId string `json:"openId,optional"`                     //平台编号唯一id
+        UserName string `json:"userName"`                          //登录账号
+        NickName string `json:"nickName,optional"`                 //用户昵称
+        Email string `json:"email,optional"`                       //用户邮箱
+        Avatar string `json:"avatar,optional"`                     //头像地址
+        AccessToken string `json:"accessToken"`                    //用户的授权令牌
+        ExpireIn int32 `json:"expireIn,optional"`                  //用户的授权令牌的有效期，部分平台可能没有
+        RefreshToken string `json:"refreshToken,optional"`         //刷新令牌，部分平台可能没有
+        AccessCode string `json:"accessCode,optional"`             //平台的授权信息，部分平台可能没有
+        UnionId string `json:"unionId,optional"`                   //用户的 unionid
+        Scope string `json:"scope,optional"`                       //授予的权限，部分平台可能没有
+        TokenType string `json:"tokenType,optional"`               //个别平台的授权信息，部分平台可能没有
+        IdToken string `json:"idToken,optional"`                   //id token，部分平台可能没有
+        MacAlgorithm string `json:"macAlgorithm,optional"`         //小米平台用户的附带属性，部分平台可能没有
+        MacKey string `json:"macKey,optional"`                     //小米平台用户的附带属性，部分平台可能没有
+        Code string `json:"code,optional"`                         //用户的授权code，部分平台可能没有
+        OauthToken string `json:"oauthToken,optional"`             //Twitter平台用户的附带属性，部分平台可能没有
+        OauthTokenSecret string `json:"oauthTokenSecret,optional"` //Twitter平台用户的附带属性，部分平台可能没有
+        DelFlag string `json:"delFlag,optional"`                   //删除标志（0代表存在 1代表删除）
+    }
+    UpdateSocialResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 更新社会化关系状态请求参数
+    UpdateSocialStatusReq {
+
+    }
+    UpdateSocialStatusResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 查询社会化关系详情请求参数
+    QuerySocialDetailReq {
+        Id int64 `form:"id"`
+    }
+    QuerySocialDetailData {
+        Id int64 `json:"id"`                              //主键
+        UserId int64 `json:"userId"`                      //用户ID
+        TenantId string `json:"tenantId"`                 //租户id
+        AuthId string `json:"authId"`                     //平台+平台唯一id
+        Source string `json:"source"`                     //用户来源
+        OpenId string `json:"openId"`                     //平台编号唯一id
+        UserName string `json:"userName"`                 //登录账号
+        NickName string `json:"nickName"`                 //用户昵称
+        Email string `json:"email"`                       //用户邮箱
+        Avatar string `json:"avatar"`                     //头像地址
+        AccessToken string `json:"accessToken"`           //用户的授权令牌
+        ExpireIn int32 `json:"expireIn"`                  //用户的授权令牌的有效期，部分平台可能没有
+        RefreshToken string `json:"refreshToken"`         //刷新令牌，部分平台可能没有
+        AccessCode string `json:"accessCode"`             //平台的授权信息，部分平台可能没有
+        UnionId string `json:"unionId"`                   //用户的 unionid
+        Scope string `json:"scope"`                       //授予的权限，部分平台可能没有
+        TokenType string `json:"tokenType"`               //个别平台的授权信息，部分平台可能没有
+        IdToken string `json:"idToken"`                   //id token，部分平台可能没有
+        MacAlgorithm string `json:"macAlgorithm"`         //小米平台用户的附带属性，部分平台可能没有
+        MacKey string `json:"macKey"`                     //小米平台用户的附带属性，部分平台可能没有
+        Code string `json:"code"`                         //用户的授权code，部分平台可能没有
+        OauthToken string `json:"oauthToken"`             //Twitter平台用户的附带属性，部分平台可能没有
+        OauthTokenSecret string `json:"oauthTokenSecret"` //Twitter平台用户的附带属性，部分平台可能没有
+        CreateDept int64 `json:"createDept"`              //创建部门
+        CreateBy int64 `json:"createBy"`                  //创建者
+        CreateTime string `json:"createTime"`             //创建时间
+        UpdateBy int64 `json:"updateBy"`                  //更新者
+        UpdateTime string `json:"updateTime"`             //更新时间
+        DelFlag string `json:"delFlag"`                   //删除标志（0代表存在 1代表删除）
+    }
+    QuerySocialDetailResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Data QuerySocialDetailData `json:"data"`
+    }
+
+        // 分页查询社会化关系列表请求参数
+    QueryPageSocialListReq {
+        Current int64 `form:"current,default=1"`                   //第几页
+        PageSize int64 `form:"pageSize,default=20"`                //每页的数量
+        Id int64 `json:"id,optional"`                              //主键
+        UserId int64 `json:"userId,optional"`                      //用户ID
+        TenantId string `json:"tenantId,optional"`                 //租户id
+        AuthId string `json:"authId,optional"`                     //平台+平台唯一id
+        Source string `json:"source,optional"`                     //用户来源
+        OpenId string `json:"openId,optional"`                     //平台编号唯一id
+        UserName string `json:"userName,optional"`                 //登录账号
+        NickName string `json:"nickName,optional"`                 //用户昵称
+        Email string `json:"email,optional"`                       //用户邮箱
+        Avatar string `json:"avatar,optional"`                     //头像地址
+        AccessToken string `json:"accessToken,optional"`           //用户的授权令牌
+        ExpireIn int32 `json:"expireIn,optional"`                  //用户的授权令牌的有效期，部分平台可能没有
+        RefreshToken string `json:"refreshToken,optional"`         //刷新令牌，部分平台可能没有
+        AccessCode string `json:"accessCode,optional"`             //平台的授权信息，部分平台可能没有
+        UnionId string `json:"unionId,optional"`                   //用户的 unionid
+        Scope string `json:"scope,optional"`                       //授予的权限，部分平台可能没有
+        TokenType string `json:"tokenType,optional"`               //个别平台的授权信息，部分平台可能没有
+        IdToken string `json:"idToken,optional"`                   //id token，部分平台可能没有
+        MacAlgorithm string `json:"macAlgorithm,optional"`         //小米平台用户的附带属性，部分平台可能没有
+        MacKey string `json:"macKey,optional"`                     //小米平台用户的附带属性，部分平台可能没有
+        Code string `json:"code,optional"`                         //用户的授权code，部分平台可能没有
+        OauthToken string `json:"oauthToken,optional"`             //Twitter平台用户的附带属性，部分平台可能没有
+        OauthTokenSecret string `json:"oauthTokenSecret,optional"` //Twitter平台用户的附带属性，部分平台可能没有
+        DelFlag string `json:"delFlag,optional"`                   //删除标志（0代表存在 1代表删除）
+    }
+    QueryPageSocialListData {
+        Id int64 `json:"id"`                              //主键
+        UserId int64 `json:"userId"`                      //用户ID
+        TenantId string `json:"tenantId"`                 //租户id
+        AuthId string `json:"authId"`                     //平台+平台唯一id
+        Source string `json:"source"`                     //用户来源
+        OpenId string `json:"openId"`                     //平台编号唯一id
+        UserName string `json:"userName"`                 //登录账号
+        NickName string `json:"nickName"`                 //用户昵称
+        Email string `json:"email"`                       //用户邮箱
+        Avatar string `json:"avatar"`                     //头像地址
+        AccessToken string `json:"accessToken"`           //用户的授权令牌
+        ExpireIn int32 `json:"expireIn"`                  //用户的授权令牌的有效期，部分平台可能没有
+        RefreshToken string `json:"refreshToken"`         //刷新令牌，部分平台可能没有
+        AccessCode string `json:"accessCode"`             //平台的授权信息，部分平台可能没有
+        UnionId string `json:"unionId"`                   //用户的 unionid
+        Scope string `json:"scope"`                       //授予的权限，部分平台可能没有
+        TokenType string `json:"tokenType"`               //个别平台的授权信息，部分平台可能没有
+        IdToken string `json:"idToken"`                   //id token，部分平台可能没有
+        MacAlgorithm string `json:"macAlgorithm"`         //小米平台用户的附带属性，部分平台可能没有
+        MacKey string `json:"macKey"`                     //小米平台用户的附带属性，部分平台可能没有
+        Code string `json:"code"`                         //用户的授权code，部分平台可能没有
+        OauthToken string `json:"oauthToken"`             //Twitter平台用户的附带属性，部分平台可能没有
+        OauthTokenSecret string `json:"oauthTokenSecret"` //Twitter平台用户的附带属性，部分平台可能没有
+        CreateDept int64 `json:"createDept"`              //创建部门
+        CreateBy int64 `json:"createBy"`                  //创建者
+        CreateTime string `json:"createTime"`             //创建时间
+        UpdateBy int64 `json:"updateBy"`                  //更新者
+        UpdateTime string `json:"updateTime"`             //更新时间
+        DelFlag string `json:"delFlag"`                   //删除标志（0代表存在 1代表删除）
+    }
+    QueryPageSocialListResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Current int64 `json:"current,default=1"`
+        Data []*QueryPageSocialListData `json:"data"`
+        PageSize int64 `json:"pageSize,default=20"`
+        Success bool `json:"success"`
+        Total int64 `json:"total"`
+    }
+
+        // 查询社会化关系所有列表请求参数
+    QuerySocialListReq {
+        Id int64 `json:"id,optional"`                              //主键
+        UserId int64 `json:"userId,optional"`                      //用户ID
+        TenantId string `json:"tenantId,optional"`                 //租户id
+        AuthId string `json:"authId,optional"`                     //平台+平台唯一id
+        Source string `json:"source,optional"`                     //用户来源
+        OpenId string `json:"openId,optional"`                     //平台编号唯一id
+        UserName string `json:"userName,optional"`                 //登录账号
+        NickName string `json:"nickName,optional"`                 //用户昵称
+        Email string `json:"email,optional"`                       //用户邮箱
+        Avatar string `json:"avatar,optional"`                     //头像地址
+        AccessToken string `json:"accessToken,optional"`           //用户的授权令牌
+        ExpireIn int32 `json:"expireIn,optional"`                  //用户的授权令牌的有效期，部分平台可能没有
+        RefreshToken string `json:"refreshToken,optional"`         //刷新令牌，部分平台可能没有
+        AccessCode string `json:"accessCode,optional"`             //平台的授权信息，部分平台可能没有
+        UnionId string `json:"unionId,optional"`                   //用户的 unionid
+        Scope string `json:"scope,optional"`                       //授予的权限，部分平台可能没有
+        TokenType string `json:"tokenType,optional"`               //个别平台的授权信息，部分平台可能没有
+        IdToken string `json:"idToken,optional"`                   //id token，部分平台可能没有
+        MacAlgorithm string `json:"macAlgorithm,optional"`         //小米平台用户的附带属性，部分平台可能没有
+        MacKey string `json:"macKey,optional"`                     //小米平台用户的附带属性，部分平台可能没有
+        Code string `json:"code,optional"`                         //用户的授权code，部分平台可能没有
+        OauthToken string `json:"oauthToken,optional"`             //Twitter平台用户的附带属性，部分平台可能没有
+        OauthTokenSecret string `json:"oauthTokenSecret,optional"` //Twitter平台用户的附带属性，部分平台可能没有
+        DelFlag string `json:"delFlag,optional"`                   //删除标志（0代表存在 1代表删除）
+    }
+    QuerySocialListData {
+        Id int64 `json:"id"`                              //主键
+        UserId int64 `json:"userId"`                      //用户ID
+        TenantId string `json:"tenantId"`                 //租户id
+        AuthId string `json:"authId"`                     //平台+平台唯一id
+        Source string `json:"source"`                     //用户来源
+        OpenId string `json:"openId"`                     //平台编号唯一id
+        UserName string `json:"userName"`                 //登录账号
+        NickName string `json:"nickName"`                 //用户昵称
+        Email string `json:"email"`                       //用户邮箱
+        Avatar string `json:"avatar"`                     //头像地址
+        AccessToken string `json:"accessToken"`           //用户的授权令牌
+        ExpireIn int32 `json:"expireIn"`                  //用户的授权令牌的有效期，部分平台可能没有
+        RefreshToken string `json:"refreshToken"`         //刷新令牌，部分平台可能没有
+        AccessCode string `json:"accessCode"`             //平台的授权信息，部分平台可能没有
+        UnionId string `json:"unionId"`                   //用户的 unionid
+        Scope string `json:"scope"`                       //授予的权限，部分平台可能没有
+        TokenType string `json:"tokenType"`               //个别平台的授权信息，部分平台可能没有
+        IdToken string `json:"idToken"`                   //id token，部分平台可能没有
+        MacAlgorithm string `json:"macAlgorithm"`         //小米平台用户的附带属性，部分平台可能没有
+        MacKey string `json:"macKey"`                     //小米平台用户的附带属性，部分平台可能没有
+        Code string `json:"code"`                         //用户的授权code，部分平台可能没有
+        OauthToken string `json:"oauthToken"`             //Twitter平台用户的附带属性，部分平台可能没有
+        OauthTokenSecret string `json:"oauthTokenSecret"` //Twitter平台用户的附带属性，部分平台可能没有
+        CreateDept int64 `json:"createDept"`              //创建部门
+        CreateBy int64 `json:"createBy"`                  //创建者
+        CreateTime string `json:"createTime"`             //创建时间
+        UpdateBy int64 `json:"updateBy"`                  //更新者
+        UpdateTime string `json:"updateTime"`             //更新时间
+        DelFlag string `json:"delFlag"`                   //删除标志（0代表存在 1代表删除）
+    }
+    QuerySocialListResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Data []*QuerySocialListData `json:"data"`
+        Success bool `json:"success"`
+    }
+)
+
+@server(
+    group: demo/social
+    prefix: /api/demo/social
+)
+service demo-api {
+    // 添加社会化关系
+    @handler AddSocial
+    post /addSocial (AddSocialReq) returns (AddSocialResp)
+
+    // 删除社会化关系
+    @handler DeleteSocial
+    get /deleteSocial (DeleteSocialReq) returns (DeleteSocialResp)
+
+    // 更新社会化关系
+    @handler UpdateSocial
+    post /updateSocial (UpdateSocialReq) returns (UpdateSocialResp)
+
+    // 更新社会化关系状态
+    @handler UpdateSocialStatus
+    post /updateSocialStatus (UpdateSocialStatusReq) returns (UpdateSocialStatusResp)
+
+    // 查询社会化关系详情
+    @handler QuerySocialDetail
+    get /querySocialDetail (QuerySocialDetailReq) returns (QuerySocialDetailResp)
+
+    // 分页查询社会化关系列表
+    @handler QueryPageSocialList
+    get /queryPageSocialList (QueryPageSocialListReq) returns (QueryPageSocialListResp)
+
+    // 查询社会化关系所有列表
+    @handler QuerySocialList
+    get /querySocialList (QuerySocialListReq) returns (QuerySocialListResp)
+}

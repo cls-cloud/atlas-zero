@@ -1,0 +1,178 @@
+info(
+    desc: "参数配置"
+    author: "atlas"
+    email: "ut1221@icloud.com"
+)
+
+type (
+    // 添加参数配置请求参数
+    AddConfigReq {
+        ConfigId int64 `json:"configId"`                 //参数主键
+        TenantId string `json:"tenantId,optional"`       //租户编号
+        ConfigName string `json:"configName,optional"`   //参数名称
+        ConfigKey string `json:"configKey,optional"`     //参数键名
+        ConfigValue string `json:"configValue,optional"` //参数键值
+        ConfigType string `json:"configType,optional"`   //系统内置（Y是 N否）
+        Remark string `json:"remark,optional"`           //备注
+    }
+    AddConfigResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 删除参数配置请求参数
+    DeleteConfigReq {
+        Ids []int64 `form:"ids"`
+    }
+    DeleteConfigResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 更新参数配置请求参数
+    UpdateConfigReq {
+        ConfigId int64 `json:"configId"`                 //参数主键
+        TenantId string `json:"tenantId,optional"`       //租户编号
+        ConfigName string `json:"configName,optional"`   //参数名称
+        ConfigKey string `json:"configKey,optional"`     //参数键名
+        ConfigValue string `json:"configValue,optional"` //参数键值
+        ConfigType string `json:"configType,optional"`   //系统内置（Y是 N否）
+        Remark string `json:"remark,optional"`           //备注
+    }
+    UpdateConfigResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 更新参数配置状态请求参数
+    UpdateConfigStatusReq {
+
+    }
+    UpdateConfigStatusResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 查询参数配置详情请求参数
+    QueryConfigDetailReq {
+        Id int64 `form:"id"`
+    }
+    QueryConfigDetailData {
+        ConfigId int64 `json:"configId"`        //参数主键
+        TenantId string `json:"tenantId"`       //租户编号
+        ConfigName string `json:"configName"`   //参数名称
+        ConfigKey string `json:"configKey"`     //参数键名
+        ConfigValue string `json:"configValue"` //参数键值
+        ConfigType string `json:"configType"`   //系统内置（Y是 N否）
+        CreateDept int64 `json:"createDept"`    //创建部门
+        CreateBy int64 `json:"createBy"`        //创建者
+        CreateTime string `json:"createTime"`   //创建时间
+        UpdateBy int64 `json:"updateBy"`        //更新者
+        UpdateTime string `json:"updateTime"`   //更新时间
+        Remark string `json:"remark"`           //备注
+    }
+    QueryConfigDetailResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Data QueryConfigDetailData `json:"data"`
+    }
+
+        // 分页查询参数配置列表请求参数
+    QueryPageConfigListReq {
+        Current int64 `form:"current,default=1"`         //第几页
+        PageSize int64 `form:"pageSize,default=20"`      //每页的数量
+        ConfigId int64 `json:"configId,optional"`        //参数主键
+        TenantId string `json:"tenantId,optional"`       //租户编号
+        ConfigName string `json:"configName,optional"`   //参数名称
+        ConfigKey string `json:"configKey,optional"`     //参数键名
+        ConfigValue string `json:"configValue,optional"` //参数键值
+        ConfigType string `json:"configType,optional"`   //系统内置（Y是 N否）
+    }
+    QueryPageConfigListData {
+        ConfigId int64 `json:"configId"`        //参数主键
+        TenantId string `json:"tenantId"`       //租户编号
+        ConfigName string `json:"configName"`   //参数名称
+        ConfigKey string `json:"configKey"`     //参数键名
+        ConfigValue string `json:"configValue"` //参数键值
+        ConfigType string `json:"configType"`   //系统内置（Y是 N否）
+        CreateDept int64 `json:"createDept"`    //创建部门
+        CreateBy int64 `json:"createBy"`        //创建者
+        CreateTime string `json:"createTime"`   //创建时间
+        UpdateBy int64 `json:"updateBy"`        //更新者
+        UpdateTime string `json:"updateTime"`   //更新时间
+        Remark string `json:"remark"`           //备注
+    }
+    QueryPageConfigListResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Current int64 `json:"current,default=1"`
+        Data []*QueryPageConfigListData `json:"data"`
+        PageSize int64 `json:"pageSize,default=20"`
+        Success bool `json:"success"`
+        Total int64 `json:"total"`
+    }
+
+        // 查询参数配置所有列表请求参数
+    QueryConfigListReq {
+        ConfigId int64 `json:"configId,optional"`        //参数主键
+        TenantId string `json:"tenantId,optional"`       //租户编号
+        ConfigName string `json:"configName,optional"`   //参数名称
+        ConfigKey string `json:"configKey,optional"`     //参数键名
+        ConfigValue string `json:"configValue,optional"` //参数键值
+        ConfigType string `json:"configType,optional"`   //系统内置（Y是 N否）
+    }
+    QueryConfigListData {
+        ConfigId int64 `json:"configId"`        //参数主键
+        TenantId string `json:"tenantId"`       //租户编号
+        ConfigName string `json:"configName"`   //参数名称
+        ConfigKey string `json:"configKey"`     //参数键名
+        ConfigValue string `json:"configValue"` //参数键值
+        ConfigType string `json:"configType"`   //系统内置（Y是 N否）
+        CreateDept int64 `json:"createDept"`    //创建部门
+        CreateBy int64 `json:"createBy"`        //创建者
+        CreateTime string `json:"createTime"`   //创建时间
+        UpdateBy int64 `json:"updateBy"`        //更新者
+        UpdateTime string `json:"updateTime"`   //更新时间
+        Remark string `json:"remark"`           //备注
+    }
+    QueryConfigListResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Data []*QueryConfigListData `json:"data"`
+        Success bool `json:"success"`
+    }
+)
+
+@server(
+    group: demo/config
+    prefix: /api/demo/config
+)
+service demo-api {
+    // 添加参数配置
+    @handler AddConfig
+    post /addConfig (AddConfigReq) returns (AddConfigResp)
+
+    // 删除参数配置
+    @handler DeleteConfig
+    get /deleteConfig (DeleteConfigReq) returns (DeleteConfigResp)
+
+    // 更新参数配置
+    @handler UpdateConfig
+    post /updateConfig (UpdateConfigReq) returns (UpdateConfigResp)
+
+    // 更新参数配置状态
+    @handler UpdateConfigStatus
+    post /updateConfigStatus (UpdateConfigStatusReq) returns (UpdateConfigStatusResp)
+
+    // 查询参数配置详情
+    @handler QueryConfigDetail
+    get /queryConfigDetail (QueryConfigDetailReq) returns (QueryConfigDetailResp)
+
+    // 分页查询参数配置列表
+    @handler QueryPageConfigList
+    get /queryPageConfigList (QueryPageConfigListReq) returns (QueryPageConfigListResp)
+
+    // 查询参数配置所有列表
+    @handler QueryConfigList
+    get /queryConfigList (QueryConfigListReq) returns (QueryConfigListResp)
+}

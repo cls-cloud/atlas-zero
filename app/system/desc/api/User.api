@@ -1,0 +1,90 @@
+info(
+    desc: "用户信息"
+//    author: "atlas"
+//    email: "ut1221@icloud.com"
+)
+
+import "base.api"
+
+type (
+    // 创建和更新共用结构
+    AddOrUpdateUserReq {
+        UserBase
+    }
+        // 更新用户状态
+    UpdateUserStatusReq {
+        UserId int64 `json:"userId"`
+        Status string `json:"status"`
+    }
+        // 查询详情响应（包含创建更新信息）
+    UserDetailResp {
+        UserBase
+        CreateDept int64 `json:"createDept"`
+        CreateBy int64 `json:"createBy"`
+        CreateTime string `json:"createTime"`
+        UpdateBy int64 `json:"updateBy"`
+        UpdateTime string `json:"updateTime"`
+    }
+        // 用户分页请求过滤参数
+    UserQuery {
+        UserId int64 `json:"userId,optional"`
+        TenantId string `json:"tenantId,optional"`
+        DeptId int64 `json:"deptId,optional"`
+        UserName string `json:"userName,optional"`
+        NickName string `json:"nickName,optional"`
+        UserType string `json:"userType,optional"`
+        Email string `json:"email,optional"`
+        PhoneNumber string `json:"phonenumber,optional"`
+        Sex string `json:"sex,optional"`
+        Avatar int64 `json:"avatar,optional"`
+        Status string `json:"status,optional"`
+        DelFlag string `json:"delFlag,optional"`
+        LoginIp string `json:"loginIp,optional"`
+    }
+    QueryPageUserListReq {
+        PageReq
+        UserQuery
+    }
+    QueryPageUserListResp {
+        Total int64 `json:"total"`
+        Rows []UserDetailResp `json:"rows"`
+    }
+    QueryUserListReq {
+        UserQuery
+    }
+    UserInfoResp {
+        UserBase
+    }
+)
+
+@server(
+    group: user
+    prefix: /system/user
+    middleware: Auth
+)
+service System {
+    @handler GetUserInfo
+    get /getInfo returns (UserInfoResp)
+
+    @handler AddUser
+    post /addUser (AddOrUpdateUserReq)
+
+    @handler DeleteUser
+    get /deleteUser (IdsReq)
+
+    @handler UpdateUser
+    post /updateUser (AddOrUpdateUserReq)
+
+    @handler UpdateUserStatus
+    post /updateUserStatus (UpdateUserStatusReq)
+
+    @handler QueryUserDetail
+    get /queryUserDetail (IdReq) returns (UserDetailResp)
+
+    @handler QueryPageUserList
+    get /queryPageUserList (QueryPageUserListReq) returns (QueryPageUserListResp)
+
+    @handler QueryUserList
+    get /queryUserList (QueryUserListReq) returns ([]UserDetailResp)
+}
+

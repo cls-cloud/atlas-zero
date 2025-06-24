@@ -1,0 +1,201 @@
+info(
+    desc: "系统授权"
+    author: "atlas"
+    email: "ut1221@icloud.com"
+)
+
+type (
+    // 添加系统授权请求参数
+    AddClientReq {
+        Id int64 `json:"id"`                                //id
+        ClientId string `json:"clientId,optional"`          //客户端id
+        ClientKey string `json:"clientKey,optional"`        //客户端key
+        ClientSecret string `json:"clientSecret,optional"`  //客户端秘钥
+        GrantType string `json:"grantType,optional"`        //授权类型
+        DeviceType string `json:"deviceType,optional"`      //设备类型
+        ActiveTimeout int32 `json:"activeTimeout,optional"` //token活跃超时时间
+        Timeout int32 `json:"timeout,optional"`             //token固定超时
+        Status string `json:"status,optional"`              //状态（0正常 1停用）
+        DelFlag string `json:"delFlag,optional"`            //删除标志（0代表存在 1代表删除）
+    }
+    AddClientResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 删除系统授权请求参数
+    DeleteClientReq {
+        Ids []int64 `form:"ids"`
+    }
+    DeleteClientResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 更新系统授权请求参数
+    UpdateClientReq {
+        Id int64 `json:"id"`                                //id
+        ClientId string `json:"clientId,optional"`          //客户端id
+        ClientKey string `json:"clientKey,optional"`        //客户端key
+        ClientSecret string `json:"clientSecret,optional"`  //客户端秘钥
+        GrantType string `json:"grantType,optional"`        //授权类型
+        DeviceType string `json:"deviceType,optional"`      //设备类型
+        ActiveTimeout int32 `json:"activeTimeout,optional"` //token活跃超时时间
+        Timeout int32 `json:"timeout,optional"`             //token固定超时
+        Status string `json:"status,optional"`              //状态（0正常 1停用）
+        DelFlag string `json:"delFlag,optional"`            //删除标志（0代表存在 1代表删除）
+    }
+    UpdateClientResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 更新系统授权状态请求参数
+    UpdateClientStatusReq {
+        Status string `json:"status,default=2"` //状态（0正常 1停用）
+    }
+    UpdateClientStatusResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 查询系统授权详情请求参数
+    QueryClientDetailReq {
+        Id int64 `form:"id"`
+    }
+    QueryClientDetailData {
+        Id int64 `json:"id"`                       //id
+        ClientId string `json:"clientId"`          //客户端id
+        ClientKey string `json:"clientKey"`        //客户端key
+        ClientSecret string `json:"clientSecret"`  //客户端秘钥
+        GrantType string `json:"grantType"`        //授权类型
+        DeviceType string `json:"deviceType"`      //设备类型
+        ActiveTimeout int32 `json:"activeTimeout"` //token活跃超时时间
+        Timeout int32 `json:"timeout"`             //token固定超时
+        Status string `json:"status"`              //状态（0正常 1停用）
+        DelFlag string `json:"delFlag"`            //删除标志（0代表存在 1代表删除）
+        CreateDept int64 `json:"createDept"`       //创建部门
+        CreateBy int64 `json:"createBy"`           //创建者
+        CreateTime string `json:"createTime"`      //创建时间
+        UpdateBy int64 `json:"updateBy"`           //更新者
+        UpdateTime string `json:"updateTime"`      //更新时间
+    }
+    QueryClientDetailResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Data QueryClientDetailData `json:"data"`
+    }
+
+        // 分页查询系统授权列表请求参数
+    QueryPageClientListReq {
+        Current int64 `form:"current,default=1"`            //第几页
+        PageSize int64 `form:"pageSize,default=20"`         //每页的数量
+        Id int64 `json:"id,optional"`                       //id
+        ClientId string `json:"clientId,optional"`          //客户端id
+        ClientKey string `json:"clientKey,optional"`        //客户端key
+        ClientSecret string `json:"clientSecret,optional"`  //客户端秘钥
+        GrantType string `json:"grantType,optional"`        //授权类型
+        DeviceType string `json:"deviceType,optional"`      //设备类型
+        ActiveTimeout int32 `json:"activeTimeout,optional"` //token活跃超时时间
+        Timeout int32 `json:"timeout,optional"`             //token固定超时
+        Status string `json:"status,default=2"`             //状态（0正常 1停用）
+        DelFlag string `json:"delFlag,optional"`            //删除标志（0代表存在 1代表删除）
+    }
+    QueryPageClientListData {
+        Id int64 `json:"id"`                       //id
+        ClientId string `json:"clientId"`          //客户端id
+        ClientKey string `json:"clientKey"`        //客户端key
+        ClientSecret string `json:"clientSecret"`  //客户端秘钥
+        GrantType string `json:"grantType"`        //授权类型
+        DeviceType string `json:"deviceType"`      //设备类型
+        ActiveTimeout int32 `json:"activeTimeout"` //token活跃超时时间
+        Timeout int32 `json:"timeout"`             //token固定超时
+        Status string `json:"status"`              //状态（0正常 1停用）
+        DelFlag string `json:"delFlag"`            //删除标志（0代表存在 1代表删除）
+        CreateDept int64 `json:"createDept"`       //创建部门
+        CreateBy int64 `json:"createBy"`           //创建者
+        CreateTime string `json:"createTime"`      //创建时间
+        UpdateBy int64 `json:"updateBy"`           //更新者
+        UpdateTime string `json:"updateTime"`      //更新时间
+    }
+    QueryPageClientListResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Current int64 `json:"current,default=1"`
+        Data []*QueryPageClientListData `json:"data"`
+        PageSize int64 `json:"pageSize,default=20"`
+        Success bool `json:"success"`
+        Total int64 `json:"total"`
+    }
+
+        // 查询系统授权所有列表请求参数
+    QueryClientListReq {
+        Id int64 `json:"id,optional"`                       //id
+        ClientId string `json:"clientId,optional"`          //客户端id
+        ClientKey string `json:"clientKey,optional"`        //客户端key
+        ClientSecret string `json:"clientSecret,optional"`  //客户端秘钥
+        GrantType string `json:"grantType,optional"`        //授权类型
+        DeviceType string `json:"deviceType,optional"`      //设备类型
+        ActiveTimeout int32 `json:"activeTimeout,optional"` //token活跃超时时间
+        Timeout int32 `json:"timeout,optional"`             //token固定超时
+        Status string `json:"status,default=2"`             //状态（0正常 1停用）
+        DelFlag string `json:"delFlag,optional"`            //删除标志（0代表存在 1代表删除）
+    }
+    QueryClientListData {
+        Id int64 `json:"id"`                       //id
+        ClientId string `json:"clientId"`          //客户端id
+        ClientKey string `json:"clientKey"`        //客户端key
+        ClientSecret string `json:"clientSecret"`  //客户端秘钥
+        GrantType string `json:"grantType"`        //授权类型
+        DeviceType string `json:"deviceType"`      //设备类型
+        ActiveTimeout int32 `json:"activeTimeout"` //token活跃超时时间
+        Timeout int32 `json:"timeout"`             //token固定超时
+        Status string `json:"status"`              //状态（0正常 1停用）
+        DelFlag string `json:"delFlag"`            //删除标志（0代表存在 1代表删除）
+        CreateDept int64 `json:"createDept"`       //创建部门
+        CreateBy int64 `json:"createBy"`           //创建者
+        CreateTime string `json:"createTime"`      //创建时间
+        UpdateBy int64 `json:"updateBy"`           //更新者
+        UpdateTime string `json:"updateTime"`      //更新时间
+    }
+    QueryClientListResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Data []*QueryClientListData `json:"data"`
+        Success bool `json:"success"`
+    }
+)
+
+@server(
+    group: demo/client
+    prefix: /api/demo/client
+)
+service demo-api {
+    // 添加系统授权
+    @handler AddClient
+    post /addClient (AddClientReq) returns (AddClientResp)
+
+    // 删除系统授权
+    @handler DeleteClient
+    get /deleteClient (DeleteClientReq) returns (DeleteClientResp)
+
+    // 更新系统授权
+    @handler UpdateClient
+    post /updateClient (UpdateClientReq) returns (UpdateClientResp)
+
+    // 更新系统授权状态
+    @handler UpdateClientStatus
+    post /updateClientStatus (UpdateClientStatusReq) returns (UpdateClientStatusResp)
+
+    // 查询系统授权详情
+    @handler QueryClientDetail
+    get /queryClientDetail (QueryClientDetailReq) returns (QueryClientDetailResp)
+
+    // 分页查询系统授权列表
+    @handler QueryPageClientList
+    get /queryPageClientList (QueryPageClientListReq) returns (QueryPageClientListResp)
+
+    // 查询系统授权所有列表
+    @handler QueryClientList
+    get /queryClientList (QueryClientListReq) returns (QueryClientListResp)
+}

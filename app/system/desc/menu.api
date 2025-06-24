@@ -1,0 +1,150 @@
+info(
+    desc: "菜单权限"
+    author: "atlas"
+    email: "ut1221@icloud.com"
+    data: "2025-05-22 17:37:21"
+)
+
+import "base.api"
+
+type (
+    SysMenuBase {
+        // 菜单ID
+        menuId int64 `json:"menuId,optional"`
+        // 菜单名称
+        menuName string `json:"menuName,optional"`
+        // 父菜单ID
+        parentId int64 `json:"parentId,optional"`
+        // 显示顺序
+        orderNum int32 `json:"orderNum,optional"`
+        // 路由地址
+        path string `json:"path,optional"`
+        // 组件路径
+        component string `json:"component,optional"`
+        // 路由参数
+        queryParam string `json:"queryParam,optional"`
+        // 是否为外链（0是 1否）
+        isFrame int32 `json:"isFrame,optional"`
+        // 是否缓存（0缓存 1不缓存）
+        isCache int32 `json:"isCache,optional"`
+        // 菜单类型（M目录 C菜单 F按钮）
+        menuType string `json:"menuType,optional"`
+        // 显示状态（0显示 1隐藏）
+        visible string `json:"visible,optional"`
+        // 菜单状态（0正常 1停用）
+        status string `json:"status,optional"`
+        // 权限标识
+        perms string `json:"perms,optional"`
+        // 菜单图标
+        icon string `json:"icon,optional"`
+        // 创建部门
+        createDept int64 `json:"createDept,optional"`
+        // 创建者
+        createBy int64 `json:"createBy,optional"`
+        // 创建时间
+        createTime string `json:"createTime,optional"`
+        // 更新者
+        updateBy int64 `json:"updateBy,optional"`
+        // 更新时间
+        updateTime string `json:"updateTime,optional"`
+        // 备注
+        remark string `json:"remark,optional"`
+    }
+
+        // 创建和更新共用结构
+    ModifySysMenuReq {
+        SysMenuBase
+    }
+
+        // 请求过滤参数
+    SysMenuQuery {
+        // 菜单ID
+        menuId int64 `json:"menuId,optional"`
+        // 菜单名称
+        menuName string `json:"menuName,optional"`
+        // 父菜单ID
+        parentId int64 `json:"parentId,optional"`
+        // 显示顺序
+        orderNum int32 `json:"orderNum,optional"`
+        // 路由地址
+        path string `json:"path,optional"`
+        // 组件路径
+        component string `json:"component,optional"`
+        // 路由参数
+        queryParam string `json:"queryParam,optional"`
+        // 是否为外链（0是 1否）
+        isFrame int32 `json:"isFrame,optional"`
+        // 是否缓存（0缓存 1不缓存）
+        isCache int32 `json:"isCache,optional"`
+        // 菜单类型（M目录 C菜单 F按钮）
+        menuType string `json:"menuType,optional"`
+        // 显示状态（0显示 1隐藏）
+        visible string `json:"visible,optional"`
+        // 菜单状态（0正常 1停用）
+        status string `json:"status,optional"`
+        // 权限标识
+        perms string `json:"perms,optional"`
+        // 菜单图标
+        icon string `json:"icon,optional"`
+        // 创建部门
+        createDept int64 `json:"createDept,optional"`
+        // 创建者
+        createBy int64 `json:"createBy,optional"`
+        // 创建时间
+        createTime string `json:"createTime,optional"`
+        // 更新者
+        updateBy int64 `json:"updateBy,optional"`
+        // 更新时间
+        updateTime string `json:"updateTime,optional"`
+        // 备注
+        remark string `json:"remark,optional"`
+    }
+        // 分页请求过滤参数
+    QueryPageSysMenuListReq {
+        PageReq
+        SysMenuQuery
+    }
+        // 分页响应
+    QueryPageSysMenuListResp {
+        Total int64 `json:"total"`
+        Rows []SysMenuDetailResp `json:"rows"`
+    }
+
+    QuerySysMenuListReq {
+        SysMenuQuery
+    }
+
+    SysMenuDetailResp {
+        SysMenuBase
+    }
+
+    SysMenuInfoResp {
+        SysMenuBase
+    }
+)
+
+@server(
+    tags: "菜单权限"
+    group: sysMenu
+    prefix: /menu
+    middleware: Auth
+)
+service SysMenu {
+    @handler GetSysMenuInfo
+    get /info returns (SysMenuInfoResp)
+
+    @handler AddSysMenu
+    post /add (ModifySysMenuReq)
+
+    @handler DeleteSysMenu
+    get /delete (IdsReq)
+
+    @handler UpdateSysMenu
+    post /update (ModifySysMenuReq)
+
+    @handler QueryPageSysMenuList
+    get /queryPageList (QueryPageSysMenuListReq) returns (QueryPageSysMenuListResp)
+
+    @handler QuerySysMenuList
+    get /queryList (QuerySysMenuListReq) returns ([]SysMenuDetailResp)
+}

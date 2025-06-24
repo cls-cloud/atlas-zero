@@ -1,0 +1,186 @@
+info(
+    desc: "岗位信息"
+    author: "atlas"
+    email: "ut1221@icloud.com"
+)
+
+import "base.api"
+
+type (
+    // 添加岗位信息请求参数
+    AddPostReq {
+        RoleBase
+    }
+    AddPostResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 删除岗位信息请求参数
+    DeletePostReq {
+        Ids []int64 `form:"ids"`
+    }
+    DeletePostResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 更新岗位信息请求参数
+    UpdatePostReq {
+        PostId int64 `json:"postId"`                       //岗位ID
+        TenantId string `json:"tenantId,optional"`         //租户编号
+        DeptId int64 `json:"deptId"`                       //部门id
+        PostCode string `json:"postCode"`                  //岗位编码
+        PostCategory string `json:"postCategory,optional"` //岗位类别编码
+        PostName string `json:"postName"`                  //岗位名称
+        PostSort int32 `json:"postSort"`                   //显示顺序
+        Status string `json:"status,default=2"`            //状态（0正常 1停用）
+        Remark string `json:"remark,optional"`             //备注
+    }
+    UpdatePostResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 更新岗位信息状态请求参数
+    UpdatePostStatusReq {
+        Status string `json:"status,default=2"` //状态（0正常 1停用）
+    }
+    UpdatePostStatusResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 查询岗位信息详情请求参数
+    QueryPostDetailReq {
+        Id int64 `form:"id"`
+    }
+    QueryPostDetailData {
+        PostId int64 `json:"postId"`              //岗位ID
+        TenantId string `json:"tenantId"`         //租户编号
+        DeptId int64 `json:"deptId"`              //部门id
+        PostCode string `json:"postCode"`         //岗位编码
+        PostCategory string `json:"postCategory"` //岗位类别编码
+        PostName string `json:"postName"`         //岗位名称
+        PostSort int32 `json:"postSort"`          //显示顺序
+        Status string `json:"status"`             //状态（0正常 1停用）
+        CreateDept int64 `json:"createDept"`      //创建部门
+        CreateBy int64 `json:"createBy"`          //创建者
+        CreateTime string `json:"createTime"`     //创建时间
+        UpdateBy int64 `json:"updateBy"`          //更新者
+        UpdateTime string `json:"updateTime"`     //更新时间
+        Remark string `json:"remark"`             //备注
+    }
+    QueryPostDetailResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Data QueryPostDetailData `json:"data"`
+    }
+
+        // 分页查询岗位信息列表请求参数
+    QueryPagePostListReq {
+        Current int64 `form:"current,default=1"`           //第几页
+        PageSize int64 `form:"pageSize,default=20"`        //每页的数量
+        PostId int64 `json:"postId,optional"`              //岗位ID
+        TenantId string `json:"tenantId,optional"`         //租户编号
+        DeptId int64 `json:"deptId,optional"`              //部门id
+        PostCode string `json:"postCode,optional"`         //岗位编码
+        PostCategory string `json:"postCategory,optional"` //岗位类别编码
+        PostName string `json:"postName,optional"`         //岗位名称
+        PostSort int32 `json:"postSort,optional"`          //显示顺序
+        Status string `json:"status,default=2"`            //状态（0正常 1停用）
+    }
+    QueryPagePostListData {
+        PostId int64 `json:"postId"`              //岗位ID
+        TenantId string `json:"tenantId"`         //租户编号
+        DeptId int64 `json:"deptId"`              //部门id
+        PostCode string `json:"postCode"`         //岗位编码
+        PostCategory string `json:"postCategory"` //岗位类别编码
+        PostName string `json:"postName"`         //岗位名称
+        PostSort int32 `json:"postSort"`          //显示顺序
+        Status string `json:"status"`             //状态（0正常 1停用）
+        CreateDept int64 `json:"createDept"`      //创建部门
+        CreateBy int64 `json:"createBy"`          //创建者
+        CreateTime string `json:"createTime"`     //创建时间
+        UpdateBy int64 `json:"updateBy"`          //更新者
+        UpdateTime string `json:"updateTime"`     //更新时间
+        Remark string `json:"remark"`             //备注
+    }
+    QueryPagePostListResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Current int64 `json:"current,default=1"`
+        Data []*QueryPagePostListData `json:"data"`
+        PageSize int64 `json:"pageSize,default=20"`
+        Success bool `json:"success"`
+        Total int64 `json:"total"`
+    }
+
+        // 查询岗位信息所有列表请求参数
+    QueryPostListReq {
+        PostId int64 `json:"postId,optional"`              //岗位ID
+        TenantId string `json:"tenantId,optional"`         //租户编号
+        DeptId int64 `json:"deptId,optional"`              //部门id
+        PostCode string `json:"postCode,optional"`         //岗位编码
+        PostCategory string `json:"postCategory,optional"` //岗位类别编码
+        PostName string `json:"postName,optional"`         //岗位名称
+        PostSort int32 `json:"postSort,optional"`          //显示顺序
+        Status string `json:"status,default=2"`            //状态（0正常 1停用）
+    }
+    QueryPostListData {
+        PostId int64 `json:"postId"`              //岗位ID
+        TenantId string `json:"tenantId"`         //租户编号
+        DeptId int64 `json:"deptId"`              //部门id
+        PostCode string `json:"postCode"`         //岗位编码
+        PostCategory string `json:"postCategory"` //岗位类别编码
+        PostName string `json:"postName"`         //岗位名称
+        PostSort int32 `json:"postSort"`          //显示顺序
+        Status string `json:"status"`             //状态（0正常 1停用）
+        CreateDept int64 `json:"createDept"`      //创建部门
+        CreateBy int64 `json:"createBy"`          //创建者
+        CreateTime string `json:"createTime"`     //创建时间
+        UpdateBy int64 `json:"updateBy"`          //更新者
+        UpdateTime string `json:"updateTime"`     //更新时间
+        Remark string `json:"remark"`             //备注
+    }
+    QueryPostListResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Data []*QueryPostListData `json:"data"`
+        Success bool `json:"success"`
+    }
+)
+
+@server(
+    group: demo/post
+    prefix: /api/demo/post
+)
+service demo-api {
+    // 添加岗位信息
+    @handler AddPost
+    post /addPost (AddPostReq) returns (AddPostResp)
+
+    // 删除岗位信息
+    @handler DeletePost
+    get /deletePost (DeletePostReq) returns (DeletePostResp)
+
+    // 更新岗位信息
+    @handler UpdatePost
+    post /updatePost (UpdatePostReq) returns (UpdatePostResp)
+
+    // 更新岗位信息状态
+    @handler UpdatePostStatus
+    post /updatePostStatus (UpdatePostStatusReq) returns (UpdatePostStatusResp)
+
+    // 查询岗位信息详情
+    @handler QueryPostDetail
+    get /queryPostDetail (QueryPostDetailReq) returns (QueryPostDetailResp)
+
+    // 分页查询岗位信息列表
+    @handler QueryPagePostList
+    get /queryPagePostList (QueryPagePostListReq) returns (QueryPagePostListResp)
+
+    // 查询岗位信息所有列表
+    @handler QueryPostList
+    get /queryPostList (QueryPostListReq) returns (QueryPostListResp)
+}

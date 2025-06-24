@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package system;
+option go_package="./system";
+
+message Request {
+  string ping = 1;
+}
+
+message Response {
+  string pong = 1;
+}
+
+service UserRpc {
+  rpc Ping(Request) returns(Response);
+}
+
+service RoleRpc {
+  rpc Ping(Request) returns(Response);
+}

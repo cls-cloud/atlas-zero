@@ -1,0 +1,234 @@
+info(
+    desc: "租户"
+    author: "atlas"
+    email: "ut1221@icloud.com"
+)
+
+type (
+    // 添加租户请求参数
+    AddTenantReq {
+        Id int64 `json:"id"`                                     //id
+        TenantId string `json:"tenantId"`                        //租户编号
+        ContactUserName string `json:"contactUserName,optional"` //联系人
+        ContactPhone string `json:"contactPhone,optional"`       //联系电话
+        CompanyName string `json:"companyName,optional"`         //企业名称
+        LicenseNumber string `json:"licenseNumber,optional"`     //统一社会信用代码
+        Address string `json:"address,optional"`                 //地址
+        Intro string `json:"intro,optional"`                     //企业简介
+        Domain string `json:"domain,optional"`                   //域名
+        Remark string `json:"remark,optional"`                   //备注
+        PackageId int64 `json:"packageId,optional"`              //租户套餐编号
+        ExpireTime time.Time `json:"expireTime,optional"`        //过期时间
+        AccountCount int32 `json:"accountCount,optional"`        //用户数量（-1不限制）
+        Status string `json:"status,optional"`                   //租户状态（0正常 1停用）
+        DelFlag string `json:"delFlag,optional"`                 //删除标志（0代表存在 1代表删除）
+    }
+    AddTenantResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 删除租户请求参数
+    DeleteTenantReq {
+        Ids []int64 `form:"ids"`
+    }
+    DeleteTenantResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 更新租户请求参数
+    UpdateTenantReq {
+        Id int64 `json:"id"`                                     //id
+        TenantId string `json:"tenantId"`                        //租户编号
+        ContactUserName string `json:"contactUserName,optional"` //联系人
+        ContactPhone string `json:"contactPhone,optional"`       //联系电话
+        CompanyName string `json:"companyName,optional"`         //企业名称
+        LicenseNumber string `json:"licenseNumber,optional"`     //统一社会信用代码
+        Address string `json:"address,optional"`                 //地址
+        Intro string `json:"intro,optional"`                     //企业简介
+        Domain string `json:"domain,optional"`                   //域名
+        Remark string `json:"remark,optional"`                   //备注
+        PackageId int64 `json:"packageId,optional"`              //租户套餐编号
+        ExpireTime time.Time `json:"expireTime,optional"`        //过期时间
+        AccountCount int32 `json:"accountCount,optional"`        //用户数量（-1不限制）
+        Status string `json:"status,optional"`                   //租户状态（0正常 1停用）
+        DelFlag string `json:"delFlag,optional"`                 //删除标志（0代表存在 1代表删除）
+    }
+    UpdateTenantResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 更新租户状态请求参数
+    UpdateTenantStatusReq {
+        Status string `json:"status,default=2"` //租户状态（0正常 1停用）
+    }
+    UpdateTenantStatusResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 查询租户详情请求参数
+    QueryTenantDetailReq {
+        Id int64 `form:"id"`
+    }
+    QueryTenantDetailData {
+        Id int64 `json:"id"`                            //id
+        TenantId string `json:"tenantId"`               //租户编号
+        ContactUserName string `json:"contactUserName"` //联系人
+        ContactPhone string `json:"contactPhone"`       //联系电话
+        CompanyName string `json:"companyName"`         //企业名称
+        LicenseNumber string `json:"licenseNumber"`     //统一社会信用代码
+        Address string `json:"address"`                 //地址
+        Intro string `json:"intro"`                     //企业简介
+        Domain string `json:"domain"`                   //域名
+        Remark string `json:"remark"`                   //备注
+        PackageId int64 `json:"packageId"`              //租户套餐编号
+        ExpireTime string `json:"expireTime"`           //过期时间
+        AccountCount int32 `json:"accountCount"`        //用户数量（-1不限制）
+        Status string `json:"status"`                   //租户状态（0正常 1停用）
+        DelFlag string `json:"delFlag"`                 //删除标志（0代表存在 1代表删除）
+        CreateDept int64 `json:"createDept"`            //创建部门
+        CreateBy int64 `json:"createBy"`                //创建者
+        CreateTime string `json:"createTime"`           //创建时间
+        UpdateBy int64 `json:"updateBy"`                //更新者
+        UpdateTime string `json:"updateTime"`           //更新时间
+    }
+    QueryTenantDetailResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Data QueryTenantDetailData `json:"data"`
+    }
+
+        // 分页查询租户列表请求参数
+    QueryPageTenantListReq {
+        Current int64 `form:"current,default=1"`                 //第几页
+        PageSize int64 `form:"pageSize,default=20"`              //每页的数量
+        Id int64 `json:"id,optional"`                            //id
+        TenantId string `json:"tenantId,optional"`               //租户编号
+        ContactUserName string `json:"contactUserName,optional"` //联系人
+        ContactPhone string `json:"contactPhone,optional"`       //联系电话
+        CompanyName string `json:"companyName,optional"`         //企业名称
+        LicenseNumber string `json:"licenseNumber,optional"`     //统一社会信用代码
+        Address string `json:"address,optional"`                 //地址
+        Intro string `json:"intro,optional"`                     //企业简介
+        Domain string `json:"domain,optional"`                   //域名
+        PackageId int64 `json:"packageId,optional"`              //租户套餐编号
+        ExpireTime time.Time `json:"expireTime,optional"`        //过期时间
+        AccountCount int32 `json:"accountCount,optional"`        //用户数量（-1不限制）
+        Status string `json:"status,default=2"`                  //租户状态（0正常 1停用）
+        DelFlag string `json:"delFlag,optional"`                 //删除标志（0代表存在 1代表删除）
+    }
+    QueryPageTenantListData {
+        Id int64 `json:"id"`                            //id
+        TenantId string `json:"tenantId"`               //租户编号
+        ContactUserName string `json:"contactUserName"` //联系人
+        ContactPhone string `json:"contactPhone"`       //联系电话
+        CompanyName string `json:"companyName"`         //企业名称
+        LicenseNumber string `json:"licenseNumber"`     //统一社会信用代码
+        Address string `json:"address"`                 //地址
+        Intro string `json:"intro"`                     //企业简介
+        Domain string `json:"domain"`                   //域名
+        Remark string `json:"remark"`                   //备注
+        PackageId int64 `json:"packageId"`              //租户套餐编号
+        ExpireTime string `json:"expireTime"`           //过期时间
+        AccountCount int32 `json:"accountCount"`        //用户数量（-1不限制）
+        Status string `json:"status"`                   //租户状态（0正常 1停用）
+        DelFlag string `json:"delFlag"`                 //删除标志（0代表存在 1代表删除）
+        CreateDept int64 `json:"createDept"`            //创建部门
+        CreateBy int64 `json:"createBy"`                //创建者
+        CreateTime string `json:"createTime"`           //创建时间
+        UpdateBy int64 `json:"updateBy"`                //更新者
+        UpdateTime string `json:"updateTime"`           //更新时间
+    }
+    QueryPageTenantListResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Current int64 `json:"current,default=1"`
+        Data []*QueryPageTenantListData `json:"data"`
+        PageSize int64 `json:"pageSize,default=20"`
+        Success bool `json:"success"`
+        Total int64 `json:"total"`
+    }
+
+        // 查询租户所有列表请求参数
+    QueryTenantListReq {
+        Id int64 `json:"id,optional"`                            //id
+        TenantId string `json:"tenantId,optional"`               //租户编号
+        ContactUserName string `json:"contactUserName,optional"` //联系人
+        ContactPhone string `json:"contactPhone,optional"`       //联系电话
+        CompanyName string `json:"companyName,optional"`         //企业名称
+        LicenseNumber string `json:"licenseNumber,optional"`     //统一社会信用代码
+        Address string `json:"address,optional"`                 //地址
+        Intro string `json:"intro,optional"`                     //企业简介
+        Domain string `json:"domain,optional"`                   //域名
+        PackageId int64 `json:"packageId,optional"`              //租户套餐编号
+        ExpireTime time.Time `json:"expireTime,optional"`        //过期时间
+        AccountCount int32 `json:"accountCount,optional"`        //用户数量（-1不限制）
+        Status string `json:"status,default=2"`                  //租户状态（0正常 1停用）
+        DelFlag string `json:"delFlag,optional"`                 //删除标志（0代表存在 1代表删除）
+    }
+    QueryTenantListData {
+        Id int64 `json:"id"`                            //id
+        TenantId string `json:"tenantId"`               //租户编号
+        ContactUserName string `json:"contactUserName"` //联系人
+        ContactPhone string `json:"contactPhone"`       //联系电话
+        CompanyName string `json:"companyName"`         //企业名称
+        LicenseNumber string `json:"licenseNumber"`     //统一社会信用代码
+        Address string `json:"address"`                 //地址
+        Intro string `json:"intro"`                     //企业简介
+        Domain string `json:"domain"`                   //域名
+        Remark string `json:"remark"`                   //备注
+        PackageId int64 `json:"packageId"`              //租户套餐编号
+        ExpireTime string `json:"expireTime"`           //过期时间
+        AccountCount int32 `json:"accountCount"`        //用户数量（-1不限制）
+        Status string `json:"status"`                   //租户状态（0正常 1停用）
+        DelFlag string `json:"delFlag"`                 //删除标志（0代表存在 1代表删除）
+        CreateDept int64 `json:"createDept"`            //创建部门
+        CreateBy int64 `json:"createBy"`                //创建者
+        CreateTime string `json:"createTime"`           //创建时间
+        UpdateBy int64 `json:"updateBy"`                //更新者
+        UpdateTime string `json:"updateTime"`           //更新时间
+    }
+    QueryTenantListResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Data []*QueryTenantListData `json:"data"`
+        Success bool `json:"success"`
+    }
+)
+
+@server(
+    group: demo/tenant
+    prefix: /api/demo/tenant
+)
+service demo-api {
+    // 添加租户
+    @handler AddTenant
+    post /addTenant (AddTenantReq) returns (AddTenantResp)
+
+    // 删除租户
+    @handler DeleteTenant
+    get /deleteTenant (DeleteTenantReq) returns (DeleteTenantResp)
+
+    // 更新租户
+    @handler UpdateTenant
+    post /updateTenant (UpdateTenantReq) returns (UpdateTenantResp)
+
+    // 更新租户状态
+    @handler UpdateTenantStatus
+    post /updateTenantStatus (UpdateTenantStatusReq) returns (UpdateTenantStatusResp)
+
+    // 查询租户详情
+    @handler QueryTenantDetail
+    get /queryTenantDetail (QueryTenantDetailReq) returns (QueryTenantDetailResp)
+
+    // 分页查询租户列表
+    @handler QueryPageTenantList
+    get /queryPageTenantList (QueryPageTenantListReq) returns (QueryPageTenantListResp)
+
+    // 查询租户所有列表
+    @handler QueryTenantList
+    get /queryTenantList (QueryTenantListReq) returns (QueryTenantListResp)
+}

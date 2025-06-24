@@ -1,0 +1,178 @@
+info(
+    desc: "通知公告"
+    author: "atlas"
+    email: "ut1221@icloud.com"
+)
+
+type (
+    // 添加通知公告请求参数
+    AddNoticeReq {
+        NoticeId int64 `json:"noticeId"`                     //公告ID
+        TenantId string `json:"tenantId,optional"`           //租户编号
+        NoticeTitle string `json:"noticeTitle"`              //公告标题
+        NoticeType string `json:"noticeType"`                //公告类型（1通知 2公告）
+        NoticeContent string `json:"noticeContent,optional"` //公告内容
+        Status string `json:"status,optional"`               //公告状态（0正常 1关闭）
+        Remark string `json:"remark,optional"`               //备注
+    }
+    AddNoticeResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 删除通知公告请求参数
+    DeleteNoticeReq {
+        Ids []int64 `form:"ids"`
+    }
+    DeleteNoticeResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 更新通知公告请求参数
+    UpdateNoticeReq {
+        NoticeId int64 `json:"noticeId"`                     //公告ID
+        TenantId string `json:"tenantId,optional"`           //租户编号
+        NoticeTitle string `json:"noticeTitle"`              //公告标题
+        NoticeType string `json:"noticeType"`                //公告类型（1通知 2公告）
+        NoticeContent string `json:"noticeContent,optional"` //公告内容
+        Status string `json:"status,optional"`               //公告状态（0正常 1关闭）
+        Remark string `json:"remark,optional"`               //备注
+    }
+    UpdateNoticeResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 更新通知公告状态请求参数
+    UpdateNoticeStatusReq {
+        Status string `json:"status,default=2"` //公告状态（0正常 1关闭）
+    }
+    UpdateNoticeStatusResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 查询通知公告详情请求参数
+    QueryNoticeDetailReq {
+        Id int64 `form:"id"`
+    }
+    QueryNoticeDetailData {
+        NoticeId int64 `json:"noticeId"`            //公告ID
+        TenantId string `json:"tenantId"`           //租户编号
+        NoticeTitle string `json:"noticeTitle"`     //公告标题
+        NoticeType string `json:"noticeType"`       //公告类型（1通知 2公告）
+        NoticeContent string `json:"noticeContent"` //公告内容
+        Status string `json:"status"`               //公告状态（0正常 1关闭）
+        CreateDept int64 `json:"createDept"`        //创建部门
+        CreateBy int64 `json:"createBy"`            //创建者
+        CreateTime string `json:"createTime"`       //创建时间
+        UpdateBy int64 `json:"updateBy"`            //更新者
+        UpdateTime string `json:"updateTime"`       //更新时间
+        Remark string `json:"remark"`               //备注
+    }
+    QueryNoticeDetailResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Data QueryNoticeDetailData `json:"data"`
+    }
+
+        // 分页查询通知公告列表请求参数
+    QueryPageNoticeListReq {
+        Current int64 `form:"current,default=1"`             //第几页
+        PageSize int64 `form:"pageSize,default=20"`          //每页的数量
+        NoticeId int64 `json:"noticeId,optional"`            //公告ID
+        TenantId string `json:"tenantId,optional"`           //租户编号
+        NoticeTitle string `json:"noticeTitle,optional"`     //公告标题
+        NoticeType string `json:"noticeType,optional"`       //公告类型（1通知 2公告）
+        NoticeContent string `json:"noticeContent,optional"` //公告内容
+        Status string `json:"status,default=2"`              //公告状态（0正常 1关闭）
+    }
+    QueryPageNoticeListData {
+        NoticeId int64 `json:"noticeId"`            //公告ID
+        TenantId string `json:"tenantId"`           //租户编号
+        NoticeTitle string `json:"noticeTitle"`     //公告标题
+        NoticeType string `json:"noticeType"`       //公告类型（1通知 2公告）
+        NoticeContent string `json:"noticeContent"` //公告内容
+        Status string `json:"status"`               //公告状态（0正常 1关闭）
+        CreateDept int64 `json:"createDept"`        //创建部门
+        CreateBy int64 `json:"createBy"`            //创建者
+        CreateTime string `json:"createTime"`       //创建时间
+        UpdateBy int64 `json:"updateBy"`            //更新者
+        UpdateTime string `json:"updateTime"`       //更新时间
+        Remark string `json:"remark"`               //备注
+    }
+    QueryPageNoticeListResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Current int64 `json:"current,default=1"`
+        Data []*QueryPageNoticeListData `json:"data"`
+        PageSize int64 `json:"pageSize,default=20"`
+        Success bool `json:"success"`
+        Total int64 `json:"total"`
+    }
+
+        // 查询通知公告所有列表请求参数
+    QueryNoticeListReq {
+        NoticeId int64 `json:"noticeId,optional"`            //公告ID
+        TenantId string `json:"tenantId,optional"`           //租户编号
+        NoticeTitle string `json:"noticeTitle,optional"`     //公告标题
+        NoticeType string `json:"noticeType,optional"`       //公告类型（1通知 2公告）
+        NoticeContent string `json:"noticeContent,optional"` //公告内容
+        Status string `json:"status,default=2"`              //公告状态（0正常 1关闭）
+    }
+    QueryNoticeListData {
+        NoticeId int64 `json:"noticeId"`            //公告ID
+        TenantId string `json:"tenantId"`           //租户编号
+        NoticeTitle string `json:"noticeTitle"`     //公告标题
+        NoticeType string `json:"noticeType"`       //公告类型（1通知 2公告）
+        NoticeContent string `json:"noticeContent"` //公告内容
+        Status string `json:"status"`               //公告状态（0正常 1关闭）
+        CreateDept int64 `json:"createDept"`        //创建部门
+        CreateBy int64 `json:"createBy"`            //创建者
+        CreateTime string `json:"createTime"`       //创建时间
+        UpdateBy int64 `json:"updateBy"`            //更新者
+        UpdateTime string `json:"updateTime"`       //更新时间
+        Remark string `json:"remark"`               //备注
+    }
+    QueryNoticeListResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Data []*QueryNoticeListData `json:"data"`
+        Success bool `json:"success"`
+    }
+)
+
+@server(
+    group: demo/notice
+    prefix: /api/demo/notice
+)
+service demo-api {
+    // 添加通知公告
+    @handler AddNotice
+    post /addNotice (AddNoticeReq) returns (AddNoticeResp)
+
+    // 删除通知公告
+    @handler DeleteNotice
+    get /deleteNotice (DeleteNoticeReq) returns (DeleteNoticeResp)
+
+    // 更新通知公告
+    @handler UpdateNotice
+    post /updateNotice (UpdateNoticeReq) returns (UpdateNoticeResp)
+
+    // 更新通知公告状态
+    @handler UpdateNoticeStatus
+    post /updateNoticeStatus (UpdateNoticeStatusReq) returns (UpdateNoticeStatusResp)
+
+    // 查询通知公告详情
+    @handler QueryNoticeDetail
+    get /queryNoticeDetail (QueryNoticeDetailReq) returns (QueryNoticeDetailResp)
+
+    // 分页查询通知公告列表
+    @handler QueryPageNoticeList
+    get /queryPageNoticeList (QueryPageNoticeListReq) returns (QueryPageNoticeListResp)
+
+    // 查询通知公告所有列表
+    @handler QueryNoticeList
+    get /queryNoticeList (QueryNoticeListReq) returns (QueryNoticeListResp)
+}

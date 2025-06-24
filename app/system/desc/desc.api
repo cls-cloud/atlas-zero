@@ -1,0 +1,24 @@
+syntax = "v1"
+
+info (
+	desc:   "系统管理"
+	author: "atlas"
+	email:  "ut1221@icloud.com"
+)
+
+import "api/auth.api"
+import "api/user.api"
+import "api/role.api"
+
+type resp {
+	Msg  string `json:"msg"`
+	Code int    `json:"code"`
+}
+
+@server (
+	group: ping
+)
+service System {
+	@handler ping
+	get /ping returns (resp)
+}

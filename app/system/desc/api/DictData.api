@@ -1,0 +1,199 @@
+info(
+    desc: "字典数据"
+    author: "atlas"
+    email: "ut1221@icloud.com"
+)
+
+type (
+    // 添加字典数据请求参数
+    AddDictDataReq {
+        DictCode int64 `json:"dictCode"`             //字典编码
+        TenantId string `json:"tenantId,optional"`   //租户编号
+        DictSort int32 `json:"dictSort,optional"`    //字典排序
+        DictLabel string `json:"dictLabel,optional"` //字典标签
+        DictValue string `json:"dictValue,optional"` //字典键值
+        DictType string `json:"dictType,optional"`   //字典类型
+        CssClass string `json:"cssClass,optional"`   //样式属性（其他样式扩展）
+        ListClass string `json:"listClass,optional"` //表格回显样式
+        IsDefault string `json:"isDefault,optional"` //是否默认（Y是 N否）
+        Remark string `json:"remark,optional"`       //备注
+    }
+    AddDictDataResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 删除字典数据请求参数
+    DeleteDictDataReq {
+        Ids []int64 `form:"ids"`
+    }
+    DeleteDictDataResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 更新字典数据请求参数
+    UpdateDictDataReq {
+        DictCode int64 `json:"dictCode"`             //字典编码
+        TenantId string `json:"tenantId,optional"`   //租户编号
+        DictSort int32 `json:"dictSort,optional"`    //字典排序
+        DictLabel string `json:"dictLabel,optional"` //字典标签
+        DictValue string `json:"dictValue,optional"` //字典键值
+        DictType string `json:"dictType,optional"`   //字典类型
+        CssClass string `json:"cssClass,optional"`   //样式属性（其他样式扩展）
+        ListClass string `json:"listClass,optional"` //表格回显样式
+        IsDefault string `json:"isDefault,optional"` //是否默认（Y是 N否）
+        Remark string `json:"remark,optional"`       //备注
+    }
+    UpdateDictDataResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 更新字典数据状态请求参数
+    UpdateDictDataStatusReq {
+
+    }
+    UpdateDictDataStatusResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 查询字典数据详情请求参数
+    QueryDictDataDetailReq {
+        Id int64 `form:"id"`
+    }
+    QueryDictDataDetailData {
+        DictCode int64 `json:"dictCode"`      //字典编码
+        TenantId string `json:"tenantId"`     //租户编号
+        DictSort int32 `json:"dictSort"`      //字典排序
+        DictLabel string `json:"dictLabel"`   //字典标签
+        DictValue string `json:"dictValue"`   //字典键值
+        DictType string `json:"dictType"`     //字典类型
+        CssClass string `json:"cssClass"`     //样式属性（其他样式扩展）
+        ListClass string `json:"listClass"`   //表格回显样式
+        IsDefault string `json:"isDefault"`   //是否默认（Y是 N否）
+        CreateDept int64 `json:"createDept"`  //创建部门
+        CreateBy int64 `json:"createBy"`      //创建者
+        CreateTime string `json:"createTime"` //创建时间
+        UpdateBy int64 `json:"updateBy"`      //更新者
+        UpdateTime string `json:"updateTime"` //更新时间
+        Remark string `json:"remark"`         //备注
+    }
+    QueryDictDataDetailResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Data QueryDictDataDetailData `json:"data"`
+    }
+
+        // 分页查询字典数据列表请求参数
+    QueryPageDictDataListReq {
+        Current int64 `form:"current,default=1"`     //第几页
+        PageSize int64 `form:"pageSize,default=20"`  //每页的数量
+        DictCode int64 `json:"dictCode,optional"`    //字典编码
+        TenantId string `json:"tenantId,optional"`   //租户编号
+        DictSort int32 `json:"dictSort,optional"`    //字典排序
+        DictLabel string `json:"dictLabel,optional"` //字典标签
+        DictValue string `json:"dictValue,optional"` //字典键值
+        DictType string `json:"dictType,optional"`   //字典类型
+        CssClass string `json:"cssClass,optional"`   //样式属性（其他样式扩展）
+        ListClass string `json:"listClass,optional"` //表格回显样式
+        IsDefault string `json:"isDefault,optional"` //是否默认（Y是 N否）
+    }
+    QueryPageDictDataListData {
+        DictCode int64 `json:"dictCode"`      //字典编码
+        TenantId string `json:"tenantId"`     //租户编号
+        DictSort int32 `json:"dictSort"`      //字典排序
+        DictLabel string `json:"dictLabel"`   //字典标签
+        DictValue string `json:"dictValue"`   //字典键值
+        DictType string `json:"dictType"`     //字典类型
+        CssClass string `json:"cssClass"`     //样式属性（其他样式扩展）
+        ListClass string `json:"listClass"`   //表格回显样式
+        IsDefault string `json:"isDefault"`   //是否默认（Y是 N否）
+        CreateDept int64 `json:"createDept"`  //创建部门
+        CreateBy int64 `json:"createBy"`      //创建者
+        CreateTime string `json:"createTime"` //创建时间
+        UpdateBy int64 `json:"updateBy"`      //更新者
+        UpdateTime string `json:"updateTime"` //更新时间
+        Remark string `json:"remark"`         //备注
+    }
+    QueryPageDictDataListResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Current int64 `json:"current,default=1"`
+        Data []*QueryPageDictDataListData `json:"data"`
+        PageSize int64 `json:"pageSize,default=20"`
+        Success bool `json:"success"`
+        Total int64 `json:"total"`
+    }
+
+        // 查询字典数据所有列表请求参数
+    QueryDictDataListReq {
+        DictCode int64 `json:"dictCode,optional"`    //字典编码
+        TenantId string `json:"tenantId,optional"`   //租户编号
+        DictSort int32 `json:"dictSort,optional"`    //字典排序
+        DictLabel string `json:"dictLabel,optional"` //字典标签
+        DictValue string `json:"dictValue,optional"` //字典键值
+        DictType string `json:"dictType,optional"`   //字典类型
+        CssClass string `json:"cssClass,optional"`   //样式属性（其他样式扩展）
+        ListClass string `json:"listClass,optional"` //表格回显样式
+        IsDefault string `json:"isDefault,optional"` //是否默认（Y是 N否）
+    }
+    QueryDictDataListData {
+        DictCode int64 `json:"dictCode"`      //字典编码
+        TenantId string `json:"tenantId"`     //租户编号
+        DictSort int32 `json:"dictSort"`      //字典排序
+        DictLabel string `json:"dictLabel"`   //字典标签
+        DictValue string `json:"dictValue"`   //字典键值
+        DictType string `json:"dictType"`     //字典类型
+        CssClass string `json:"cssClass"`     //样式属性（其他样式扩展）
+        ListClass string `json:"listClass"`   //表格回显样式
+        IsDefault string `json:"isDefault"`   //是否默认（Y是 N否）
+        CreateDept int64 `json:"createDept"`  //创建部门
+        CreateBy int64 `json:"createBy"`      //创建者
+        CreateTime string `json:"createTime"` //创建时间
+        UpdateBy int64 `json:"updateBy"`      //更新者
+        UpdateTime string `json:"updateTime"` //更新时间
+        Remark string `json:"remark"`         //备注
+    }
+    QueryDictDataListResp {
+        Code string `json:"code"`
+        Message string `json:"message"`
+        Data []*QueryDictDataListData `json:"data"`
+        Success bool `json:"success"`
+    }
+)
+
+@server(
+    group: demo/dict_data
+    prefix: /api/demo/dictData
+)
+service demo-api {
+    // 添加字典数据
+    @handler AddDictData
+    post /addDictData (AddDictDataReq) returns (AddDictDataResp)
+
+    // 删除字典数据
+    @handler DeleteDictData
+    get /deleteDictData (DeleteDictDataReq) returns (DeleteDictDataResp)
+
+    // 更新字典数据
+    @handler UpdateDictData
+    post /updateDictData (UpdateDictDataReq) returns (UpdateDictDataResp)
+
+    // 更新字典数据状态
+    @handler UpdateDictDataStatus
+    post /updateDictDataStatus (UpdateDictDataStatusReq) returns (UpdateDictDataStatusResp)
+
+    // 查询字典数据详情
+    @handler QueryDictDataDetail
+    get /queryDictDataDetail (QueryDictDataDetailReq) returns (QueryDictDataDetailResp)
+
+    // 分页查询字典数据列表
+    @handler QueryPageDictDataList
+    get /queryPageDictDataList (QueryPageDictDataListReq) returns (QueryPageDictDataListResp)
+
+    // 查询字典数据所有列表
+    @handler QueryDictDataList
+    get /queryDictDataList (QueryDictDataListReq) returns (QueryDictDataListResp)
+}
