@@ -2,245 +2,97 @@ info(
     desc: "菜单权限"
     author: "atlas"
     email: "ut1221@icloud.com"
+    data: "2025-06-26 23:27:40"
 )
 
+import "base.api"
+
 type (
-    // 添加菜单权限请求参数
-    AddMenuReq {
-        MenuId int64 `json:"menuId"`                   //菜单ID
-        MenuName string `json:"menuName"`              //菜单名称
-        ParentId int64 `json:"parentId,optional"`      //父菜单ID
-        OrderNum int32 `json:"orderNum,optional"`      //显示顺序
-        Path string `json:"path,optional"`             //路由地址
-        Component string `json:"component,optional"`   //组件路径
-        QueryParam string `json:"queryParam,optional"` //路由参数
-        IsFrame int32 `json:"isFrame,optional"`        //是否为外链（0是 1否）
-        IsCache int32 `json:"isCache,optional"`        //是否缓存（0缓存 1不缓存）
-        MenuType string `json:"menuType,optional"`     //菜单类型（M目录 C菜单 F按钮）
-        Visible string `json:"visible,optional"`       //显示状态（0显示 1隐藏）
-        Status string `json:"status,optional"`         //菜单状态（0正常 1停用）
-        Perms string `json:"perms,optional"`           //权限标识
-        Icon string `json:"icon,optional"`             //菜单图标
-        Remark string `json:"remark,optional"`         //备注
-    }
-    AddMenuResp {
-        Code string `json:"code"`
-        Message string `json:"message"`
+    // 创建和更新共用结构
+    ModifyMenuReq {
+        MenuBase
     }
 
-        // 删除菜单权限请求参数
-    DeleteMenuReq {
-        Ids []int64 `form:"ids"`
+    // 请求过滤参数
+    MenuQuery {
+        // 菜单ID
+        menuId int64 `json:"menuId,optional"`
+        // 菜单名称
+        menuName string `json:"menuName,optional"`
+        // 父菜单ID
+        parentId int64 `json:"parentId,optional"`
+        // 显示顺序
+        orderNum int32 `json:"orderNum,optional"`
+        // 路由地址
+        path string `json:"path,optional"`
+        // 组件路径
+        component string `json:"component,optional"`
+        // 路由参数
+        queryParam string `json:"queryParam,optional"`
+        // 是否为外链（0是 1否）
+        isFrame int32 `json:"isFrame,optional"`
+        // 是否缓存（0缓存 1不缓存）
+        isCache int32 `json:"isCache,optional"`
+        // 菜单类型（M目录 C菜单 F按钮）
+        menuType string `json:"menuType,optional"`
+        // 显示状态（0显示 1隐藏）
+        visible string `json:"visible,optional"`
+        // 菜单状态（0正常 1停用）
+        status string `json:"status,optional"`
+        // 权限标识
+        perms string `json:"perms,optional"`
     }
-    DeleteMenuResp {
-        Code string `json:"code"`
-        Message string `json:"message"`
-    }
-
-        // 更新菜单权限请求参数
-    UpdateMenuReq {
-        MenuId int64 `json:"menuId"`                   //菜单ID
-        MenuName string `json:"menuName"`              //菜单名称
-        ParentId int64 `json:"parentId,optional"`      //父菜单ID
-        OrderNum int32 `json:"orderNum,optional"`      //显示顺序
-        Path string `json:"path,optional"`             //路由地址
-        Component string `json:"component,optional"`   //组件路径
-        QueryParam string `json:"queryParam,optional"` //路由参数
-        IsFrame int32 `json:"isFrame,optional"`        //是否为外链（0是 1否）
-        IsCache int32 `json:"isCache,optional"`        //是否缓存（0缓存 1不缓存）
-        MenuType string `json:"menuType,optional"`     //菜单类型（M目录 C菜单 F按钮）
-        Visible string `json:"visible,optional"`       //显示状态（0显示 1隐藏）
-        Status string `json:"status,optional"`         //菜单状态（0正常 1停用）
-        Perms string `json:"perms,optional"`           //权限标识
-        Icon string `json:"icon,optional"`             //菜单图标
-        Remark string `json:"remark,optional"`         //备注
-    }
-    UpdateMenuResp {
-        Code string `json:"code"`
-        Message string `json:"message"`
-    }
-
-        // 更新菜单权限状态请求参数
-    UpdateMenuStatusReq {
-        Status string `json:"status,default=2"` //菜单状态（0正常 1停用）
-    }
-    UpdateMenuStatusResp {
-        Code string `json:"code"`
-        Message string `json:"message"`
-    }
-
-        // 查询菜单权限详情请求参数
-    QueryMenuDetailReq {
-        Id int64 `form:"id"`
-    }
-    QueryMenuDetailData {
-        MenuId int64 `json:"menuId"`          //菜单ID
-        MenuName string `json:"menuName"`     //菜单名称
-        ParentId int64 `json:"parentId"`      //父菜单ID
-        OrderNum int32 `json:"orderNum"`      //显示顺序
-        Path string `json:"path"`             //路由地址
-        Component string `json:"component"`   //组件路径
-        QueryParam string `json:"queryParam"` //路由参数
-        IsFrame int32 `json:"isFrame"`        //是否为外链（0是 1否）
-        IsCache int32 `json:"isCache"`        //是否缓存（0缓存 1不缓存）
-        MenuType string `json:"menuType"`     //菜单类型（M目录 C菜单 F按钮）
-        Visible string `json:"visible"`       //显示状态（0显示 1隐藏）
-        Status string `json:"status"`         //菜单状态（0正常 1停用）
-        Perms string `json:"perms"`           //权限标识
-        Icon string `json:"icon"`             //菜单图标
-        CreateDept int64 `json:"createDept"`  //创建部门
-        CreateBy int64 `json:"createBy"`      //创建者
-        CreateTime string `json:"createTime"` //创建时间
-        UpdateBy int64 `json:"updateBy"`      //更新者
-        UpdateTime string `json:"updateTime"` //更新时间
-        Remark string `json:"remark"`         //备注
-    }
-    QueryMenuDetailResp {
-        Code string `json:"code"`
-        Message string `json:"message"`
-        Data QueryMenuDetailData `json:"data"`
-    }
-
-        // 分页查询菜单权限列表请求参数
+    // 分页请求过滤参数
     QueryPageMenuListReq {
-        Current int64 `form:"current,default=1"`       //第几页
-        PageSize int64 `form:"pageSize,default=20"`    //每页的数量
-        MenuId int64 `json:"menuId,optional"`          //菜单ID
-        MenuName string `json:"menuName,optional"`     //菜单名称
-        ParentId int64 `json:"parentId,optional"`      //父菜单ID
-        OrderNum int32 `json:"orderNum,optional"`      //显示顺序
-        Path string `json:"path,optional"`             //路由地址
-        Component string `json:"component,optional"`   //组件路径
-        QueryParam string `json:"queryParam,optional"` //路由参数
-        IsFrame int32 `json:"isFrame,optional"`        //是否为外链（0是 1否）
-        IsCache int32 `json:"isCache,optional"`        //是否缓存（0缓存 1不缓存）
-        MenuType string `json:"menuType,optional"`     //菜单类型（M目录 C菜单 F按钮）
-        Visible string `json:"visible,optional"`       //显示状态（0显示 1隐藏）
-        Status string `json:"status,default=2"`        //菜单状态（0正常 1停用）
-        Perms string `json:"perms,optional"`           //权限标识
-        Icon string `json:"icon,optional"`             //菜单图标
+        PageReq
+        MenuQuery
     }
-    QueryPageMenuListData {
-        MenuId int64 `json:"menuId"`          //菜单ID
-        MenuName string `json:"menuName"`     //菜单名称
-        ParentId int64 `json:"parentId"`      //父菜单ID
-        OrderNum int32 `json:"orderNum"`      //显示顺序
-        Path string `json:"path"`             //路由地址
-        Component string `json:"component"`   //组件路径
-        QueryParam string `json:"queryParam"` //路由参数
-        IsFrame int32 `json:"isFrame"`        //是否为外链（0是 1否）
-        IsCache int32 `json:"isCache"`        //是否缓存（0缓存 1不缓存）
-        MenuType string `json:"menuType"`     //菜单类型（M目录 C菜单 F按钮）
-        Visible string `json:"visible"`       //显示状态（0显示 1隐藏）
-        Status string `json:"status"`         //菜单状态（0正常 1停用）
-        Perms string `json:"perms"`           //权限标识
-        Icon string `json:"icon"`             //菜单图标
-        CreateDept int64 `json:"createDept"`  //创建部门
-        CreateBy int64 `json:"createBy"`      //创建者
-        CreateTime string `json:"createTime"` //创建时间
-        UpdateBy int64 `json:"updateBy"`      //更新者
-        UpdateTime string `json:"updateTime"` //更新时间
-        Remark string `json:"remark"`         //备注
-    }
+    // 分页响应
     QueryPageMenuListResp {
-        Code string `json:"code"`
-        Message string `json:"message"`
-        Current int64 `json:"current,default=1"`
-        Data []*QueryPageMenuListData `json:"data"`
-        PageSize int64 `json:"pageSize,default=20"`
-        Success bool `json:"success"`
         Total int64 `json:"total"`
+        Rows []MenuDetailResp `json:"rows"`
     }
 
-        // 查询菜单权限所有列表请求参数
     QueryMenuListReq {
-        MenuId int64 `json:"menuId,optional"`          //菜单ID
-        MenuName string `json:"menuName,optional"`     //菜单名称
-        ParentId int64 `json:"parentId,optional"`      //父菜单ID
-        OrderNum int32 `json:"orderNum,optional"`      //显示顺序
-        Path string `json:"path,optional"`             //路由地址
-        Component string `json:"component,optional"`   //组件路径
-        QueryParam string `json:"queryParam,optional"` //路由参数
-        IsFrame int32 `json:"isFrame,optional"`        //是否为外链（0是 1否）
-        IsCache int32 `json:"isCache,optional"`        //是否缓存（0缓存 1不缓存）
-        MenuType string `json:"menuType,optional"`     //菜单类型（M目录 C菜单 F按钮）
-        Visible string `json:"visible,optional"`       //显示状态（0显示 1隐藏）
-        Status string `json:"status,default=2"`        //菜单状态（0正常 1停用）
-        Perms string `json:"perms,optional"`           //权限标识
-        Icon string `json:"icon,optional"`             //菜单图标
+        MenuQuery
     }
-    QueryMenuListData {
-        MenuId int64 `json:"menuId"`          //菜单ID
-        MenuName string `json:"menuName"`     //菜单名称
-        ParentId int64 `json:"parentId"`      //父菜单ID
-        OrderNum int32 `json:"orderNum"`      //显示顺序
-        Path string `json:"path"`             //路由地址
-        Component string `json:"component"`   //组件路径
-        QueryParam string `json:"queryParam"` //路由参数
-        IsFrame int32 `json:"isFrame"`        //是否为外链（0是 1否）
-        IsCache int32 `json:"isCache"`        //是否缓存（0缓存 1不缓存）
-        MenuType string `json:"menuType"`     //菜单类型（M目录 C菜单 F按钮）
-        Visible string `json:"visible"`       //显示状态（0显示 1隐藏）
-        Status string `json:"status"`         //菜单状态（0正常 1停用）
-        Perms string `json:"perms"`           //权限标识
-        Icon string `json:"icon"`             //菜单图标
-        CreateDept int64 `json:"createDept"`  //创建部门
-        CreateBy int64 `json:"createBy"`      //创建者
-        CreateTime string `json:"createTime"` //创建时间
-        UpdateBy int64 `json:"updateBy"`      //更新者
-        UpdateTime string `json:"updateTime"` //更新时间
-        Remark string `json:"remark"`         //备注
+
+    MenuDetailResp {
+        MenuBase
+        CreateDept int64 `json:"createDept"`
+        CreateBy int64 `json:"createBy"`
+        CreateTime string `json:"createTime"`
+        UpdateBy int64 `json:"updateBy"`
+        UpdateTime string `json:"updateTime"`
     }
-    QueryMenuListResp {
-        Code string `json:"code"`
-        Message string `json:"message"`
-        Data []*QueryMenuListData `json:"data"`
-        Success bool `json:"success"`
-    }
-    RoutersResp {
-        alwaysShow string `json:"code"`
-        children string `json:"message"`
-        component []*RoutersData `json:"data"`
-        hidden bool `json:"success"`
-        meta
-        name
-        path
-        redirect
+
+    MenuInfoResp {
+        MenuBase
     }
 )
 
 @server(
+    tags: "菜单权限"
     group: menu
     prefix: /system/menu
+    middleware: Auth
 )
-service demo-api {
-@handler GetRouters
-get /getRouters returns (RoutersResp)
-    // 添加菜单权限
+service System {
+    @handler GetMenuInfo
+    get /info returns (MenuInfoResp)
+
     @handler AddMenu
-    post /addMenu (AddMenuReq) returns (AddMenuResp)
+    post /add (ModifyMenuReq)
 
-    // 删除菜单权限
     @handler DeleteMenu
-    get /deleteMenu (DeleteMenuReq) returns (DeleteMenuResp)
+    get /delete (IdsReq)
 
-    // 更新菜单权限
     @handler UpdateMenu
-    post /updateMenu (UpdateMenuReq) returns (UpdateMenuResp)
+    post /update (ModifyMenuReq)
 
-    // 更新菜单权限状态
-    @handler UpdateMenuStatus
-    post /updateMenuStatus (UpdateMenuStatusReq) returns (UpdateMenuStatusResp)
-
-    // 查询菜单权限详情
-    @handler QueryMenuDetail
-    get /queryMenuDetail (QueryMenuDetailReq) returns (QueryMenuDetailResp)
-
-    // 分页查询菜单权限列表
     @handler QueryPageMenuList
-    get /queryPageMenuList (QueryPageMenuListReq) returns (QueryPageMenuListResp)
+    get /queryPageList (QueryPageMenuListReq) returns (QueryPageMenuListResp)
 
-    // 查询菜单权限所有列表
     @handler QueryMenuList
-    get /queryMenuList (QueryMenuListReq) returns (QueryMenuListResp)
+    get /queryList (QueryMenuListReq) returns ([]MenuDetailResp)
 }

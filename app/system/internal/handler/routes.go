@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	auth "system/internal/handler/auth"
+	menu "system/internal/handler/menu"
 	ping "system/internal/handler/ping"
 	role "system/internal/handler/role"
 	user "system/internal/handler/user"
@@ -57,6 +58,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.Auth},
 			[]rest.Route{
 				{
+					Method:  http.MethodGet,
+					Path:    "/getInfo",
+					Handler: user.GetUserInfoHandler(serverCtx),
+				},
+				{
 					Method:  http.MethodPost,
 					Path:    "/addUser",
 					Handler: user.AddUserHandler(serverCtx),
@@ -93,7 +99,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/user"),
+		rest.WithPrefix("/system/user"),
 	)
 
 	server.AddRoutes(
@@ -135,5 +141,44 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 		rest.WithPrefix("/role"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/info",
+					Handler: menu.GetMenuInfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/add",
+					Handler: menu.AddMenuHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/delete",
+					Handler: menu.DeleteMenuHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: menu.UpdateMenuHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/queryPageList",
+					Handler: menu.QueryPageMenuListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/queryList",
+					Handler: menu.QueryMenuListHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/menu"),
 	)
 }

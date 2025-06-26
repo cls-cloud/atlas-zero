@@ -9,6 +9,7 @@ info (
 import "api/auth.api"
 import "api/user.api"
 import "api/role.api"
+import "api/menu.api"
 
 type resp {
 	Msg  string `json:"msg"`

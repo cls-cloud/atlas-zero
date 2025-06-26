@@ -91,6 +91,10 @@ type QueryUserListReq struct {
 	UserQuery
 }
 
+type UserInfoResp struct {
+	UserBase
+}
+
 type PageReq struct {
 	PageNum  int64 `form:"pageNum,default=1"`
 	PageSize int64 `form:"pageSize,default=20"`
@@ -409,4 +413,51 @@ type QueryPageRoleListResp struct {
 
 type QueryRoleListReq struct {
 	RoleQuery
+}
+
+type ModifyMenuReq struct {
+	MenuBase
+}
+
+type MenuQuery struct {
+	MenuId     int64  `json:"menuId,optional"`
+	MenuName   string `json:"menuName,optional"`
+	ParentId   int64  `json:"parentId,optional"`
+	OrderNum   int32  `json:"orderNum,optional"`
+	Path       string `json:"path,optional"`
+	Component  string `json:"component,optional"`
+	QueryParam string `json:"queryParam,optional"`
+	IsFrame    int32  `json:"isFrame,optional"`
+	IsCache    int32  `json:"isCache,optional"`
+	MenuType   string `json:"menuType,optional"`
+	Visible    string `json:"visible,optional"`
+	Status     string `json:"status,optional"`
+	Perms      string `json:"perms,optional"`
+}
+
+type QueryPageMenuListReq struct {
+	PageReq
+	MenuQuery
+}
+
+type QueryPageMenuListResp struct {
+	Total int64            `json:"total"`
+	Rows  []MenuDetailResp `json:"rows"`
+}
+
+type QueryMenuListReq struct {
+	MenuQuery
+}
+
+type MenuDetailResp struct {
+	MenuBase
+	CreateDept int64  `json:"createDept"`
+	CreateBy   int64  `json:"createBy"`
+	CreateTime string `json:"createTime"`
+	UpdateBy   int64  `json:"updateBy"`
+	UpdateTime string `json:"updateTime"`
+}
+
+type MenuInfoResp struct {
+	MenuBase
 }
