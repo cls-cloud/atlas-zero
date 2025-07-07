@@ -54,11 +54,9 @@ type UpdateUserStatusReq struct {
 
 type UserDetailResp struct {
 	UserBase
-	CreateDept int64  `json:"createDept"`
-	CreateBy   int64  `json:"createBy"`
+	DeptId     int64  `json:"deptId"`
+	DeptName   string `json:"deptName"`
 	CreateTime string `json:"createTime"`
-	UpdateBy   int64  `json:"updateBy"`
-	UpdateTime string `json:"updateTime"`
 }
 
 type UserQuery struct {
@@ -79,6 +77,7 @@ type UserQuery struct {
 
 type QueryPageUserListReq struct {
 	PageReq
+	TimeReq
 	UserQuery
 }
 
@@ -92,7 +91,14 @@ type QueryUserListReq struct {
 }
 
 type UserInfoResp struct {
+	User        UserRoles `json:"user"`
+	Roles       []string  `json:"roles"`
+	Permissions []string  `json:"permissions"`
+}
+
+type UserRoles struct {
 	UserBase
+	Roles []RoleBase `json:"roles"`
 }
 
 type PageReq struct {
@@ -108,6 +114,11 @@ type IdsReq struct {
 	Id []int64 `json:"ids"`
 }
 
+type TimeReq struct {
+	BeginTime string `form:"params[beginTime],optional"`
+	EndTime   string `form:"params[endTime],optional"`
+}
+
 type UserBase struct {
 	UserId      int64  `json:"userId,optional"`
 	TenantId    string `json:"tenantId,optional"`
@@ -121,7 +132,6 @@ type UserBase struct {
 	Avatar      int64  `json:"avatar,optional"`
 	Password    string `json:"password,optional"`
 	Status      string `json:"status,optional"`
-	DelFlag     string `json:"delFlag,optional"`
 	LoginIp     string `json:"loginIp,optional"`
 	LoginDate   string `json:"loginDate,optional"`
 	Remark      string `json:"remark,optional"`
@@ -142,7 +152,6 @@ type RoleBase struct {
 	MenuCheckStrictly int32  `json:"menuCheckStrictly,optional"` //菜单树选择项是否关联显示
 	DeptCheckStrictly int32  `json:"deptCheckStrictly,optional"` //部门树选择项是否关联显示
 	Status            string `json:"status,default=2"`           //角色状态（0正常 1停用）
-	DelFlag           string `json:"delFlag,optional"`           //删除标志（0代表存在 1代表删除）
 	Remark            string `json:"remark,optional"`            //备注
 }
 
@@ -203,7 +212,6 @@ type DeptBase struct {
 	Phone        string `json:"phone,optional"`        //联系电话
 	Email        string `json:"email,optional"`        //邮箱
 	Status       string `json:"status,optional"`       //部门状态（0正常 1停用）
-	DelFlag      string `json:"delFlag,optional"`      //删除标志（0代表存在 1代表删除）
 }
 
 type DictDataBase struct {
@@ -317,7 +325,6 @@ type TenantBase struct {
 	ExpireTime      string `json:"expireTime,optional"`      //过期时间
 	AccountCount    int32  `json:"accountCount,optional"`    //用户数量（-1不限制）
 	Status          string `json:"status,optional"`          //租户状态（0正常 1停用）
-	DelFlag         string `json:"delFlag,optional"`         //删除标志（0代表存在 1代表删除）
 }
 
 type TenantPackagBase struct {
@@ -327,7 +334,6 @@ type TenantPackagBase struct {
 	Remark            string `json:"remark,optional"`            //备注
 	MenuCheckStrictly int32  `json:"menuCheckStrictly,optional"` //菜单树选择项是否关联显示
 	Status            string `json:"status,optional"`            //状态（0正常 1停用）
-	DelFlag           string `json:"delFlag,optional"`           //删除标志（0代表存在 1代表删除）
 }
 
 type ClientBase struct {
@@ -340,7 +346,6 @@ type ClientBase struct {
 	ActiveTimeout int32  `json:"activeTimeout,optional"` //token活跃超时时间
 	Timeout       int32  `json:"timeout,optional"`       //token固定超时
 	Status        string `json:"status,optional"`        //状态（0正常 1停用）
-	DelFlag       string `json:"delFlag,optional"`       //删除标志（0代表存在 1代表删除）
 }
 
 type SocialBase struct {
@@ -367,7 +372,6 @@ type SocialBase struct {
 	Code             string `json:"code,optional"`             //用户的授权code，部分平台可能没有
 	OauthToken       string `json:"oauthToken,optional"`       //Twitter平台用户的附带属性，部分平台可能没有
 	OauthTokenSecret string `json:"oauthTokenSecret,optional"` //Twitter平台用户的附带属性，部分平台可能没有
-	DelFlag          string `json:"delFlag,optional"`          //删除标志（0代表存在 1代表删除）
 }
 
 type AddOrUpdateRoleReq struct {
@@ -460,4 +464,24 @@ type MenuDetailResp struct {
 
 type MenuInfoResp struct {
 	MenuBase
+}
+
+type RouterMenuResp struct {
+	MenuId     int64             `json:"menuId"`
+	Name       string            `json:"name"`
+	Path       string            `json:"path"`
+	Hidden     bool              `json:"hidden"`
+	Redirect   string            `json:"redirect,optional"` // 可选
+	Component  string            `json:"component"`
+	AlwaysShow bool              `json:"alwaysShow,optional"` // 可选
+	Meta       *RouterMenuMeta   `json:"meta"`
+	ParentId   int64             `json:"parentId"`
+	Children   []*RouterMenuResp `json:"children,omitempty"`
+}
+
+type RouterMenuMeta struct {
+	Title   string `json:"title"`
+	Icon    string `json:"icon"`
+	NoCache bool   `json:"noCache"`
+	Link    string `json:"link,optional"`
 }

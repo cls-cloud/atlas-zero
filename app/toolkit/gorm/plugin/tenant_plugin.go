@@ -18,7 +18,7 @@ func (tp *TenantPlugin) Name() string {
 	return "TenantPlugin"
 }
 
-// getTenantID 从 context 中获取 tenant_id（int64）
+// getTenantID 从 context 中获取 tenant_id（string）
 func getTenantID(db *gorm.DB) (string, bool) {
 	v, ok := db.Statement.Context.Value("tenant_id").(string)
 	return v, ok
@@ -40,8 +40,7 @@ func (tp *TenantPlugin) shouldSkip(db *gorm.DB) bool {
 
 // Initialize 注册 GORM 插件回调
 func (tp *TenantPlugin) Initialize(db *gorm.DB) error {
-
-	// Query 钩子：查询时自动带上 tenant_id
+	// Query 钩子
 	if err := db.Callback().Query().Before("gorm:query").
 		Register("tenant:query", func(db *gorm.DB) {
 			if tp.shouldSkip(db) {
@@ -50,7 +49,7 @@ func (tp *TenantPlugin) Initialize(db *gorm.DB) error {
 			if tenantID, ok := getTenantID(db); ok {
 				db.Statement.AddClause(clause.Where{
 					Exprs: []clause.Expression{
-						clause.Eq{Column: clause.Column{Name: "tenant_id"}, Value: tenantID},
+						clause.Eq{Column: clause.Column{Table: db.Statement.Table, Name: "tenant_id"}, Value: tenantID},
 					},
 				})
 			}
@@ -84,7 +83,7 @@ func (tp *TenantPlugin) Initialize(db *gorm.DB) error {
 			if tenantID, ok := getTenantID(db); ok {
 				db.Statement.AddClause(clause.Where{
 					Exprs: []clause.Expression{
-						clause.Eq{Column: clause.Column{Name: "tenant_id"}, Value: tenantID},
+						clause.Eq{Column: clause.Column{Table: db.Statement.Table, Name: "tenant_id"}, Value: tenantID},
 					},
 				})
 			}
@@ -101,7 +100,7 @@ func (tp *TenantPlugin) Initialize(db *gorm.DB) error {
 			if tenantID, ok := getTenantID(db); ok {
 				db.Statement.AddClause(clause.Where{
 					Exprs: []clause.Expression{
-						clause.Eq{Column: clause.Column{Name: "tenant_id"}, Value: tenantID},
+						clause.Eq{Column: clause.Column{Table: db.Statement.Table, Name: "tenant_id"}, Value: tenantID},
 					},
 				})
 			}

@@ -89,7 +89,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodGet,
-					Path:    "/queryPageUserList",
+					Path:    "/list",
 					Handler: user.QueryPageUserListHandler(serverCtx),
 				},
 				{
@@ -147,6 +147,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.Auth},
 			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/getRouters",
+					Handler: menu.GetRoutersHandler(serverCtx),
+				},
 				{
 					Method:  http.MethodGet,
 					Path:    "/info",

@@ -1,9 +1,11 @@
 package helper
 
 import (
+	"context"
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	"strconv"
 	"time"
 )
 
@@ -50,4 +52,20 @@ func AnalyseToken(tokenString, secretKey string) (*UserClaims, error) {
 // GetUUID 生成唯一码
 func GetUUID() string {
 	return uuid.New().String()
+}
+
+func GetUserId(ctx context.Context) string {
+	val := ctx.Value("user_id")
+	userIdStr, ok := val.(string)
+	if userIdStr == "" || !ok {
+		fmt.Printf("============> GetUserId Error")
+		return ""
+	}
+	return userIdStr
+}
+
+func GetUserIdInt(ctx context.Context) int64 {
+	userIdStr := GetUserId(ctx)
+	userId, _ := strconv.ParseInt(userIdStr, 10, 64)
+	return userId
 }

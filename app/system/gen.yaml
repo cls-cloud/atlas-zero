@@ -13,6 +13,7 @@ database:
     - sys_role
     - sys_role_menu
     - sys_user_role
+    - sys_dept
   # specify a directory for output
   outPath: "./internal/dao/query"
   # query code file name, default: gen.go

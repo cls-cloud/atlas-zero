@@ -18,6 +18,7 @@ import (
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:               db,
+		SysDept:          newSysDept(db, opts...),
 		SysMenu:          newSysMenu(db, opts...),
 		SysRole:          newSysRole(db, opts...),
 		SysRoleMenu:      newSysRoleMenu(db, opts...),
@@ -31,6 +32,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 type Query struct {
 	db *gorm.DB
 
+	SysDept          sysDept
 	SysMenu          sysMenu
 	SysRole          sysRole
 	SysRoleMenu      sysRoleMenu
@@ -45,6 +47,7 @@ func (q *Query) Available() bool { return q.db != nil }
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
 		db:               db,
+		SysDept:          q.SysDept.clone(db),
 		SysMenu:          q.SysMenu.clone(db),
 		SysRole:          q.SysRole.clone(db),
 		SysRoleMenu:      q.SysRoleMenu.clone(db),
@@ -66,6 +69,7 @@ func (q *Query) WriteDB() *Query {
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
 		db:               db,
+		SysDept:          q.SysDept.replaceDB(db),
 		SysMenu:          q.SysMenu.replaceDB(db),
 		SysRole:          q.SysRole.replaceDB(db),
 		SysRoleMenu:      q.SysRoleMenu.replaceDB(db),
@@ -77,6 +81,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 }
 
 type queryCtx struct {
+	SysDept          *sysDeptDo
 	SysMenu          *sysMenuDo
 	SysRole          *sysRoleDo
 	SysRoleMenu      *sysRoleMenuDo
@@ -88,6 +93,7 @@ type queryCtx struct {
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
+		SysDept:          q.SysDept.WithContext(ctx),
 		SysMenu:          q.SysMenu.WithContext(ctx),
 		SysRole:          q.SysRole.WithContext(ctx),
 		SysRoleMenu:      q.SysRoleMenu.WithContext(ctx),

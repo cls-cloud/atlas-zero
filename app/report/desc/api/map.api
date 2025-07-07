@@ -1,0 +1,7 @@
+syntax = "v1"
+
+info(
+    desc: "可视化地图配置"
+    author: "atlas"
+    email: "ut1221@icloud.com"
+)

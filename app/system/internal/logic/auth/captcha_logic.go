@@ -33,7 +33,7 @@ func (l *CaptchaLogic) Captcha() (resp *types.CaptchaResp, err error) {
 	if err != nil {
 		return nil, err
 	}
-	err = l.svcCtx.Rds.SetexCtx(l.ctx, "captcha:"+id, answer, 5)
+	err = l.svcCtx.Rds.SetexCtx(l.ctx, "captcha:"+id, answer, 5*60)
 	if err != nil {
 		return nil, err
 	}

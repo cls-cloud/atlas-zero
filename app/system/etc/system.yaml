@@ -36,6 +36,7 @@ Tenant:
     - sys_tenant
     - sys_tenant_package
     - sys_menu
+    - sys_user_role
 
 Data:
   Database:

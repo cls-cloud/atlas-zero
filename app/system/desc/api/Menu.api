@@ -13,7 +13,7 @@ type (
         MenuBase
     }
 
-    // 请求过滤参数
+        // 请求过滤参数
     MenuQuery {
         // 菜单ID
         menuId int64 `json:"menuId,optional"`
@@ -42,12 +42,12 @@ type (
         // 权限标识
         perms string `json:"perms,optional"`
     }
-    // 分页请求过滤参数
+        // 分页请求过滤参数
     QueryPageMenuListReq {
         PageReq
         MenuQuery
     }
-    // 分页响应
+        // 分页响应
     QueryPageMenuListResp {
         Total int64 `json:"total"`
         Rows []MenuDetailResp `json:"rows"`
@@ -69,6 +69,25 @@ type (
     MenuInfoResp {
         MenuBase
     }
+
+    RouterMenuResp {
+        MenuId int64 `json:"menuId"`
+        Name string `json:"name"`
+        Path string `json:"path"`
+        Hidden bool `json:"hidden"`
+        Redirect string `json:"redirect,optional"`   // 可选
+        Component string `json:"component"`
+        AlwaysShow bool `json:"alwaysShow,optional"` // 可选
+        Meta *RouterMenuMeta `json:"meta"`
+        ParentId int64 `json:"parentId"`
+        Children []*RouterMenuResp `json:"children,omitempty"`
+    }
+    RouterMenuMeta {
+        Title string `json:"title"`
+        Icon string `json:"icon"`
+        NoCache bool `json:"noCache"`
+        Link string `json:"link,optional"`
+    }
 )
 
 @server(
@@ -78,6 +97,9 @@ type (
     middleware: Auth
 )
 service System {
+    @handler GetRouters
+    get /getRouters returns ([]RouterMenuResp)
+
     @handler GetMenuInfo
     get /info returns (MenuInfoResp)
 

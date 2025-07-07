@@ -1,7 +1,7 @@
 info(
     desc: "用户信息"
-//    author: "atlas"
-//    email: "ut1221@icloud.com"
+    //    author: "atlas"
+    //    email: "ut1221@icloud.com"
 )
 
 import "base.api"
@@ -19,11 +19,8 @@ type (
         // 查询详情响应（包含创建更新信息）
     UserDetailResp {
         UserBase
-        CreateDept int64 `json:"createDept"`
-        CreateBy int64 `json:"createBy"`
+        DeptName string `json:"deptName"`
         CreateTime string `json:"createTime"`
-        UpdateBy int64 `json:"updateBy"`
-        UpdateTime string `json:"updateTime"`
     }
         // 用户分页请求过滤参数
     UserQuery {
@@ -43,6 +40,7 @@ type (
     }
     QueryPageUserListReq {
         PageReq
+        TimeReq
         UserQuery
     }
     QueryPageUserListResp {
@@ -52,8 +50,15 @@ type (
     QueryUserListReq {
         UserQuery
     }
+
     UserInfoResp {
+        User UserRoles `json:"user"`
+        Roles []string `json:"roles"`
+        Permissions []string `json:"permissions"`
+    }
+    UserRoles {
         UserBase
+        Roles []RoleBase `json:"roles"`
     }
 )
 
@@ -82,7 +87,7 @@ service System {
     get /queryUserDetail (IdReq) returns (UserDetailResp)
 
     @handler QueryPageUserList
-    get /queryPageUserList (QueryPageUserListReq) returns (QueryPageUserListResp)
+    get /list (QueryPageUserListReq) returns (QueryPageUserListResp)
 
     @handler QueryUserList
     get /queryUserList (QueryUserListReq) returns ([]UserDetailResp)
