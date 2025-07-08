@@ -26,15 +26,17 @@ func Success(data interface{}) any {
 
 	// 判断是否有 Rows 字段
 	val := reflect.Indirect(reflect.ValueOf(data))
-	if val.Kind() == reflect.Struct && val.FieldByName("Rows").IsValid() {
-		base := map[string]interface{}{
-			"code": http.StatusOK,
-			"msg":  "请求成功",
+	if val.Kind() == reflect.Struct {
+		if val.FieldByName("Rows").IsValid() || val.FieldByName("Data").IsValid() {
+			base := map[string]interface{}{
+				"code": http.StatusOK,
+				"msg":  "请求成功",
+			}
+			for k, v := range structToMap(data) {
+				base[k] = v
+			}
+			return base
 		}
-		for k, v := range structToMap(data) {
-			base[k] = v
-		}
-		return base
 	}
 
 	return Response{
