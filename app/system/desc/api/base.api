@@ -6,7 +6,10 @@ type (
         PageSize int64 `form:"pageSize,default=20"`
     }
     IdReq {
-        id int64 `json:"id"`
+        id int64 `path:"id"`
+    }
+    CodeReq {
+        code string `path:"code"`
     }
     IdsReq {
         id []int64 `json:"ids"`
@@ -126,6 +129,17 @@ type (
         DictType string `json:"dictType,optional"` //字典类型
         Remark string `json:"remark,optional"`     //备注
     }
+
+    ConfigBase {
+        ConfigId int64 `json:"configId,optional"`       // 参数主键
+        TenantId string `json:"tenantId,optional"`      // 租户编号
+        ConfigName string `json:"configName,optional"`  // 参数名称
+        ConfigKey string `json:"configKey,optional"`    // 参数键名
+        ConfigValue string `json:"configValue,optional"`// 参数键值
+        ConfigType string `json:"configType,optional"`  // 系统内置（Y是 N否）
+        Remark string `json:"remark,optional"`          // 备注
+    }
+
     LogininforBase {
         InfoId int64 `json:"infoId"`                         //访问ID
         TenantId string `json:"tenantId,optional"`           //租户编号

@@ -18,13 +18,19 @@ import (
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:               db,
+		SysConfig:        newSysConfig(db, opts...),
 		SysDept:          newSysDept(db, opts...),
+		SysDictDatum:     newSysDictDatum(db, opts...),
+		SysDictType:      newSysDictType(db, opts...),
 		SysMenu:          newSysMenu(db, opts...),
+		SysPost:          newSysPost(db, opts...),
 		SysRole:          newSysRole(db, opts...),
+		SysRoleDept:      newSysRoleDept(db, opts...),
 		SysRoleMenu:      newSysRoleMenu(db, opts...),
 		SysTenant:        newSysTenant(db, opts...),
 		SysTenantPackage: newSysTenantPackage(db, opts...),
 		SysUser:          newSysUser(db, opts...),
+		SysUserPost:      newSysUserPost(db, opts...),
 		SysUserRole:      newSysUserRole(db, opts...),
 	}
 }
@@ -32,13 +38,19 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 type Query struct {
 	db *gorm.DB
 
+	SysConfig        sysConfig
 	SysDept          sysDept
+	SysDictDatum     sysDictDatum
+	SysDictType      sysDictType
 	SysMenu          sysMenu
+	SysPost          sysPost
 	SysRole          sysRole
+	SysRoleDept      sysRoleDept
 	SysRoleMenu      sysRoleMenu
 	SysTenant        sysTenant
 	SysTenantPackage sysTenantPackage
 	SysUser          sysUser
+	SysUserPost      sysUserPost
 	SysUserRole      sysUserRole
 }
 
@@ -47,13 +59,19 @@ func (q *Query) Available() bool { return q.db != nil }
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
 		db:               db,
+		SysConfig:        q.SysConfig.clone(db),
 		SysDept:          q.SysDept.clone(db),
+		SysDictDatum:     q.SysDictDatum.clone(db),
+		SysDictType:      q.SysDictType.clone(db),
 		SysMenu:          q.SysMenu.clone(db),
+		SysPost:          q.SysPost.clone(db),
 		SysRole:          q.SysRole.clone(db),
+		SysRoleDept:      q.SysRoleDept.clone(db),
 		SysRoleMenu:      q.SysRoleMenu.clone(db),
 		SysTenant:        q.SysTenant.clone(db),
 		SysTenantPackage: q.SysTenantPackage.clone(db),
 		SysUser:          q.SysUser.clone(db),
+		SysUserPost:      q.SysUserPost.clone(db),
 		SysUserRole:      q.SysUserRole.clone(db),
 	}
 }
@@ -69,37 +87,55 @@ func (q *Query) WriteDB() *Query {
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
 		db:               db,
+		SysConfig:        q.SysConfig.replaceDB(db),
 		SysDept:          q.SysDept.replaceDB(db),
+		SysDictDatum:     q.SysDictDatum.replaceDB(db),
+		SysDictType:      q.SysDictType.replaceDB(db),
 		SysMenu:          q.SysMenu.replaceDB(db),
+		SysPost:          q.SysPost.replaceDB(db),
 		SysRole:          q.SysRole.replaceDB(db),
+		SysRoleDept:      q.SysRoleDept.replaceDB(db),
 		SysRoleMenu:      q.SysRoleMenu.replaceDB(db),
 		SysTenant:        q.SysTenant.replaceDB(db),
 		SysTenantPackage: q.SysTenantPackage.replaceDB(db),
 		SysUser:          q.SysUser.replaceDB(db),
+		SysUserPost:      q.SysUserPost.replaceDB(db),
 		SysUserRole:      q.SysUserRole.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
+	SysConfig        *sysConfigDo
 	SysDept          *sysDeptDo
+	SysDictDatum     *sysDictDatumDo
+	SysDictType      *sysDictTypeDo
 	SysMenu          *sysMenuDo
+	SysPost          *sysPostDo
 	SysRole          *sysRoleDo
+	SysRoleDept      *sysRoleDeptDo
 	SysRoleMenu      *sysRoleMenuDo
 	SysTenant        *sysTenantDo
 	SysTenantPackage *sysTenantPackageDo
 	SysUser          *sysUserDo
+	SysUserPost      *sysUserPostDo
 	SysUserRole      *sysUserRoleDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
+		SysConfig:        q.SysConfig.WithContext(ctx),
 		SysDept:          q.SysDept.WithContext(ctx),
+		SysDictDatum:     q.SysDictDatum.WithContext(ctx),
+		SysDictType:      q.SysDictType.WithContext(ctx),
 		SysMenu:          q.SysMenu.WithContext(ctx),
+		SysPost:          q.SysPost.WithContext(ctx),
 		SysRole:          q.SysRole.WithContext(ctx),
+		SysRoleDept:      q.SysRoleDept.WithContext(ctx),
 		SysRoleMenu:      q.SysRoleMenu.WithContext(ctx),
 		SysTenant:        q.SysTenant.WithContext(ctx),
 		SysTenantPackage: q.SysTenantPackage.WithContext(ctx),
 		SysUser:          q.SysUser.WithContext(ctx),
+		SysUserPost:      q.SysUserPost.WithContext(ctx),
 		SysUserRole:      q.SysUserRole.WithContext(ctx),
 	}
 }

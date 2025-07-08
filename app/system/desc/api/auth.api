@@ -6,8 +6,8 @@ type LoginReq {
     clientId string `json:"clientId"`
     tenantId string `json:"tenantId"`
     grantType string `json:"grantType"`
-    code string `json:"code"`
-    uuid string `json:"uuid"`
+    code string `json:"code,optional"`
+    uuid string `json:"uuid,optional"`
 }
 
 type (

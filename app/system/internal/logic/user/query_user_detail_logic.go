@@ -2,12 +2,10 @@ package user
 
 import (
 	"context"
-	"errors"
 	"github.com/jinzhu/copier"
-	"gorm.io/gorm"
-
 	"system/internal/svc"
 	"system/internal/types"
+	"toolkit/errx"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -27,20 +25,57 @@ func NewQueryUserDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Q
 }
 
 func (l *QueryUserDetailLogic) QueryUserDetail(req *types.IdReq) (resp *types.UserDetailResp, err error) {
-	userId := l.ctx.Value("user_id")
-	l.Logger.Info("当前查询数据userId:", userId)
+	q := l.svcCtx.Query
 	resp = new(types.UserDetailResp)
-	sysUser := l.svcCtx.Query.SysUser
-	user, err := sysUser.WithContext(l.ctx).Where(sysUser.UserID.Eq(req.Id)).First()
+
+	// 查询系统所有角色
+	roles, err := q.SysRole.WithContext(l.ctx).Find()
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, errors.New("用户不存在")
-		}
+		return nil, errx.GORMErr(err)
+	}
+	if err = copier.Copy(&resp.Roles, roles); err != nil {
 		return nil, err
 	}
-	err = copier.Copy(resp, user)
+	if req == nil {
+		return
+	}
+	// 查询用户基本信息
+	user, err := q.SysUser.WithContext(l.ctx).
+		Where(q.SysUser.UserID.Eq(req.Id)).
+		First()
 	if err != nil {
+		return nil, errx.GORMErr(err)
+	}
+	if err = copier.Copy(&resp.User, user); err != nil {
 		return nil, err
 	}
+
+	// 查询用户的角色ID列表
+	userRoles, err := q.SysUserRole.WithContext(l.ctx).
+		Select(q.SysUserRole.RoleID).
+		Where(q.SysUserRole.UserID.Eq(req.Id)).
+		Find()
+	if err != nil {
+		return nil, errx.GORMErr(err)
+	}
+	roleIds := make([]int64, 0)
+	for _, r := range userRoles {
+		roleIds = append(roleIds, r.RoleID)
+	}
+
+	// 查询用户的岗位ID列表
+	postIds := make([]int64, 0)
+	userPosts, err := q.SysUserPost.WithContext(l.ctx).
+		Select(q.SysUserPost.PostID).
+		Where(q.SysUserPost.UserID.Eq(req.Id)).
+		Find()
+	if err != nil {
+		return nil, errx.GORMErr(err)
+	}
+	for _, p := range userPosts {
+		postIds = append(postIds, p.PostID)
+	}
+	resp.RoleIds = roleIds
+	resp.PostIds = postIds
 	return
 }

@@ -2,7 +2,7 @@ info(
     desc: "菜单权限"
     author: "atlas"
     email: "ut1221@icloud.com"
-    data: "2025-06-26 23:27:40"
+    date: "2025-06-26 23:27:40"
 )
 
 import "base.api"

@@ -1,0 +1,98 @@
+info(
+    desc: "岗位信息"
+    author: "atlas"
+    email: "ut1221@icloud.com"
+    data: "2025-07-09 01:02:36"
+)
+
+import "base.api"
+
+type (
+    // 创建和更新共用结构
+    ModifyPostReq {
+        PostBase
+    }
+
+        // 请求过滤参数
+    PostQuery {
+        // 岗位ID
+        postId int64 `json:"postId,optional"`
+        // 租户编号
+        tenantId string `json:"tenantId,optional"`
+        // 部门id
+        deptId int64 `form:"deptId,optional"`
+        // 岗位编码
+        postCode string `json:"postCode,optional"`
+        // 岗位类别编码
+        postCategory string `json:"postCategory,optional"`
+        // 岗位名称
+        postName string `json:"postName,optional"`
+        // 显示顺序
+        postSort int32 `json:"postSort,optional"`
+        // 状态（0正常 1停用）
+        status string `json:"status,optional"`
+        // 创建部门
+        createDept int64 `json:"createDept,optional"`
+        // 创建者
+        createBy int64 `json:"createBy,optional"`
+        // 创建时间
+        createTime string `json:"createTime,optional"`
+        // 更新者
+        updateBy int64 `json:"updateBy,optional"`
+        // 更新时间
+        updateTime string `json:"updateTime,optional"`
+        // 备注
+        remark string `json:"remark,optional"`
+    }
+        // 分页请求过滤参数
+    QueryPagePostListReq {
+        PageReq
+        PostQuery
+    }
+        // 分页响应
+    QueryPagePostListResp {
+        Total int64 `json:"total"`
+        Rows []PostDetailResp `json:"rows"`
+    }
+
+    QueryPostListReq {
+        PostQuery
+    }
+
+    PostDetailResp {
+        PostBase
+    }
+
+    PostInfoResp {
+        PostBase
+    }
+)
+
+@server(
+    tags: "岗位信息"
+    group: _post
+    prefix: system/post
+    middleware: Auth
+)
+service System {
+    // 根据所属部门选择岗位
+    @handler OptionSelect
+    get /optionselect (PostQuery) returns ([]PostInfoResp)
+    @handler GetPostInfo
+    get /info returns (PostInfoResp)
+
+    @handler AddPost
+    post /add (ModifyPostReq)
+
+    @handler DeletePost
+    get /delete (IdsReq)
+
+    @handler UpdatePost
+    post /update (ModifyPostReq)
+
+    @handler QueryPagePostList
+    get /queryPageList (QueryPagePostListReq) returns (QueryPagePostListResp)
+
+    @handler QueryPostList
+    get /queryList (QueryPostListReq) returns ([]PostDetailResp)
+}

@@ -1,0 +1,102 @@
+info(
+    desc: "部门"
+    author: "atlas"
+    email: "ut1221@icloud.com"
+    data: "2025-07-08 23:40:15"
+)
+
+import "base.api"
+
+type (
+
+    // 创建和更新共用结构
+    ModifyDeptReq {
+        DeptBase
+    }
+
+        // 请求过滤参数
+    DeptQuery {
+        // 部门id
+        deptId int64 `json:"deptId,optional"`
+        // 租户编号
+        tenantId string `json:"tenantId,optional"`
+        // 父部门id
+        parentId int64 `json:"parentId,optional"`
+        // 祖级列表
+        ancestors string `json:"ancestors,optional"`
+        // 部门名称
+        deptName string `json:"deptName,optional"`
+        // 部门类别编码
+        deptCategory string `json:"deptCategory,optional"`
+        // 显示顺序
+        orderNum int32 `json:"orderNum,optional"`
+        // 负责人
+        leader int64 `json:"leader,optional"`
+        // 联系电话
+        phone string `json:"phone,optional"`
+        // 邮箱
+        email string `json:"email,optional"`
+        // 部门状态（0正常 1停用）
+        status string `json:"status,optional"`
+        // 删除标志（0代表存在 1代表删除）
+        delFlag string `json:"delFlag,optional"`
+        // 创建部门
+        createDept int64 `json:"createDept,optional"`
+        // 创建者
+        createBy int64 `json:"createBy,optional"`
+        // 创建时间
+        createTime string `json:"createTime,optional"`
+        // 更新者
+        updateBy int64 `json:"updateBy,optional"`
+        // 更新时间
+        updateTime string `json:"updateTime,optional"`
+    }
+        // 分页请求过滤参数
+    QueryPageDeptListReq {
+        PageReq
+        DeptQuery
+    }
+        // 分页响应
+    QueryPageDeptListResp {
+        Total int64 `json:"total"`
+        Rows []DeptDetailResp `json:"rows"`
+    }
+
+    QueryDeptListReq {
+        DeptQuery
+    }
+
+    DeptDetailResp {
+        DeptBase
+    }
+
+    DeptInfoResp {
+        DeptBase
+    }
+)
+
+@server(
+    tags: "部门"
+    group: sysDept
+    prefix: /system/dept
+    middleware: Auth
+)
+service System {
+    @handler GetDeptInfo
+    get /info returns (DeptInfoResp)
+
+    @handler AddDept
+    post /add (ModifyDeptReq)
+
+    @handler DeleteDept
+    get /delete (IdsReq)
+
+    @handler UpdateDept
+    post /update (ModifyDeptReq)
+
+    @handler QueryPageDeptList
+    get /queryPageList (QueryPageDeptListReq) returns (QueryPageDeptListResp)
+
+    @handler QueryDeptList
+    get /queryList (QueryDeptListReq) returns ([]DeptDetailResp)
+}

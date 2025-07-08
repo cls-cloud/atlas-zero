@@ -2,7 +2,9 @@ package user
 
 import (
 	"context"
+	"errors"
 	"github.com/jinzhu/copier"
+	"gorm.io/gorm"
 	"strconv"
 	"toolkit/errx"
 	"toolkit/helper"
@@ -39,7 +41,10 @@ func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoResp, err error) {
 	sysUser := l.svcCtx.Query.SysUser
 	user, err := sysUser.WithContext(l.ctx).Where(sysUser.UserID.Eq(userId)).First()
 	if err != nil {
-		return nil, errx.GORMErr(err)
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errx.GORMErrMsg(err, "用户不存在")
+		}
+		return nil, err
 	}
 	sysRole := l.svcCtx.Query.SysRole
 	sysUserRole := l.svcCtx.Query.SysUserRole
@@ -59,7 +64,10 @@ func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoResp, err error) {
 		Where(sysRole.RoleID.In(roleIds...)).
 		Find()
 	if err != nil {
-		return nil, errx.GORMErr(err)
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errx.GORMErr(err)
+		}
+		return nil, err
 	}
 	roleNames := make([]string, len(roles))
 	for i, item := range roles {

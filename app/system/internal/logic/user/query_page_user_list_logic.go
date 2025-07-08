@@ -4,11 +4,12 @@ import (
 	"context"
 	"errors"
 	"github.com/jinzhu/copier"
+	"gorm.io/gorm"
 	"system/internal/dao/model"
-	"time"
-
 	"system/internal/svc"
 	"system/internal/types"
+	"time"
+	"toolkit/errx"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -41,6 +42,13 @@ func (l *QueryPageUserListLogic) QueryPageUserList(req *types.QueryPageUserListR
 		)
 
 	// 条件查询
+	if req.DeptId != 0 {
+		deptIds, err := GetDeptIds(req, l.svcCtx.Db, l.ctx)
+		if err != nil {
+			return nil, errx.GORMErr(err)
+		}
+		do = do.Where(sysUser.DeptID.In(deptIds...))
+	}
 	if req.UserName != "" {
 		do = do.Where(sysUser.UserName.Like("%" + req.UserName + "%"))
 	}
@@ -86,9 +94,9 @@ func (l *QueryPageUserListLogic) QueryPageUserList(req *types.QueryPageUserListR
 
 	// 复制并添加 dept_name
 	resp.Total = total
-	resp.Rows = make([]types.UserDetailResp, len(result))
+	resp.Rows = make([]types.QueryPageUser, len(result))
 	for i, row := range result {
-		var userDetail types.UserDetailResp
+		var userDetail types.QueryPageUser
 		_ = copier.Copy(&userDetail, row.SysUser)
 		userDetail.CreateTime = row.CreateTime.Format(time.DateTime)
 		userDetail.DeptName = row.DeptName
@@ -96,4 +104,18 @@ func (l *QueryPageUserListLogic) QueryPageUserList(req *types.QueryPageUserListR
 	}
 
 	return
+}
+
+func GetDeptIds(req *types.QueryPageUserListReq, db *gorm.DB, ctx context.Context) ([]int64, error) {
+	var deptIds []int64
+	err := db.WithContext(ctx).
+		Table("sys_dept").
+		Select("dept_id").
+		Where("FIND_IN_SET(?, ancestors)", req.DeptId).
+		Find(&deptIds).Error
+	if err != nil {
+		return nil, errx.GORMErr(err)
+	}
+	deptIds = append(deptIds, req.DeptId)
+	return deptIds, nil
 }

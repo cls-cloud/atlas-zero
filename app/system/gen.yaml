@@ -11,9 +11,15 @@ database:
     - sys_tenant_package
     - sys_menu
     - sys_role
+    - sys_dept
+    - sys_post
+    - sys_config
     - sys_role_menu
     - sys_user_role
-    - sys_dept
+    - sys_user_post
+    - sys_dict_data
+    - sys_dict_type
+    - sys_role_post
   # specify a directory for output
   outPath: "./internal/dao/query"
   # query code file name, default: gen.go

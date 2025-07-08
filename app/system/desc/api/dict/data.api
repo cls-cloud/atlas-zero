@@ -1,0 +1,103 @@
+syntax = "v1"
+
+info(
+    desc: "字典数据"
+    author: "atlas"
+    email: "ut1221@icloud.com"
+    date: "2025-07-08 22:55:53"
+)
+
+import "../base.api"
+
+type (
+    // 创建和更新共用结构
+    ModifyDictDataReq {
+        DictDataBase
+    }
+
+        // 请求过滤参数
+    DictDataQuery {
+        // 字典编码
+        dictCode int64 `json:"dictCode,optional"`
+        // 租户编号
+        tenantId string `json:"tenantId,optional"`
+        // 字典排序
+        dictSort int32 `json:"dictSort,optional"`
+        // 字典标签
+        dictLabel string `json:"dictLabel,optional"`
+        // 字典键值
+        dictValue string `json:"dictValue,optional"`
+        // 字典类型
+        dictType string `json:"dictType,optional"`
+        // 样式属性（其他样式扩展）
+        cssClass string `json:"cssClass,optional"`
+        // 表格回显样式
+        listClass string `json:"listClass,optional"`
+        // 是否默认（Y是 N否）
+        isDefault string `json:"isDefault,optional"`
+        // 创建部门
+        createDept int64 `json:"createDept,optional"`
+        // 创建者
+        createBy int64 `json:"createBy,optional"`
+        // 创建时间
+        createTime string `json:"createTime,optional"`
+        // 更新者
+        updateBy int64 `json:"updateBy,optional"`
+        // 更新时间
+        updateTime string `json:"updateTime,optional"`
+        // 备注
+        remark string `json:"remark,optional"`
+    }
+        // 分页请求过滤参数
+    QueryPageDictDataListReq {
+        PageReq
+        DictDataQuery
+    }
+        // 分页响应
+    QueryPageDictDataListResp {
+        Total int64 `json:"total"`
+        Rows []DictDataDetailResp `json:"rows"`
+    }
+
+    QueryDictDataListReq {
+        DictDataQuery
+    }
+
+    DictDataDetailResp {
+        DictDataBase
+    }
+
+    DictDataInfoResp {
+        DictDataBase
+    }
+)
+
+@server(
+    tags: "字典数据"
+    group: dict/data
+    prefix: /system/dict/data
+    middleware: Auth
+)
+service System {
+
+    @handler GetDataByType
+    get /type/:code (CodeReq) returns ([]DictDataDetailResp)
+
+    @handler GetDictDataInfo
+    get /info returns (DictDataInfoResp)
+
+    @handler AddDictData
+    post /add (ModifyDictDataReq)
+
+    @handler DeleteDictData
+    get /delete (IdsReq)
+
+    @handler UpdateDictData
+    post /update (ModifyDictDataReq)
+
+    @handler QueryPageDictDataList
+    get /queryPageList (QueryPageDictDataListReq) returns (QueryPageDictDataListResp)
+
+    @handler QueryDictDataList
+    get /queryList (QueryDictDataListReq) returns ([]DictDataDetailResp)
+}

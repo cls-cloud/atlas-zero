@@ -10,6 +10,10 @@ import "api/auth.api"
 import "api/user.api"
 import "api/role.api"
 import "api/menu.api"
+import "api/post.api"
+import "api/config.api"
+import "api/dict/data.api"
+import "api/dict/type.api"
 
 type resp {
 	Msg  string `json:"msg"`

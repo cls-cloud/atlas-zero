@@ -22,7 +22,7 @@ JwtAuth:
   AccessExpire: 86400
 
 Captcha:
-  Enabled: true
+  Enabled: false
 
 ApiDecrypt:
   Enabled: true
@@ -37,6 +37,7 @@ Tenant:
     - sys_tenant_package
     - sys_menu
     - sys_user_role
+    - sys_user_post
 
 Data:
   Database:

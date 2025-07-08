@@ -6,7 +6,11 @@ package handler
 import (
 	"net/http"
 
+	_config "system/internal/handler/_config"
+	_post "system/internal/handler/_post"
 	auth "system/internal/handler/auth"
+	dict_type "system/internal/handler/dict/_type"
+	dictdata "system/internal/handler/dict/data"
 	menu "system/internal/handler/menu"
 	ping "system/internal/handler/ping"
 	role "system/internal/handler/role"
@@ -59,8 +63,23 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodGet,
+					Path:    "/deptTree",
+					Handler: user.GetDeptTreeHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
 					Path:    "/getInfo",
 					Handler: user.GetUserInfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/:id",
+					Handler: user.QueryUserDetailHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/",
+					Handler: user.QueryUserDetailInsertHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
@@ -81,11 +100,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/updateUserStatus",
 					Handler: user.UpdateUserStatusHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodGet,
-					Path:    "/queryUserDetail",
-					Handler: user.QueryUserDetailHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodGet,
@@ -185,5 +199,176 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/system/menu"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/optionselect",
+					Handler: _post.OptionSelectHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/info",
+					Handler: _post.GetPostInfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/add",
+					Handler: _post.AddPostHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/delete",
+					Handler: _post.DeletePostHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: _post.UpdatePostHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/queryPageList",
+					Handler: _post.QueryPagePostListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/queryList",
+					Handler: _post.QueryPostListHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/post"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/configKey/:code",
+					Handler: _config.ConfigKeyHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/info",
+					Handler: _config.GetConfigInfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/add",
+					Handler: _config.AddConfigHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/delete",
+					Handler: _config.DeleteConfigHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: _config.UpdateConfigHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/queryPageList",
+					Handler: _config.QueryPageConfigListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/queryList",
+					Handler: _config.QueryConfigListHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/config"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/type/:code",
+					Handler: dictdata.GetDataByTypeHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/info",
+					Handler: dictdata.GetDictDataInfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/add",
+					Handler: dictdata.AddDictDataHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/delete",
+					Handler: dictdata.DeleteDictDataHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: dictdata.UpdateDictDataHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/queryPageList",
+					Handler: dictdata.QueryPageDictDataListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/queryList",
+					Handler: dictdata.QueryDictDataListHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/dict/data"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/info",
+					Handler: dict_type.GetDictTypeInfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/add",
+					Handler: dict_type.AddDictTypeHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/delete",
+					Handler: dict_type.DeleteDictTypeHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: dict_type.UpdateDictTypeHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/queryPageList",
+					Handler: dict_type.QueryPageDictTypeListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/queryList",
+					Handler: dict_type.QueryDictTypeListHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/dict/type"),
 	)
 }

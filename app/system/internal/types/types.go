@@ -14,8 +14,8 @@ type LoginReq struct {
 	ClientId  string `json:"clientId"`
 	TenantId  string `json:"tenantId"`
 	GrantType string `json:"grantType"`
-	Code      string `json:"code"`
-	Uuid      string `json:"uuid"`
+	Code      string `json:"code,optional"`
+	Uuid      string `json:"uuid,optional"`
 }
 
 type LoginResp struct {
@@ -53,26 +53,27 @@ type UpdateUserStatusReq struct {
 }
 
 type UserDetailResp struct {
-	UserBase
-	DeptId     int64  `json:"deptId"`
-	DeptName   string `json:"deptName"`
-	CreateTime string `json:"createTime"`
+	PostIds []int64     `json:"postIds"`
+	Posts   []*PostBase `json:"posts"`
+	RoleIds []int64     `json:"roleIds"`
+	Roles   []*RoleBase `json:"roles"`
+	User    *UserRoles  `json:"user"`
 }
 
 type UserQuery struct {
-	UserId      int64  `json:"userId,optional"`
-	TenantId    string `json:"tenantId,optional"`
-	DeptId      int64  `json:"deptId,optional"`
-	UserName    string `json:"userName,optional"`
-	NickName    string `json:"nickName,optional"`
-	UserType    string `json:"userType,optional"`
-	Email       string `json:"email,optional"`
-	PhoneNumber string `json:"phonenumber,optional"`
-	Sex         string `json:"sex,optional"`
-	Avatar      int64  `json:"avatar,optional"`
-	Status      string `json:"status,optional"`
-	DelFlag     string `json:"delFlag,optional"`
-	LoginIp     string `json:"loginIp,optional"`
+	UserId      int64  `form:"userId,optional"`
+	TenantId    string `form:"tenantId,optional"`
+	DeptId      int64  `form:"deptId,optional"`
+	UserName    string `form:"userName,optional"`
+	NickName    string `form:"nickName,optional"`
+	UserType    string `form:"userType,optional"`
+	Email       string `form:"email,optional"`
+	PhoneNumber string `form:"phonenumber,optional"`
+	Sex         string `form:"sex,optional"`
+	Avatar      int64  `form:"avatar,optional"`
+	Status      string `form:"status,optional"`
+	DelFlag     string `form:"delFlag,optional"`
+	LoginIp     string `form:"loginIp,optional"`
 }
 
 type QueryPageUserListReq struct {
@@ -82,8 +83,14 @@ type QueryPageUserListReq struct {
 }
 
 type QueryPageUserListResp struct {
-	Total int64            `json:"total"`
-	Rows  []UserDetailResp `json:"rows"`
+	Total int64           `json:"total"`
+	Rows  []QueryPageUser `json:"rows"`
+}
+
+type QueryPageUser struct {
+	UserBase
+	DeptName   string `json:"deptName"`
+	CreateTime string `json:"createTime"`
 }
 
 type QueryUserListReq struct {
@@ -101,13 +108,26 @@ type UserRoles struct {
 	Roles []RoleBase `json:"roles"`
 }
 
+type DeptTree struct {
+	Disabled bool       `json:"disabled"`
+	Id       string     `json:"id"`
+	Label    string     `json:"label"`
+	ParentId int64      `json:"parentId"`
+	Weight   int64      `json:"weight"`
+	Children []DeptTree `json:"children"`
+}
+
 type PageReq struct {
 	PageNum  int64 `form:"pageNum,default=1"`
 	PageSize int64 `form:"pageSize,default=20"`
 }
 
 type IdReq struct {
-	Id int64 `json:"id"`
+	Id int64 `path:"id"`
+}
+
+type CodeReq struct {
+	Code string `path:"code"`
 }
 
 type IdsReq struct {
@@ -233,6 +253,16 @@ type DictTypeBase struct {
 	DictName string `json:"dictName,optional"` //字典名称
 	DictType string `json:"dictType,optional"` //字典类型
 	Remark   string `json:"remark,optional"`   //备注
+}
+
+type ConfigBase struct {
+	ConfigId    int64  `json:"configId,optional"`    // 参数主键
+	TenantId    string `json:"tenantId,optional"`    // 租户编号
+	ConfigName  string `json:"configName,optional"`  // 参数名称
+	ConfigKey   string `json:"configKey,optional"`   // 参数键名
+	ConfigValue string `json:"configValue,optional"` // 参数键值
+	ConfigType  string `json:"configType,optional"`  // 系统内置（Y是 N否）
+	Remark      string `json:"remark,optional"`      // 备注
 }
 
 type LogininforBase struct {
@@ -484,4 +514,175 @@ type RouterMenuMeta struct {
 	Icon    string `json:"icon"`
 	NoCache bool   `json:"noCache"`
 	Link    string `json:"link,optional"`
+}
+
+type ModifyPostReq struct {
+	PostBase
+}
+
+type PostQuery struct {
+	PostId       int64  `json:"postId,optional"`
+	TenantId     string `json:"tenantId,optional"`
+	DeptId       int64  `form:"deptId,optional"`
+	PostCode     string `json:"postCode,optional"`
+	PostCategory string `json:"postCategory,optional"`
+	PostName     string `json:"postName,optional"`
+	PostSort     int32  `json:"postSort,optional"`
+	Status       string `json:"status,optional"`
+	CreateDept   int64  `json:"createDept,optional"`
+	CreateBy     int64  `json:"createBy,optional"`
+	CreateTime   string `json:"createTime,optional"`
+	UpdateBy     int64  `json:"updateBy,optional"`
+	UpdateTime   string `json:"updateTime,optional"`
+	Remark       string `json:"remark,optional"`
+}
+
+type QueryPagePostListReq struct {
+	PageReq
+	PostQuery
+}
+
+type QueryPagePostListResp struct {
+	Total int64            `json:"total"`
+	Rows  []PostDetailResp `json:"rows"`
+}
+
+type QueryPostListReq struct {
+	PostQuery
+}
+
+type PostDetailResp struct {
+	PostBase
+}
+
+type PostInfoResp struct {
+	PostBase
+}
+
+type ModifyConfigReq struct {
+	ConfigBase
+}
+
+type ConfigQuery struct {
+	ConfigId    int64  `json:"configId,optional"`
+	TenantId    string `json:"tenantId,optional"`
+	ConfigName  string `json:"configName,optional"`
+	ConfigKey   string `json:"configKey,optional"`
+	ConfigValue string `json:"configValue,optional"`
+	ConfigType  string `json:"configType,optional"`
+	CreateDept  int64  `json:"createDept,optional"`
+	CreateBy    int64  `json:"createBy,optional"`
+	CreateTime  string `json:"createTime,optional"`
+	UpdateBy    int64  `json:"updateBy,optional"`
+	UpdateTime  string `json:"updateTime,optional"`
+	Remark      string `json:"remark,optional"`
+}
+
+type QueryPageConfigListReq struct {
+	PageReq
+	ConfigQuery
+}
+
+type QueryPageConfigListResp struct {
+	Total int64              `json:"total"`
+	Rows  []ConfigDetailResp `json:"rows"`
+}
+
+type QueryConfigListReq struct {
+	ConfigQuery
+}
+
+type ConfigDetailResp struct {
+	ConfigBase
+}
+
+type ConfigInfoResp struct {
+	ConfigBase
+}
+
+type ConfigKeyResp struct {
+	Data string `json:"data"`
+}
+
+type ModifyDictDataReq struct {
+	DictDataBase
+}
+
+type DictDataQuery struct {
+	DictCode   int64  `json:"dictCode,optional"`
+	TenantId   string `json:"tenantId,optional"`
+	DictSort   int32  `json:"dictSort,optional"`
+	DictLabel  string `json:"dictLabel,optional"`
+	DictValue  string `json:"dictValue,optional"`
+	DictType   string `json:"dictType,optional"`
+	CssClass   string `json:"cssClass,optional"`
+	ListClass  string `json:"listClass,optional"`
+	IsDefault  string `json:"isDefault,optional"`
+	CreateDept int64  `json:"createDept,optional"`
+	CreateBy   int64  `json:"createBy,optional"`
+	CreateTime string `json:"createTime,optional"`
+	UpdateBy   int64  `json:"updateBy,optional"`
+	UpdateTime string `json:"updateTime,optional"`
+	Remark     string `json:"remark,optional"`
+}
+
+type QueryPageDictDataListReq struct {
+	PageReq
+	DictDataQuery
+}
+
+type QueryPageDictDataListResp struct {
+	Total int64                `json:"total"`
+	Rows  []DictDataDetailResp `json:"rows"`
+}
+
+type QueryDictDataListReq struct {
+	DictDataQuery
+}
+
+type DictDataDetailResp struct {
+	DictDataBase
+}
+
+type DictDataInfoResp struct {
+	DictDataBase
+}
+
+type ModifyDictTypeReq struct {
+	DictTypeBase
+}
+
+type DictTypeQuery struct {
+	DictId     int64  `json:"dictId,optional"`
+	TenantId   string `json:"tenantId,optional"`
+	DictName   string `json:"dictName,optional"`
+	DictType   string `json:"dictType,optional"`
+	CreateDept int64  `json:"createDept,optional"`
+	CreateBy   int64  `json:"createBy,optional"`
+	CreateTime string `json:"createTime,optional"`
+	UpdateBy   int64  `json:"updateBy,optional"`
+	UpdateTime string `json:"updateTime,optional"`
+	Remark     string `json:"remark,optional"`
+}
+
+type QueryPageDictTypeListReq struct {
+	PageReq
+	DictTypeQuery
+}
+
+type QueryPageDictTypeListResp struct {
+	Total int64                `json:"total"`
+	Rows  []DictTypeDetailResp `json:"rows"`
+}
+
+type QueryDictTypeListReq struct {
+	DictTypeQuery
+}
+
+type DictTypeDetailResp struct {
+	DictTypeBase
+}
+
+type DictTypeInfoResp struct {
+	DictTypeBase
 }

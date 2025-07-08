@@ -18,25 +18,27 @@ type (
     }
         // 查询详情响应（包含创建更新信息）
     UserDetailResp {
-        UserBase
-        DeptName string `json:"deptName"`
-        CreateTime string `json:"createTime"`
+        PostIds []int64 `json:"postIds"`
+        Posts []*PostBase `json:"posts"`
+        RoleIds []int64 `json:"roleIds"`
+        Roles []*RoleBase `json:"roles"`
+        User *UserRoles `json:"user"`
     }
         // 用户分页请求过滤参数
     UserQuery {
-        UserId int64 `json:"userId,optional"`
-        TenantId string `json:"tenantId,optional"`
-        DeptId int64 `json:"deptId,optional"`
-        UserName string `json:"userName,optional"`
-        NickName string `json:"nickName,optional"`
-        UserType string `json:"userType,optional"`
-        Email string `json:"email,optional"`
-        PhoneNumber string `json:"phonenumber,optional"`
-        Sex string `json:"sex,optional"`
-        Avatar int64 `json:"avatar,optional"`
-        Status string `json:"status,optional"`
-        DelFlag string `json:"delFlag,optional"`
-        LoginIp string `json:"loginIp,optional"`
+        UserId int64 `form:"userId,optional"`
+        TenantId string `form:"tenantId,optional"`
+        DeptId int64 `form:"deptId,optional"`
+        UserName string `form:"userName,optional"`
+        NickName string `form:"nickName,optional"`
+        UserType string `form:"userType,optional"`
+        Email string `form:"email,optional"`
+        PhoneNumber string `form:"phonenumber,optional"`
+        Sex string `form:"sex,optional"`
+        Avatar int64 `form:"avatar,optional"`
+        Status string `form:"status,optional"`
+        DelFlag string `form:"delFlag,optional"`
+        LoginIp string `form:"loginIp,optional"`
     }
     QueryPageUserListReq {
         PageReq
@@ -45,7 +47,12 @@ type (
     }
     QueryPageUserListResp {
         Total int64 `json:"total"`
-        Rows []UserDetailResp `json:"rows"`
+        Rows []QueryPageUser `json:"rows"`
+    }
+    QueryPageUser {
+        UserBase
+        DeptName string `json:"deptName"`
+        CreateTime string `json:"createTime"`
     }
     QueryUserListReq {
         UserQuery
@@ -60,6 +67,14 @@ type (
         UserBase
         Roles []RoleBase `json:"roles"`
     }
+    DeptTree {
+        Disabled bool `json:"disabled"`
+        Id string `json:"id"`
+        Label string `json:"label"`
+        ParentId int64 `json:"parentId"`
+        Weight int64 `json:"weight"`
+        Children []DeptTree `json:"children"`
+    }
 )
 
 @server(
@@ -68,9 +83,17 @@ type (
     middleware: Auth
 )
 service System {
+    @handler GetDeptTree
+    get /deptTree returns ([]DeptTree)
+
     @handler GetUserInfo
     get /getInfo returns (UserInfoResp)
-
+    // 编辑查询用户详情
+    @handler QueryUserDetail
+    get /:id (IdReq) returns (UserDetailResp)
+    // 新增查询用户详情
+    @handler QueryUserDetailInsert
+    get / returns (UserDetailResp)
     @handler AddUser
     post /addUser (AddOrUpdateUserReq)
 
@@ -83,8 +106,6 @@ service System {
     @handler UpdateUserStatus
     post /updateUserStatus (UpdateUserStatusReq)
 
-    @handler QueryUserDetail
-    get /queryUserDetail (IdReq) returns (UserDetailResp)
 
     @handler QueryPageUserList
     get /list (QueryPageUserListReq) returns (QueryPageUserListResp)
