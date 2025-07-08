@@ -92,13 +92,6 @@ func (l *GetRoutersLogic) GetRouters() (resp []*types.RouterMenuResp, err error)
 	return
 }
 
-func ternary[T any](cond bool, a, b T) T {
-	if cond {
-		return a
-	}
-	return b
-}
-
 func (l *GetRoutersLogic) Tree(node []*types.RouterMenuResp, pid int64) []*types.RouterMenuResp {
 	res := make([]*types.RouterMenuResp, 0)
 	for _, v := range node {

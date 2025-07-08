@@ -2,10 +2,9 @@ package user
 
 import (
 	"context"
-	"errors"
 	"github.com/jinzhu/copier"
-	"gorm.io/gorm"
 	"strconv"
+	"toolkit/errx"
 	"toolkit/helper"
 
 	"system/internal/svc"
@@ -34,16 +33,13 @@ func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoResp, err error) {
 	userIdStr := helper.GetUserId(l.ctx)
 	userId, err := strconv.ParseInt(userIdStr, 10, 64)
 	if err != nil {
-		return nil, errors.New("userId 解析失败")
+		return nil, errx.BizErr("userId 解析失败")
 	}
 	resp = new(types.UserInfoResp)
 	sysUser := l.svcCtx.Query.SysUser
 	user, err := sysUser.WithContext(l.ctx).Where(sysUser.UserID.Eq(userId)).First()
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, errors.New("用户不存在")
-		}
-		return nil, err
+		return nil, errx.GORMErr(err)
 	}
 	sysRole := l.svcCtx.Query.SysRole
 	sysUserRole := l.svcCtx.Query.SysUserRole
@@ -63,10 +59,7 @@ func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoResp, err error) {
 		Where(sysRole.RoleID.In(roleIds...)).
 		Find()
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, errors.New("查询失败")
-		}
-		return nil, err
+		return nil, errx.GORMErr(err)
 	}
 	roleNames := make([]string, len(roles))
 	for i, item := range roles {
