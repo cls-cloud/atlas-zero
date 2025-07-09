@@ -2,6 +2,9 @@ package user
 
 import (
 	"context"
+	"strconv"
+	"strings"
+	"toolkit/errx"
 
 	"system/internal/svc"
 	"system/internal/types"
@@ -24,7 +27,24 @@ func NewDeleteUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delete
 }
 
 func (l *DeleteUserLogic) DeleteUser(req *types.CodeReq) error {
-	// todo: add your logic here and delete this line
+	userIds := strings.Split(req.Code, ",")
+	for _, id := range userIds {
+		userId, _ := strconv.ParseInt(id, 10, 64)
+		q := l.svcCtx.Query
+		_, err := q.SysUser.WithContext(l.ctx).Where(q.SysUser.UserID.Eq(userId)).Unscoped().Delete()
+		if err != nil {
+			return errx.GORMErr(err)
+		}
+		//删除角色 岗位
+		_, err = q.SysUserRole.WithContext(l.ctx).Where(q.SysUserRole.UserID.Eq(userId)).Unscoped().Delete()
+		if err != nil {
+			return errx.GORMErr(err)
+		}
+		_, err = q.SysUserPost.WithContext(l.ctx).Where(q.SysUserPost.UserID.Eq(userId)).Unscoped().Delete()
+		if err != nil {
+			return errx.GORMErr(err)
+		}
+	}
 
 	return nil
 }

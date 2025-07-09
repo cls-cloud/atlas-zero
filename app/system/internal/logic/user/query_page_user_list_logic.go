@@ -94,9 +94,9 @@ func (l *QueryPageUserListLogic) QueryPageUserList(req *types.QueryPageUserListR
 
 	// 复制并添加 dept_name
 	resp.Total = total
-	resp.Rows = make([]types.QueryPageUser, len(result))
+	resp.Rows = make([]types.UserAndDeptName, len(result))
 	for i, row := range result {
-		var userDetail types.QueryPageUser
+		var userDetail types.UserAndDeptName
 		_ = copier.Copy(&userDetail, row.SysUser)
 		userDetail.CreateTime = row.CreateTime.Format(time.DateTime)
 		userDetail.DeptName = row.DeptName

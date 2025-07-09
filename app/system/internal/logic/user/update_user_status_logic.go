@@ -24,7 +24,10 @@ func NewUpdateUserStatusLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *UpdateUserStatusLogic) UpdateUserStatus(req *types.UpdateUserStatusReq) error {
-	// todo: add your logic here and delete this line
-
+	q := l.svcCtx.Query
+	_, err := q.SysUser.WithContext(l.ctx).Where(q.SysUser.UserID.Eq(req.UserId)).Update(q.SysUser.Status, req.Status)
+	if err != nil {
+		return err
+	}
 	return nil
 }

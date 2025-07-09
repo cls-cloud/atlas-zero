@@ -85,12 +85,12 @@ type QueryPageUserListReq struct {
 }
 
 type QueryPageUserListResp struct {
-	Total int64           `json:"total"`
-	Rows  []QueryPageUser `json:"rows"`
+	Total int64             `json:"total"`
+	Rows  []UserAndDeptName `json:"rows"`
 }
 
-type QueryPageUser struct {
-	UserBase
+type UserAndDeptName struct {
+	UserRoles
 	DeptName   string `json:"deptName"`
 	CreateTime string `json:"createTime"`
 }
@@ -107,7 +107,7 @@ type UserInfoResp struct {
 
 type UserRoles struct {
 	UserBase
-	Roles []RoleBase `json:"roles"`
+	Roles []RoleBase `json:"roles,omitempty"`
 }
 
 type DeptTree struct {
@@ -117,6 +117,17 @@ type DeptTree struct {
 	ParentId int64      `json:"parentId"`
 	Weight   int64      `json:"weight"`
 	Children []DeptTree `json:"children"`
+}
+
+type ResetPwdReq struct {
+	UserId   int64  `json:"userId"`
+	Password string `json:"password"`
+}
+
+type UserProfileResp struct {
+	User      UserAndDeptName `json:"user"`
+	PostGroup string          `json:"postGroup"`
+	RoleGroup string          `json:"roleGroup"`
 }
 
 type PageReq struct {

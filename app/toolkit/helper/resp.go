@@ -20,7 +20,7 @@ func Success(data interface{}) any {
 	if data == nil {
 		return Response{
 			Code: http.StatusOK,
-			Msg:  "请求成功",
+			Msg:  "操作成功",
 		}
 	}
 
@@ -30,7 +30,7 @@ func Success(data interface{}) any {
 		if val.FieldByName("Rows").IsValid() || val.FieldByName("Data").IsValid() {
 			base := map[string]interface{}{
 				"code": http.StatusOK,
-				"msg":  "请求成功",
+				"msg":  "操作成功",
 			}
 			for k, v := range structToMap(data) {
 				base[k] = v
@@ -41,7 +41,7 @@ func Success(data interface{}) any {
 
 	return Response{
 		Code: http.StatusOK,
-		Msg:  "请求成功",
+		Msg:  "操作成功",
 		Data: data,
 	}
 }

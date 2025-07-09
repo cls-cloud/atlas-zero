@@ -49,10 +49,10 @@ type (
     }
     QueryPageUserListResp {
         Total int64 `json:"total"`
-        Rows []QueryPageUser `json:"rows"`
+        Rows []UserAndDeptName `json:"rows"`
     }
-    QueryPageUser {
-        UserBase
+    UserAndDeptName {
+        UserRoles
         DeptName string `json:"deptName"`
         CreateTime string `json:"createTime"`
     }
@@ -67,7 +67,7 @@ type (
     }
     UserRoles {
         UserBase
-        Roles []RoleBase `json:"roles"`
+        Roles []RoleBase `json:"roles,omitempty"`
     }
     DeptTree {
         Disabled bool `json:"disabled"`
@@ -76,6 +76,15 @@ type (
         ParentId int64 `json:"parentId"`
         Weight int64 `json:"weight"`
         Children []DeptTree `json:"children"`
+    }
+    ResetPwdReq {
+        UserId int64 `json:"userId"`
+        Password string `json:"password"`
+    }
+    UserProfileResp {
+        User UserAndDeptName `json:"user"`
+        PostGroup string `json:"postGroup"`
+        RoleGroup string `json:"roleGroup"`
     }
 )
 
@@ -87,6 +96,10 @@ type (
 service System {
     @handler GetDeptTree
     get /deptTree returns ([]DeptTree)
+
+
+    @handler Profile
+    get /profile returns (UserProfileResp)
 
     @handler GetUserInfo
     get /getInfo returns (UserInfoResp)
@@ -107,7 +120,10 @@ service System {
     put / (AddOrUpdateUserReq)
 
     @handler UpdateUserStatus
-    post /changeStatus (UpdateUserStatusReq)
+    put /changeStatus (UpdateUserStatusReq)
+
+    @handler ResetPwd
+    put /resetPwd (ResetPwdReq)
 
     @handler QueryPageUserList
     get /list (QueryPageUserListReq) returns (QueryPageUserListResp)

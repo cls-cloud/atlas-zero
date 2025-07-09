@@ -68,6 +68,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodGet,
+					Path:    "/profile",
+					Handler: user.ProfileHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
 					Path:    "/getInfo",
 					Handler: user.GetUserInfoHandler(serverCtx),
 				},
@@ -97,9 +102,14 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: user.UpdateUserHandler(serverCtx),
 				},
 				{
-					Method:  http.MethodPost,
+					Method:  http.MethodPut,
 					Path:    "/changeStatus",
 					Handler: user.UpdateUserStatusHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/resetPwd",
+					Handler: user.ResetPwdHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodGet,

@@ -76,6 +76,8 @@ func (l *QueryUserDetailLogic) QueryUserDetail(req *types.IdReq) (resp *types.Us
 	for _, p := range userPosts {
 		postIds = append(postIds, p.PostID)
 	}
+	posts := make([]*types.PostBase, 0)
+	resp.Posts = posts
 	resp.RoleIds = roleIds
 	resp.PostIds = postIds
 	return
