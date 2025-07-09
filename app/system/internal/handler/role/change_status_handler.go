@@ -9,20 +9,20 @@ import (
 	"system/internal/types"
 )
 
-func QueryPageRoleListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func ChangeStatusHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.QueryPageRoleListReq
+		var req types.UpdateRoleStatusReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := role.NewQueryPageRoleListLogic(r.Context(), svcCtx)
-		resp, err := l.QueryPageRoleList(&req)
+		l := role.NewChangeStatusLogic(r.Context(), svcCtx)
+		err := l.ChangeStatus(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			httpx.OkJsonCtx(r.Context(), w, resp)
+			httpx.OkJsonCtx(r.Context(), w, nil)
 		}
 	}
 }

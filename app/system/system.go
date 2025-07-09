@@ -27,6 +27,7 @@ func main() {
 	// 创建服务器并传入自定义的 UnauthorizedCallback
 	server := rest.MustNewServer(c.RestConf)
 	server.Use(middleware.LogMiddleware)
+	server.Use(middleware.ApiMiddleware(c))
 	server.Use(middleware.CorsMiddleware)
 	// 使用拦截器
 	httpx.SetOkHandler(helper.OkHandler)

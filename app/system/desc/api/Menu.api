@@ -88,6 +88,19 @@ type (
         NoCache bool `json:"noCache"`
         Link string `json:"link,optional"`
     }
+    RoleMenuTreeResp {
+        CheckedKeys []int64 `json:"checkedKeys"`
+        Menus []*RoleMenuTree `json:"menus"`
+    }
+    RoleMenuTree {
+        Id int64 `json:"id"`
+        ParentId int64 `json:"parentId"`
+        MenuType string `json:"menuType"`
+        Icon string `json:"icon"`
+        Weight int32 `json:"weight"`
+        Label string `json:"label"`
+        Children []*RoleMenuTree `json:"children,omitempty"`
+    }
 )
 
 @server(
@@ -97,6 +110,9 @@ type (
     middleware: Auth
 )
 service System {
+    @handler RoleMenuTree
+    get /roleMenuTreeselect/:id (IdReq) returns (RoleMenuTreeResp)
+
     @handler GetRouters
     get /getRouters returns ([]RouterMenuResp)
 

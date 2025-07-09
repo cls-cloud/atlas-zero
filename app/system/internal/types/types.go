@@ -80,7 +80,6 @@ type UserQuery struct {
 
 type QueryPageUserListReq struct {
 	PageReq
-	TimeReq
 	UserQuery
 }
 
@@ -133,6 +132,7 @@ type UserProfileResp struct {
 type PageReq struct {
 	PageNum  int64 `form:"pageNum,default=1"`
 	PageSize int64 `form:"pageSize,default=20"`
+	TimeReq
 }
 
 type IdReq struct {
@@ -182,10 +182,12 @@ type RoleBase struct {
 	RoleKey           string `json:"roleKey"`                    //角色权限字符串
 	RoleSort          int32  `json:"roleSort"`                   //显示顺序
 	DataScope         string `json:"dataScope,optional"`         //数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限 5：仅本人数据权限 6：部门及以下或本人数据权限）
-	MenuCheckStrictly int32  `json:"menuCheckStrictly,optional"` //菜单树选择项是否关联显示
-	DeptCheckStrictly int32  `json:"deptCheckStrictly,optional"` //部门树选择项是否关联显示
+	MenuCheckStrictly bool   `json:"menuCheckStrictly,optional"` //菜单树选择项是否关联显示
+	DeptCheckStrictly bool   `json:"deptCheckStrictly,optional"` //部门树选择项是否关联显示
 	Status            string `json:"status,default=2"`           //角色状态（0正常 1停用）
 	Remark            string `json:"remark,optional"`            //备注
+	CreateTime        string `json:"createTime"`
+	SuperAdmin        bool   `json:"superAdmin,omitempty"`
 }
 
 type UserPostBase struct {
@@ -437,29 +439,25 @@ type RoleDetailResp struct {
 }
 
 type RoleQuery struct {
-	RoleId            int64  `json:"roleId"`                     //角色ID
-	TenantId          string `json:"tenantId,optional"`          //租户编号
-	RoleName          string `json:"roleName"`                   //角色名称
-	RoleKey           string `json:"roleKey"`                    //角色权限字符串
-	RoleSort          int32  `json:"roleSort"`                   //显示顺序
-	DataScope         string `json:"dataScope,optional"`         //数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限 5：仅本人数据权限 6：部门及以下或本人数据权限）
-	MenuCheckStrictly int32  `json:"menuCheckStrictly,optional"` //菜单树选择项是否关联显示
-	DeptCheckStrictly int32  `json:"deptCheckStrictly,optional"` //部门树选择项是否关联显示
-	Status            string `json:"status,default=2"`           //角色状态（0正常 1停用）
+	RoleId            int64  `form:"roleId,optional"`            //角色ID
+	TenantId          string `form:"tenantId,optional"`          //租户编号
+	RoleName          string `form:"roleName,optional"`          //角色名称
+	RoleKey           string `form:"roleKey,optional"`           //角色权限字符串
+	RoleSort          int32  `form:"roleSort,optional"`          //显示顺序
+	DataScope         string `form:"dataScope,optional"`         //数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限 5：仅本人数据权限 6：部门及以下或本人数据权限）
+	MenuCheckStrictly int32  `form:"menuCheckStrictly,optional"` //菜单树选择项是否关联显示
+	DeptCheckStrictly int32  `form:"deptCheckStrictly,optional"` //部门树选择项是否关联显示
+	Status            string `form:"status,default=0,optional"`  //角色状态（0正常 1停用）
 }
 
-type QueryPageRoleListReq struct {
+type RolePageSetReq struct {
 	PageReq
-	RoleBase
-}
-
-type QueryPageRoleListResp struct {
-	Total int64            `json:"total"`
-	Rows  []RoleDetailResp `json:"rows"`
-}
-
-type QueryRoleListReq struct {
 	RoleQuery
+}
+
+type RolePageSetResp struct {
+	Total int64      `json:"total"`
+	Rows  []RoleBase `json:"rows"`
 }
 
 type ModifyMenuReq struct {
@@ -527,6 +525,21 @@ type RouterMenuMeta struct {
 	Icon    string `json:"icon"`
 	NoCache bool   `json:"noCache"`
 	Link    string `json:"link,optional"`
+}
+
+type RoleMenuTreeResp struct {
+	CheckedKeys []int64         `json:"checkedKeys"`
+	Menus       []*RoleMenuTree `json:"menus"`
+}
+
+type RoleMenuTree struct {
+	Id       int64           `json:"id"`
+	ParentId int64           `json:"parentId"`
+	MenuType string          `json:"menuType"`
+	Icon     string          `json:"icon"`
+	Weight   int32           `json:"weight"`
+	Label    string          `json:"label"`
+	Children []*RoleMenuTree `json:"children,omitempty"`
 }
 
 type ModifyPostReq struct {

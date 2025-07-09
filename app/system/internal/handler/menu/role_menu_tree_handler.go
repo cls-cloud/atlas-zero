@@ -1,28 +1,28 @@
-package role
+package menu
 
 import (
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"system/internal/logic/role"
+	"system/internal/logic/menu"
 	"system/internal/svc"
 	"system/internal/types"
 )
 
-func UpdateRoleStatusHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func RoleMenuTreeHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.UpdateRoleStatusReq
+		var req types.IdReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := role.NewUpdateRoleStatusLogic(r.Context(), svcCtx)
-		err := l.UpdateRoleStatus(&req)
+		l := menu.NewRoleMenuTreeLogic(r.Context(), svcCtx)
+		resp, err := l.RoleMenuTree(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			httpx.Ok(w)
+			httpx.OkJsonCtx(r.Context(), w, resp)
 		}
 	}
 }

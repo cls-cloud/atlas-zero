@@ -1,7 +1,7 @@
 info(
     desc: "用户信息"
-    //    author: "atlas"
-    //    email: "ut1221@icloud.com"
+    author: "atlas"
+    email: "ut1221@icloud.com"
 )
 
 import "base.api"
@@ -44,7 +44,6 @@ type (
     }
     QueryPageUserListReq {
         PageReq
-        TimeReq
         UserQuery
     }
     QueryPageUserListResp {

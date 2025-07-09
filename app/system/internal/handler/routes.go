@@ -124,48 +124,48 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodPost,
-				Path:    "/addRole",
-				Handler: role.AddRoleHandler(serverCtx),
+				Method:  http.MethodGet,
+				Path:    "/list",
+				Handler: role.PageSetHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
+				Path:    "/",
+				Handler: role.AddHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
 				Path:    "/deleteRole",
-				Handler: role.DeleteRoleHandler(serverCtx),
+				Handler: role.RemoveHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodPost,
+				Method:  http.MethodPut,
 				Path:    "/updateRole",
-				Handler: role.UpdateRoleHandler(serverCtx),
+				Handler: role.UpdateHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodPost,
+				Method:  http.MethodGet,
+				Path:    "/:id",
+				Handler: role.InfoHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPut,
 				Path:    "/updateRoleStatus",
-				Handler: role.UpdateRoleStatusHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/queryRoleDetail",
-				Handler: role.QueryRoleDetailHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/queryPageRoleList",
-				Handler: role.QueryPageRoleListHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/queryRoleList",
-				Handler: role.QueryRoleListHandler(serverCtx),
+				Handler: role.ChangeStatusHandler(serverCtx),
 			},
 		},
-		rest.WithPrefix("/role"),
+		rest.WithPrefix("/system/role"),
 	)
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.Auth},
 			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/roleMenuTreeselect/:id",
+					Handler: menu.RoleMenuTreeHandler(serverCtx),
+				},
 				{
 					Method:  http.MethodGet,
 					Path:    "/getRouters",

@@ -1,4 +1,5 @@
 RestConf:
+  Mode: pre
   Name: system
   Host: 0.0.0.0
   Port: 8080
@@ -38,6 +39,7 @@ Tenant:
     - sys_menu
     - sys_user_role
     - sys_user_post
+    - sys_role_menu
 
 Data:
   Database:

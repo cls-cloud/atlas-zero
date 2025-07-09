@@ -4,6 +4,7 @@ type (
     PageReq {
         PageNum int64 `form:"pageNum,default=1"`
         PageSize int64 `form:"pageSize,default=20"`
+        TimeReq
     }
     IdReq {
         id int64 `path:"id"`
@@ -51,11 +52,12 @@ type (
         RoleKey string `json:"roleKey"`                             //角色权限字符串
         RoleSort int32 `json:"roleSort"`                            //显示顺序
         DataScope string `json:"dataScope,optional"`                //数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限 5：仅本人数据权限 6：部门及以下或本人数据权限）
-        MenuCheckStrictly int32 `json:"menuCheckStrictly,optional"` //菜单树选择项是否关联显示
-        DeptCheckStrictly int32 `json:"deptCheckStrictly,optional"` //部门树选择项是否关联显示
+        MenuCheckStrictly bool `json:"menuCheckStrictly,optional"` //菜单树选择项是否关联显示
+        DeptCheckStrictly bool `json:"deptCheckStrictly,optional"` //部门树选择项是否关联显示
         Status string `json:"status,default=2"`                     //角色状态（0正常 1停用）
-
         Remark string `json:"remark,optional"`                      //备注
+        CreateTime string `json:"createTime"`
+        SuperAdmin bool `json:"superAdmin,omitempty"`
     }
     UserPostBase {
         UserId int64 `json:"userId"` //用户ID

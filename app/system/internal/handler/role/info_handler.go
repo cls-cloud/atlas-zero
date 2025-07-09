@@ -9,20 +9,20 @@ import (
 	"system/internal/types"
 )
 
-func UpdateRoleHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func InfoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.AddOrUpdateRoleReq
+		var req types.IdReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := role.NewUpdateRoleLogic(r.Context(), svcCtx)
-		err := l.UpdateRole(&req)
+		l := role.NewInfoLogic(r.Context(), svcCtx)
+		resp, err := l.Info(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			httpx.Ok(w)
+			httpx.OkJsonCtx(r.Context(), w, resp)
 		}
 	}
 }

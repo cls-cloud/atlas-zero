@@ -9,22 +9,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type QueryRoleListLogic struct {
+type ChangeStatusLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewQueryRoleListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *QueryRoleListLogic {
-	return &QueryRoleListLogic{
+func NewChangeStatusLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ChangeStatusLogic {
+	return &ChangeStatusLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *QueryRoleListLogic) QueryRoleList(req *types.QueryRoleListReq) (resp []types.RoleDetailResp, err error) {
+func (l *ChangeStatusLogic) ChangeStatus(req *types.UpdateRoleStatusReq) error {
 	// todo: add your logic here and delete this line
 
-	return
+	return nil
 }
