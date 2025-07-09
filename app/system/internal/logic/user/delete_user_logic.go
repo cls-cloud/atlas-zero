@@ -23,7 +23,7 @@ func NewDeleteUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delete
 	}
 }
 
-func (l *DeleteUserLogic) DeleteUser(req *types.IdsReq) error {
+func (l *DeleteUserLogic) DeleteUser(req *types.CodeReq) error {
 	// todo: add your logic here and delete this line
 
 	return nil

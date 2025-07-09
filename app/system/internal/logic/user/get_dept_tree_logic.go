@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"strconv"
 	"toolkit/errx"
 
 	"system/internal/svc"
@@ -33,7 +32,7 @@ func (l *GetDeptTreeLogic) GetDeptTree() (resp []types.DeptTree, err error) {
 	}
 	for _, dept := range sysDepts {
 		resp = append(resp, types.DeptTree{
-			Id:       strconv.FormatInt(dept.DeptID, 10),
+			Id:       dept.DeptID,
 			ParentId: dept.ParentID,
 			Label:    dept.DeptName,
 		})
@@ -45,12 +44,8 @@ func (l *GetDeptTreeLogic) GetDeptTree() (resp []types.DeptTree, err error) {
 func BuildDeptTree(list []types.DeptTree, pid int64) []types.DeptTree {
 	var tree []types.DeptTree
 	for _, item := range list {
-		idInt, err := strconv.ParseInt(item.Id, 10, 64)
-		if err != nil {
-			continue
-		}
 		if item.ParentId == pid {
-			children := BuildDeptTree(list, idInt)
+			children := BuildDeptTree(list, item.Id)
 			if len(children) > 0 {
 				item.Children = children
 			}

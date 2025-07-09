@@ -2,6 +2,8 @@ package user
 
 import (
 	"context"
+	"toolkit/errx"
+	"toolkit/utils"
 
 	"system/internal/svc"
 	"system/internal/types"
@@ -24,7 +26,15 @@ func NewUpdateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Update
 }
 
 func (l *UpdateUserLogic) UpdateUser(req *types.AddOrUpdateUserReq) error {
-	// todo: add your logic here and delete this line
-
+	if req.UserID == 0 {
+		return errx.BizErr("用户ID不能为空")
+	}
+	userToMap := utils.StructToMapOmit(req.UserBase, nil, []string{"Password"}, true)
+	//更新数据
+	q := l.svcCtx.Query
+	_, err := q.SysUser.WithContext(l.ctx).Where(q.SysUser.UserID.Eq(req.UserID)).Updates(userToMap)
+	if err != nil {
+		return errx.GORMErr(err)
+	}
 	return nil
 }

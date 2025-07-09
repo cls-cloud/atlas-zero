@@ -9,6 +9,8 @@ import "base.api"
 type (
     // 创建和更新共用结构
     AddOrUpdateUserReq {
+        RoleIds []int64 `json:"roleIds"`
+        PostIds []int64 `json:"postIds"`
         UserBase
     }
         // 更新用户状态
@@ -69,7 +71,7 @@ type (
     }
     DeptTree {
         Disabled bool `json:"disabled"`
-        Id string `json:"id"`
+        Id int64 `json:"id"`
         Label string `json:"label"`
         ParentId int64 `json:"parentId"`
         Weight int64 `json:"weight"`
@@ -94,23 +96,20 @@ service System {
     // 新增查询用户详情
     @handler QueryUserDetailInsert
     get / returns (UserDetailResp)
+
     @handler AddUser
-    post /addUser (AddOrUpdateUserReq)
+    post / (AddOrUpdateUserReq)
 
     @handler DeleteUser
-    get /deleteUser (IdsReq)
+    delete /:code (CodeReq)
 
     @handler UpdateUser
-    post /updateUser (AddOrUpdateUserReq)
+    put / (AddOrUpdateUserReq)
 
     @handler UpdateUserStatus
-    post /updateUserStatus (UpdateUserStatusReq)
-
+    post /changeStatus (UpdateUserStatusReq)
 
     @handler QueryPageUserList
     get /list (QueryPageUserListReq) returns (QueryPageUserListResp)
-
-    @handler QueryUserList
-    get /queryUserList (QueryUserListReq) returns ([]UserDetailResp)
 }
 

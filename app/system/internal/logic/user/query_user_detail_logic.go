@@ -40,16 +40,17 @@ func (l *QueryUserDetailLogic) QueryUserDetail(req *types.IdReq) (resp *types.Us
 		return
 	}
 	// 查询用户基本信息
-	user, err := q.SysUser.WithContext(l.ctx).
+	sysUser, err := q.SysUser.WithContext(l.ctx).
 		Where(q.SysUser.UserID.Eq(req.Id)).
 		First()
+	user := new(types.UserRoles)
 	if err != nil {
 		return nil, errx.GORMErr(err)
 	}
-	if err = copier.Copy(&resp.User, user); err != nil {
+	if err = copier.Copy(&user, sysUser); err != nil {
 		return nil, err
 	}
-
+	resp.User = user
 	// 查询用户的角色ID列表
 	userRoles, err := q.SysUserRole.WithContext(l.ctx).
 		Select(q.SysUserRole.RoleID).

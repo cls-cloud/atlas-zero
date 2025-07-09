@@ -23,9 +23,9 @@ type (
 type (
     // 用户基础信息（可复用）
     UserBase {
-        UserId int64 `json:"userId,optional"`
+        UserID int64 `json:"userId,optional"`
         TenantId string `json:"tenantId,optional"`
-        DeptId int64 `json:"deptId,optional"`
+        DeptID int64 `json:"deptId,optional"`
         UserName string `json:"userName"`
         NickName string `json:"nickName"`
         UserType string `json:"userType,optional"`

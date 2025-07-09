@@ -44,6 +44,8 @@ type TenantVo struct {
 }
 
 type AddOrUpdateUserReq struct {
+	RoleIds []int64 `json:"roleIds"`
+	PostIds []int64 `json:"postIds"`
 	UserBase
 }
 
@@ -110,7 +112,7 @@ type UserRoles struct {
 
 type DeptTree struct {
 	Disabled bool       `json:"disabled"`
-	Id       string     `json:"id"`
+	Id       int64      `json:"id"`
 	Label    string     `json:"label"`
 	ParentId int64      `json:"parentId"`
 	Weight   int64      `json:"weight"`
@@ -140,9 +142,9 @@ type TimeReq struct {
 }
 
 type UserBase struct {
-	UserId      int64  `json:"userId,optional"`
+	UserID      int64  `json:"userId,optional"`
 	TenantId    string `json:"tenantId,optional"`
-	DeptId      int64  `json:"deptId,optional"`
+	DeptID      int64  `json:"deptId,optional"`
 	UserName    string `json:"userName"`
 	NickName    string `json:"nickName"`
 	UserType    string `json:"userType,optional"`
