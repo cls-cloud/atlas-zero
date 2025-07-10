@@ -10,11 +10,11 @@ type (
     // 添加角色信息请求参数
     AddOrUpdateRoleReq {
         RoleBase
-        MenuIds []int64 `json:"menuIds"`
+        MenuIds []string `json:"menuIds"`
     }
         // 更新角色信息状态请求参数
     UpdateRoleStatusReq {
-        RoleID int64 `json:"roleId"`
+        RoleID string `json:"roleId"`
         Status string `json:"status,default=0"` //角色状态（0正常 1停用）
     }
 
@@ -28,7 +28,7 @@ type (
         Remark string `json:"remark"`                      //备注
     }
     RoleQuery {
-        RoleId int64 `form:"roleId,optional"`                                //角色ID
+        RoleId string `form:"roleId,optional"`                                //角色ID
         TenantId string `form:"tenantId,optional"`                           //租户编号
         RoleName string `form:"roleName,optional"`                           //角色名称
         RoleKey string `form:"roleKey,optional"`                             //角色权限字符串
@@ -50,12 +50,12 @@ type (
     }
 
     DeptTreeResp {
-        CheckedKeys []int64 `json:"checkedKeys"`
+        CheckedKeys []string `json:"checkedKeys"`
         Depts []DeptTree `json:"depts"`
     }
     AllocatedReq {
         PageReq
-        RoleId int64 `form:"roleId"`
+        RoleId string `form:"roleId"`
         UserName string `form:"userName,optional"`
         PhoneNumber string `form:"phonenumber,optional"`
     }
@@ -64,12 +64,12 @@ type (
         Rows []UserBase `json:"rows"`
     }
     SelectAllReq {
-        RoleId int64 `form:"roleId"`
+        RoleId string `form:"roleId"`
         UserIds string `form:"userIds"`
     }
     CancelReq {
         RoleId string `json:"roleId"`
-        UserId int64 `json:"userId"`
+        UserId string `json:"userId"`
     }
 )
 

@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/jinzhu/copier"
@@ -29,9 +30,12 @@ func NewQueryPageUserListLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 	}
 }
 
-func (l *QueryPageUserListLogic) QueryPageUserList(req *types.QueryPageUserListReq) (resp *types.QueryPageUserListResp, err error) {
-	resp = new(types.QueryPageUserListResp)
+type ListResp struct {
+	Total int64                    `json:"total"`
+	Rows  []map[string]interface{} `json:"rows"`
+}
 
+func (l *QueryPageUserListLogic) QueryPageUserList(req *types.QueryPageUserListReq) (resp *ListResp, err error) {
 	sysUser := l.svcCtx.Query.SysUser
 	sysDept := l.svcCtx.Query.SysDept
 
@@ -93,9 +97,10 @@ func (l *QueryPageUserListLogic) QueryPageUserList(req *types.QueryPageUserListR
 		return nil, err
 	}
 
-	// 复制并添加 dept_name
+	// 特殊处理userId 兼容前端
+	resp = new(ListResp)
 	resp.Total = total
-	resp.Rows = make([]types.UserAndDeptName, len(result))
+	resp.Rows = make([]map[string]interface{}, len(result))
 	for i, row := range result {
 		var userDetail types.UserAndDeptName
 		_ = copier.Copy(&userDetail, row.SysUser)
@@ -103,7 +108,19 @@ func (l *QueryPageUserListLogic) QueryPageUserList(req *types.QueryPageUserListR
 		userDetail.DeptName = row.DeptName
 		userDetail.UserID = row.UserID
 		userDetail.DeptID = row.DeptID
-		resp.Rows[i] = userDetail
+		var toMap map[string]interface{}
+		bs, err := json.Marshal(userDetail)
+		if err != nil {
+			return nil, errx.BizErr("json 序列化失败")
+		}
+		err = json.Unmarshal(bs, &toMap)
+		if err != nil {
+			return nil, errx.BizErr("json 反序列化失败")
+		}
+		resp.Rows[i] = toMap
+		if userDetail.UserID == "1" {
+			resp.Rows[i]["userId"] = 1
+		}
 	}
 
 	return
