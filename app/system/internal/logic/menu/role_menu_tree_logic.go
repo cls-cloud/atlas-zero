@@ -27,7 +27,10 @@ func NewRoleMenuTreeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Role
 func (l *RoleMenuTreeLogic) RoleMenuTree(req *types.IdReq) (resp *types.RoleMenuTreeResp, err error) {
 	resp = new(types.RoleMenuTreeResp)
 	q := l.svcCtx.Query
-	roleMenus, err := q.SysRoleMenu.WithContext(l.ctx).Where(q.SysRoleMenu.RoleID.Eq(req.Id)).Find()
+	roleMenus, err := q.SysRoleMenu.WithContext(l.ctx).
+		LeftJoin(q.SysMenu, q.SysMenu.MenuID.EqCol(q.SysRoleMenu.MenuID)).
+		Where(q.SysMenu.MenuType.Eq(TypeButton)).
+		Where(q.SysRoleMenu.RoleID.Eq(req.Id)).Find()
 	if err != nil {
 		return nil, errx.GORMErr(err)
 	}
@@ -36,32 +39,10 @@ func (l *RoleMenuTreeLogic) RoleMenuTree(req *types.IdReq) (resp *types.RoleMenu
 		menuIds = append(menuIds, roleMenu.MenuID)
 	}
 	resp.CheckedKeys = menuIds
-	sysMenus, err := q.SysMenu.WithContext(l.ctx).Find()
+	treeSelect, err := NewTreeSelectLogic(l.ctx, l.svcCtx).TreeSelect()
 	if err != nil {
-		return nil, errx.GORMErr(err)
+		return nil, err
 	}
-	var menuTree []*types.RoleMenuTree
-	for _, menu := range sysMenus {
-		menuTree = append(menuTree, &types.RoleMenuTree{
-			Id:       menu.MenuID,
-			ParentId: menu.ParentID,
-			Icon:     menu.Icon,
-			MenuType: menu.MenuType,
-			Label:    menu.MenuName,
-		})
-	}
-	tree := l.Tree(menuTree, 0)
-	resp.Menus = tree
+	resp.Menus = treeSelect
 	return
-}
-
-func (l *RoleMenuTreeLogic) Tree(node []*types.RoleMenuTree, pid int64) []*types.RoleMenuTree {
-	res := make([]*types.RoleMenuTree, 0)
-	for _, v := range node {
-		if v.ParentId == pid {
-			v.Children = l.Tree(node, v.Id)
-			res = append(res, v)
-		}
-	}
-	return res
 }

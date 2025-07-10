@@ -2,11 +2,12 @@ package role
 
 import (
 	"context"
-
+	"github.com/zeromicro/go-zero/core/logx"
+	"system/internal/dao/model"
 	"system/internal/svc"
 	"system/internal/types"
-
-	"github.com/zeromicro/go-zero/core/logx"
+	"toolkit/errx"
+	"toolkit/utils"
 )
 
 type AddLogic struct {
@@ -24,7 +25,37 @@ func NewAddLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddLogic {
 }
 
 func (l *AddLogic) Add(req *types.AddOrUpdateRoleReq) error {
-	// todo: add your logic here and delete this line
-
+	if req.RoleID != 0 {
+		return errx.BizErr("角色ID不为空")
+	}
+	q := l.svcCtx.Query
+	if oRoles, err := q.SysRole.WithContext(l.ctx).Where(q.SysRole.RoleKey.Eq(req.RoleKey)).First(); err == nil && oRoles != nil {
+		return errx.BizErr("角色编码已存在")
+	}
+	req.RoleID = utils.GetIDInt64()
+	role := &model.SysRole{
+		RoleID:    req.RoleID,
+		RoleKey:   req.RoleKey,
+		RoleName:  req.RoleName,
+		RoleSort:  req.RoleSort,
+		Status:    req.Status,
+		Remark:    req.Remark,
+		DataScope: req.DataScope,
+	}
+	if err := q.SysRole.WithContext(l.ctx).Where(q.SysRole.RoleID.Eq(req.RoleID)).Create(role); err != nil {
+		return errx.GORMErr(err)
+	}
+	if len(req.MenuIds) != 0 {
+		roleMenus := make([]*model.SysRoleMenu, 0, len(req.MenuIds))
+		for _, menuId := range req.MenuIds {
+			roleMenus = append(roleMenus, &model.SysRoleMenu{
+				RoleID: req.RoleID,
+				MenuID: menuId,
+			})
+		}
+		if err := q.SysRoleMenu.WithContext(l.ctx).CreateInBatches(roleMenus, len(roleMenus)); err != nil {
+			return errx.GORMErr(err)
+		}
+	}
 	return nil
 }

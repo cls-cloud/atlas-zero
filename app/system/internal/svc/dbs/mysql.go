@@ -44,6 +44,9 @@ func NewDb(c config.Config) *gorm.DB {
 	}); err != nil {
 		panic(err)
 	}
+	if err = db.Use(&plugin.AuditPlugin{}); err != nil {
+		panic(err)
+	}
 	fmt.Println("Successfully connected to MySQL database.")
 	return db
 }

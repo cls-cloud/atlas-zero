@@ -9,20 +9,20 @@ import (
 	"system/internal/types"
 )
 
-func RemoveHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func UnAllocatedListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.CodeReq
+		var req types.AllocatedReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := role.NewRemoveLogic(r.Context(), svcCtx)
-		err := l.Remove(&req)
+		l := role.NewUnAllocatedListLogic(r.Context(), svcCtx)
+		resp, err := l.UnAllocatedList(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			httpx.OkJsonCtx(r.Context(), w, nil)
+			httpx.OkJsonCtx(r.Context(), w, resp)
 		}
 	}
 }

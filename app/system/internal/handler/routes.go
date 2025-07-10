@@ -122,38 +122,71 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	)
 
 	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodGet,
-				Path:    "/list",
-				Handler: role.PageSetHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/",
-				Handler: role.AddHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodDelete,
-				Path:    "/deleteRole",
-				Handler: role.RemoveHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPut,
-				Path:    "/updateRole",
-				Handler: role.UpdateHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/:id",
-				Handler: role.InfoHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPut,
-				Path:    "/updateRoleStatus",
-				Handler: role.ChangeStatusHandler(serverCtx),
-			},
-		},
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/list",
+					Handler: role.PageSetHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/",
+					Handler: role.AddHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodDelete,
+					Path:    "/:code",
+					Handler: role.RemoveHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/",
+					Handler: role.UpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/:id",
+					Handler: role.InfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/changeStatus",
+					Handler: role.ChangeStatusHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/deptTree/:id",
+					Handler: role.DeptTreeHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/authUser/allocatedList",
+					Handler: role.AllocatedListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/authUser/unallocatedList",
+					Handler: role.UnAllocatedListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/authUser/selectAll",
+					Handler: role.SelectAllHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/authUser/cancelAll",
+					Handler: role.CancelAllHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/authUser/cancel",
+					Handler: role.CancelHandler(serverCtx),
+				},
+			}...,
+		),
 		rest.WithPrefix("/system/role"),
 	)
 
@@ -161,6 +194,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.Auth},
 			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/treeselect",
+					Handler: menu.TreeSelectHandler(serverCtx),
+				},
 				{
 					Method:  http.MethodGet,
 					Path:    "/roleMenuTreeselect/:id",

@@ -2,6 +2,7 @@ package role
 
 import (
 	"context"
+	"toolkit/errx"
 
 	"system/internal/svc"
 	"system/internal/types"
@@ -24,7 +25,10 @@ func NewChangeStatusLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Chan
 }
 
 func (l *ChangeStatusLogic) ChangeStatus(req *types.UpdateRoleStatusReq) error {
-	// todo: add your logic here and delete this line
-
+	q := l.svcCtx.Query
+	_, err := q.SysRole.WithContext(l.ctx).Where(q.SysRole.RoleID.Eq(req.RoleID)).Update(q.SysRole.Status, req.Status)
+	if err != nil {
+		return errx.GORMErr(err)
+	}
 	return nil
 }

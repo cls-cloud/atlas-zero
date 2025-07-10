@@ -68,14 +68,6 @@ type (
         UserBase
         Roles []RoleBase `json:"roles,omitempty"`
     }
-    DeptTree {
-        Disabled bool `json:"disabled"`
-        Id int64 `json:"id"`
-        Label string `json:"label"`
-        ParentId int64 `json:"parentId"`
-        Weight int64 `json:"weight"`
-        Children []DeptTree `json:"children"`
-    }
     ResetPwdReq {
         UserId int64 `json:"userId"`
         Password string `json:"password"`

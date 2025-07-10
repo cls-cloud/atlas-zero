@@ -110,6 +110,9 @@ type (
     middleware: Auth
 )
 service System {
+    @handler TreeSelect
+    get /treeselect returns ([]*RoleMenuTree)
+
     @handler RoleMenuTree
     get /roleMenuTreeselect/:id (IdReq) returns (RoleMenuTreeResp)
 

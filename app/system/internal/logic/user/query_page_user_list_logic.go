@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
 	"system/internal/dao/model"
@@ -50,13 +51,13 @@ func (l *QueryPageUserListLogic) QueryPageUserList(req *types.QueryPageUserListR
 		do = do.Where(sysUser.DeptID.In(deptIds...))
 	}
 	if req.UserName != "" {
-		do = do.Where(sysUser.UserName.Like("%" + req.UserName + "%"))
+		do = do.Where(sysUser.UserName.Like(fmt.Sprintf("%%%s%%", req.UserName)))
 	}
 	if req.NickName != "" {
-		do = do.Where(sysUser.NickName.Like("%" + req.NickName + "%"))
+		do = do.Where(sysUser.NickName.Like(fmt.Sprintf("%%%s%%", req.NickName)))
 	}
 	if req.PhoneNumber != "" {
-		do = do.Where(sysUser.Phonenumber.Like("%" + req.PhoneNumber + "%"))
+		do = do.Where(sysUser.Phonenumber.Like(fmt.Sprintf("%%%s%%", req.PhoneNumber)))
 	}
 	if req.Status != "" {
 		do = do.Where(sysUser.Status.Eq(req.Status))

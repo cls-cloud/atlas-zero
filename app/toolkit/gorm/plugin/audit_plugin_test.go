@@ -17,11 +17,13 @@ import (
 )
 
 type User struct {
-	ID       int64 `gorm:"primaryKey"`
-	Name     string
-	TenantID string
-	CreateBy string
-	UpdateBy string
+	ID         int64 `gorm:"primaryKey"`
+	Name       string
+	TenantID   string
+	CreateBy   string
+	UpdateBy   string
+	CreateTime time.Time
+	UpdateTime time.Time
 }
 
 func (*User) TableName() string {

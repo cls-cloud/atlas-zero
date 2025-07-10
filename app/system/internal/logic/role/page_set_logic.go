@@ -2,6 +2,7 @@ package role
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"system/internal/svc"
@@ -30,10 +31,10 @@ func (l *PageSetLogic) PageSet(req *types.RolePageSetReq) (resp *types.RolePageS
 	q := l.svcCtx.Query
 	do := q.SysRole.WithContext(l.ctx)
 	if req.RoleName != "" {
-		do = do.Where(q.SysRole.RoleName.Like(req.RoleName))
+		do = do.Where(q.SysRole.RoleName.Like(fmt.Sprintf("%%%s%%", req.RoleName)))
 	}
 	if req.RoleKey != "" {
-		do = do.Where(q.SysRole.RoleKey.Like(req.RoleKey))
+		do = do.Where(q.SysRole.RoleKey.Like(fmt.Sprintf("%%%s%%", req.RoleKey)))
 	}
 	if req.Status != "" {
 		do = do.Where(q.SysRole.Status.Eq(req.Status))
@@ -53,7 +54,7 @@ func (l *PageSetLogic) PageSet(req *types.RolePageSetReq) (resp *types.RolePageS
 	roles := make([]types.RoleBase, 0)
 	for _, v := range result {
 		roles = append(roles, types.RoleBase{
-			RoleId:            v.RoleID,
+			RoleID:            v.RoleID,
 			RoleName:          v.RoleName,
 			RoleKey:           v.RoleKey,
 			RoleSort:          v.RoleSort,

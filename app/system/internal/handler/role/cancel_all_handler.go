@@ -9,16 +9,16 @@ import (
 	"system/internal/types"
 )
 
-func RemoveHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func CancelAllHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.CodeReq
+		var req types.SelectAllReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := role.NewRemoveLogic(r.Context(), svcCtx)
-		err := l.Remove(&req)
+		l := role.NewCancelAllLogic(r.Context(), svcCtx)
+		err := l.CancelAll(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

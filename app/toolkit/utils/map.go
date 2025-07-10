@@ -124,7 +124,6 @@ func isEmptyValue(v reflect.Value) bool {
 	case reflect.Float32, reflect.Float64:
 		return v.Float() == 0
 	default:
-		panic("unhandled default case")
+		return false
 	}
-	return false
 }
