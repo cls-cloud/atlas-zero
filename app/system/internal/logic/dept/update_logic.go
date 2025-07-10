@@ -27,6 +27,15 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 
 func (l *UpdateLogic) Update(req *types.ModifyDeptReq) error {
 	toMapOmit := utils.StructToMapOmit(req.DeptBase, nil, []string{"Children", "CreateTime"}, true)
+	if req.DeptCategory == "" {
+		toMapOmit["dept_category"] = req.DeptCategory
+	}
+	if req.Phone == "" {
+		toMapOmit["phone"] = req.Phone
+	}
+	if req.Email == "" {
+		toMapOmit["email"] = req.Email
+	}
 	if _, err := l.svcCtx.Query.SysDept.WithContext(l.ctx).Where(l.svcCtx.Query.SysDept.DeptID.Eq(req.DeptID)).Updates(toMapOmit); err != nil {
 		return errx.GORMErr(err)
 	}

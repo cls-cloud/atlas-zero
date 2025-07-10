@@ -497,6 +497,7 @@ type CancelReq struct {
 
 type ModifyDeptReq struct {
 	DeptBase
+	ParentIdInt int64 `form:"parentId,optional"` // 父部门ID
 }
 
 type DeptQuery struct {
