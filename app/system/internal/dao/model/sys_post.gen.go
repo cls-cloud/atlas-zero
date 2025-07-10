@@ -12,9 +12,9 @@ const TableNameSysPost = "sys_post"
 
 // SysPost 岗位信息表
 type SysPost struct {
-	PostID       int64     `gorm:"column:post_id;primaryKey;comment:岗位ID" json:"post_id"`         // 岗位ID
+	PostID       string    `gorm:"column:post_id;primaryKey;comment:岗位ID" json:"post_id"`         // 岗位ID
 	TenantID     string    `gorm:"column:tenant_id;default:000000;comment:租户编号" json:"tenant_id"` // 租户编号
-	DeptID       int64     `gorm:"column:dept_id;not null;comment:部门id" json:"dept_id"`           // 部门id
+	DeptID       string    `gorm:"column:dept_id;not null;comment:部门id" json:"dept_id"`           // 部门id
 	PostCode     string    `gorm:"column:post_code;not null;comment:岗位编码" json:"post_code"`       // 岗位编码
 	PostCategory string    `gorm:"column:post_category;comment:岗位类别编码" json:"post_category"`      // 岗位类别编码
 	PostName     string    `gorm:"column:post_name;not null;comment:岗位名称" json:"post_name"`       // 岗位名称

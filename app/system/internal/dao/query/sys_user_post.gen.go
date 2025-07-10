@@ -27,8 +27,8 @@ func newSysUserPost(db *gorm.DB, opts ...gen.DOOption) sysUserPost {
 
 	tableName := _sysUserPost.sysUserPostDo.TableName()
 	_sysUserPost.ALL = field.NewAsterisk(tableName)
-	_sysUserPost.UserID = field.NewInt64(tableName, "user_id")
-	_sysUserPost.PostID = field.NewInt64(tableName, "post_id")
+	_sysUserPost.UserID = field.NewString(tableName, "user_id")
+	_sysUserPost.PostID = field.NewString(tableName, "post_id")
 
 	_sysUserPost.fillFieldMap()
 
@@ -40,8 +40,8 @@ type sysUserPost struct {
 	sysUserPostDo sysUserPostDo
 
 	ALL    field.Asterisk
-	UserID field.Int64 // 用户ID
-	PostID field.Int64 // 岗位ID
+	UserID field.String // 用户ID
+	PostID field.String // 岗位ID
 
 	fieldMap map[string]field.Expr
 }
@@ -58,8 +58,8 @@ func (s sysUserPost) As(alias string) *sysUserPost {
 
 func (s *sysUserPost) updateTableName(table string) *sysUserPost {
 	s.ALL = field.NewAsterisk(table)
-	s.UserID = field.NewInt64(table, "user_id")
-	s.PostID = field.NewInt64(table, "post_id")
+	s.UserID = field.NewString(table, "user_id")
+	s.PostID = field.NewString(table, "post_id")
 
 	s.fillFieldMap()
 

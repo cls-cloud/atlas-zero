@@ -9,6 +9,7 @@ import (
 	_config "system/internal/handler/_config"
 	_post "system/internal/handler/_post"
 	auth "system/internal/handler/auth"
+	dept "system/internal/handler/dept"
 	dict_type "system/internal/handler/dict/_type"
 	dictdata "system/internal/handler/dict/data"
 	menu "system/internal/handler/menu"
@@ -113,6 +114,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodGet,
+					Path:    "/list/dept/:id",
+					Handler: user.DeptListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
 					Path:    "/list",
 					Handler: user.QueryPageUserListHandler(serverCtx),
 				},
@@ -196,6 +202,45 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodGet,
+					Path:    "/:id",
+					Handler: dept.InfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/",
+					Handler: dept.AddHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodDelete,
+					Path:    "/:code",
+					Handler: dept.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/",
+					Handler: dept.UpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/list/exclude/:id",
+					Handler: dept.ExcludeHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/list",
+					Handler: dept.ListHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/dept"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
 					Path:    "/treeselect",
 					Handler: menu.TreeSelectHandler(serverCtx),
 				},
@@ -211,33 +256,28 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodGet,
-					Path:    "/info",
-					Handler: menu.GetMenuInfoHandler(serverCtx),
+					Path:    "/:id",
+					Handler: menu.InfoHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/add",
-					Handler: menu.AddMenuHandler(serverCtx),
+					Path:    "/",
+					Handler: menu.AddHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodDelete,
+					Path:    "/:id",
+					Handler: menu.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/",
+					Handler: menu.UpdateHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodGet,
-					Path:    "/delete",
-					Handler: menu.DeleteMenuHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: menu.UpdateMenuHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodGet,
-					Path:    "/queryPageList",
-					Handler: menu.QueryPageMenuListHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodGet,
-					Path:    "/queryList",
-					Handler: menu.QueryMenuListHandler(serverCtx),
+					Path:    "/list",
+					Handler: menu.ListHandler(serverCtx),
 				},
 			}...,
 		),
@@ -255,33 +295,28 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodGet,
-					Path:    "/info",
-					Handler: _post.GetPostInfoHandler(serverCtx),
+					Path:    "/:id",
+					Handler: _post.InfoHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/add",
-					Handler: _post.AddPostHandler(serverCtx),
+					Path:    "/",
+					Handler: _post.AddHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodDelete,
+					Path:    "/:code",
+					Handler: _post.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/",
+					Handler: _post.UpdateHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodGet,
-					Path:    "/delete",
-					Handler: _post.DeletePostHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: _post.UpdatePostHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodGet,
-					Path:    "/queryPageList",
-					Handler: _post.QueryPagePostListHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodGet,
-					Path:    "/queryList",
-					Handler: _post.QueryPostListHandler(serverCtx),
+					Path:    "/list",
+					Handler: _post.PageSetHandler(serverCtx),
 				},
 			}...,
 		),
@@ -299,33 +334,28 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodGet,
-					Path:    "/info",
-					Handler: _config.GetConfigInfoHandler(serverCtx),
+					Path:    "/:id",
+					Handler: _config.InfoHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/add",
-					Handler: _config.AddConfigHandler(serverCtx),
+					Path:    "/",
+					Handler: _config.AddHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodDelete,
+					Path:    "/:code",
+					Handler: _config.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/",
+					Handler: _config.UpdateHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodGet,
-					Path:    "/delete",
-					Handler: _config.DeleteConfigHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: _config.UpdateConfigHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodGet,
-					Path:    "/queryPageList",
-					Handler: _config.QueryPageConfigListHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodGet,
-					Path:    "/queryList",
-					Handler: _config.QueryConfigListHandler(serverCtx),
+					Path:    "/list",
+					Handler: _config.PageSetHandler(serverCtx),
 				},
 			}...,
 		),
@@ -339,37 +369,32 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				{
 					Method:  http.MethodGet,
 					Path:    "/type/:code",
-					Handler: dictdata.GetDataByTypeHandler(serverCtx),
+					Handler: dictdata.DataByTypeHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodGet,
-					Path:    "/info",
-					Handler: dictdata.GetDictDataInfoHandler(serverCtx),
+					Path:    "/:id",
+					Handler: dictdata.InfoHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/add",
-					Handler: dictdata.AddDictDataHandler(serverCtx),
+					Path:    "/",
+					Handler: dictdata.AddHandler(serverCtx),
 				},
 				{
-					Method:  http.MethodGet,
-					Path:    "/delete",
+					Method:  http.MethodDelete,
+					Path:    "/:code",
 					Handler: dictdata.DeleteDictDataHandler(serverCtx),
 				},
 				{
-					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: dictdata.UpdateDictDataHandler(serverCtx),
+					Method:  http.MethodPut,
+					Path:    "/",
+					Handler: dictdata.UpdateHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodGet,
-					Path:    "/queryPageList",
-					Handler: dictdata.QueryPageDictDataListHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodGet,
-					Path:    "/queryList",
-					Handler: dictdata.QueryDictDataListHandler(serverCtx),
+					Path:    "/list",
+					Handler: dictdata.PageSetHandler(serverCtx),
 				},
 			}...,
 		),
@@ -382,33 +407,28 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodGet,
-					Path:    "/info",
-					Handler: dict_type.GetDictTypeInfoHandler(serverCtx),
+					Path:    "/:id",
+					Handler: dict_type.InfoHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/add",
-					Handler: dict_type.AddDictTypeHandler(serverCtx),
+					Path:    "/",
+					Handler: dict_type.AddHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodDelete,
+					Path:    "/:code",
+					Handler: dict_type.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/",
+					Handler: dict_type.UpdateHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodGet,
-					Path:    "/delete",
-					Handler: dict_type.DeleteDictTypeHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: dict_type.UpdateDictTypeHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodGet,
-					Path:    "/queryPageList",
-					Handler: dict_type.QueryPageDictTypeListHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodGet,
-					Path:    "/queryList",
-					Handler: dict_type.QueryDictTypeListHandler(serverCtx),
+					Path:    "/list",
+					Handler: dict_type.PageSetHandler(serverCtx),
 				},
 			}...,
 		),

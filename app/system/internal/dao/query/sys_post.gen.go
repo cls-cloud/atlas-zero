@@ -27,9 +27,9 @@ func newSysPost(db *gorm.DB, opts ...gen.DOOption) sysPost {
 
 	tableName := _sysPost.sysPostDo.TableName()
 	_sysPost.ALL = field.NewAsterisk(tableName)
-	_sysPost.PostID = field.NewInt64(tableName, "post_id")
+	_sysPost.PostID = field.NewString(tableName, "post_id")
 	_sysPost.TenantID = field.NewString(tableName, "tenant_id")
-	_sysPost.DeptID = field.NewInt64(tableName, "dept_id")
+	_sysPost.DeptID = field.NewString(tableName, "dept_id")
 	_sysPost.PostCode = field.NewString(tableName, "post_code")
 	_sysPost.PostCategory = field.NewString(tableName, "post_category")
 	_sysPost.PostName = field.NewString(tableName, "post_name")
@@ -52,9 +52,9 @@ type sysPost struct {
 	sysPostDo sysPostDo
 
 	ALL          field.Asterisk
-	PostID       field.Int64  // 岗位ID
+	PostID       field.String // 岗位ID
 	TenantID     field.String // 租户编号
-	DeptID       field.Int64  // 部门id
+	DeptID       field.String // 部门id
 	PostCode     field.String // 岗位编码
 	PostCategory field.String // 岗位类别编码
 	PostName     field.String // 岗位名称
@@ -82,9 +82,9 @@ func (s sysPost) As(alias string) *sysPost {
 
 func (s *sysPost) updateTableName(table string) *sysPost {
 	s.ALL = field.NewAsterisk(table)
-	s.PostID = field.NewInt64(table, "post_id")
+	s.PostID = field.NewString(table, "post_id")
 	s.TenantID = field.NewString(table, "tenant_id")
-	s.DeptID = field.NewInt64(table, "dept_id")
+	s.DeptID = field.NewString(table, "dept_id")
 	s.PostCode = field.NewString(table, "post_code")
 	s.PostCategory = field.NewString(table, "post_category")
 	s.PostName = field.NewString(table, "post_name")

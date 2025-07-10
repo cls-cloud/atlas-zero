@@ -27,7 +27,7 @@ func newSysDictDatum(db *gorm.DB, opts ...gen.DOOption) sysDictDatum {
 
 	tableName := _sysDictDatum.sysDictDatumDo.TableName()
 	_sysDictDatum.ALL = field.NewAsterisk(tableName)
-	_sysDictDatum.DictCode = field.NewInt64(tableName, "dict_code")
+	_sysDictDatum.DictCode = field.NewString(tableName, "dict_code")
 	_sysDictDatum.TenantID = field.NewString(tableName, "tenant_id")
 	_sysDictDatum.DictSort = field.NewInt32(tableName, "dict_sort")
 	_sysDictDatum.DictLabel = field.NewString(tableName, "dict_label")
@@ -53,7 +53,7 @@ type sysDictDatum struct {
 	sysDictDatumDo sysDictDatumDo
 
 	ALL        field.Asterisk
-	DictCode   field.Int64  // 字典编码
+	DictCode   field.String // 字典编码
 	TenantID   field.String // 租户编号
 	DictSort   field.Int32  // 字典排序
 	DictLabel  field.String // 字典标签
@@ -84,7 +84,7 @@ func (s sysDictDatum) As(alias string) *sysDictDatum {
 
 func (s *sysDictDatum) updateTableName(table string) *sysDictDatum {
 	s.ALL = field.NewAsterisk(table)
-	s.DictCode = field.NewInt64(table, "dict_code")
+	s.DictCode = field.NewString(table, "dict_code")
 	s.TenantID = field.NewString(table, "tenant_id")
 	s.DictSort = field.NewInt32(table, "dict_sort")
 	s.DictLabel = field.NewString(table, "dict_label")

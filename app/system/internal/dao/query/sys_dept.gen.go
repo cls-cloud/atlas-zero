@@ -27,14 +27,14 @@ func newSysDept(db *gorm.DB, opts ...gen.DOOption) sysDept {
 
 	tableName := _sysDept.sysDeptDo.TableName()
 	_sysDept.ALL = field.NewAsterisk(tableName)
-	_sysDept.DeptID = field.NewInt64(tableName, "dept_id")
+	_sysDept.DeptID = field.NewString(tableName, "dept_id")
 	_sysDept.TenantID = field.NewString(tableName, "tenant_id")
-	_sysDept.ParentID = field.NewInt64(tableName, "parent_id")
+	_sysDept.ParentID = field.NewString(tableName, "parent_id")
 	_sysDept.Ancestors = field.NewString(tableName, "ancestors")
 	_sysDept.DeptName = field.NewString(tableName, "dept_name")
 	_sysDept.DeptCategory = field.NewString(tableName, "dept_category")
 	_sysDept.OrderNum = field.NewInt32(tableName, "order_num")
-	_sysDept.Leader = field.NewInt64(tableName, "leader")
+	_sysDept.Leader = field.NewString(tableName, "leader")
 	_sysDept.Phone = field.NewString(tableName, "phone")
 	_sysDept.Email = field.NewString(tableName, "email")
 	_sysDept.Status = field.NewString(tableName, "status")
@@ -55,14 +55,14 @@ type sysDept struct {
 	sysDeptDo sysDeptDo
 
 	ALL          field.Asterisk
-	DeptID       field.Int64  // 部门id
+	DeptID       field.String // 部门id
 	TenantID     field.String // 租户编号
-	ParentID     field.Int64  // 父部门id
+	ParentID     field.String // 父部门id
 	Ancestors    field.String // 祖级列表
 	DeptName     field.String // 部门名称
 	DeptCategory field.String // 部门类别编码
 	OrderNum     field.Int32  // 显示顺序
-	Leader       field.Int64  // 负责人
+	Leader       field.String // 负责人
 	Phone        field.String // 联系电话
 	Email        field.String // 邮箱
 	Status       field.String // 部门状态（0正常 1停用）
@@ -88,14 +88,14 @@ func (s sysDept) As(alias string) *sysDept {
 
 func (s *sysDept) updateTableName(table string) *sysDept {
 	s.ALL = field.NewAsterisk(table)
-	s.DeptID = field.NewInt64(table, "dept_id")
+	s.DeptID = field.NewString(table, "dept_id")
 	s.TenantID = field.NewString(table, "tenant_id")
-	s.ParentID = field.NewInt64(table, "parent_id")
+	s.ParentID = field.NewString(table, "parent_id")
 	s.Ancestors = field.NewString(table, "ancestors")
 	s.DeptName = field.NewString(table, "dept_name")
 	s.DeptCategory = field.NewString(table, "dept_category")
 	s.OrderNum = field.NewInt32(table, "order_num")
-	s.Leader = field.NewInt64(table, "leader")
+	s.Leader = field.NewString(table, "leader")
 	s.Phone = field.NewString(table, "phone")
 	s.Email = field.NewString(table, "email")
 	s.Status = field.NewString(table, "status")

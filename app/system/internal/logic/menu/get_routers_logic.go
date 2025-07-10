@@ -28,11 +28,11 @@ func NewGetRoutersLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetRou
 
 func (l *GetRoutersLogic) GetRouters() (resp []*types.RouterMenuResp, err error) {
 	resp = make([]*types.RouterMenuResp, 0)
-	userId := helper.GetUserIdInt(l.ctx)
+	userId := helper.GetUserId(l.ctx)
 	// 判断用户是否属于超级管理员
 	isAdmin := false
 	sysUserRole := l.svcCtx.Query.SysUserRole
-	role, err := sysUserRole.WithContext(l.ctx).Where(sysUserRole.UserID.Eq(userId)).Where(sysUserRole.RoleID.Eq(1)).First()
+	role, err := sysUserRole.WithContext(l.ctx).Where(sysUserRole.UserID.Eq(userId)).Where(sysUserRole.RoleID.Eq("1")).First()
 	if err == nil && role != nil {
 		isAdmin = true
 	}
@@ -42,7 +42,7 @@ func (l *GetRoutersLogic) GetRouters() (resp []*types.RouterMenuResp, err error)
 	}
 	var menus []*types.RouterMenuResp
 	for idx, bizMenu := range sysMenus {
-		isRoot := bizMenu.ParentID == 0
+		isRoot := bizMenu.ParentID == "0"
 		isHttpLink := strings.HasPrefix(bizMenu.Path, "http://") || strings.HasPrefix(bizMenu.Path, "https://")
 
 		router := &types.RouterMenuResp{
@@ -82,17 +82,20 @@ func (l *GetRoutersLogic) GetRouters() (resp []*types.RouterMenuResp, err error)
 			// 默认子菜单
 			router.Path = bizMenu.Path
 			router.Redirect = ""
+			if bizMenu.Component == "" {
+				bizMenu.Component = ParentView
+			}
 			router.Component = bizMenu.Component
 		}
 
 		menus = append(menus, router)
 	}
 
-	resp = l.Tree(menus, 0)
+	resp = l.Tree(menus, "0")
 	return
 }
 
-func (l *GetRoutersLogic) Tree(node []*types.RouterMenuResp, pid int64) []*types.RouterMenuResp {
+func (l *GetRoutersLogic) Tree(node []*types.RouterMenuResp, pid string) []*types.RouterMenuResp {
 	res := make([]*types.RouterMenuResp, 0)
 	for _, v := range node {
 		if v.ParentId == pid {
@@ -102,7 +105,7 @@ func (l *GetRoutersLogic) Tree(node []*types.RouterMenuResp, pid int64) []*types
 	}
 	return res
 }
-func (l *GetRoutersLogic) GetMenuByUserId(ctx context.Context, userId int64, isAdmin bool) ([]*model.SysMenu, error) {
+func (l *GetRoutersLogic) GetMenuByUserId(ctx context.Context, userId string, isAdmin bool) ([]*model.SysMenu, error) {
 	q := l.svcCtx.Query
 
 	var sysMenus []*model.SysMenu

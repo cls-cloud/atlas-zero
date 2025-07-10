@@ -27,7 +27,7 @@ func newSysTenant(db *gorm.DB, opts ...gen.DOOption) sysTenant {
 
 	tableName := _sysTenant.sysTenantDo.TableName()
 	_sysTenant.ALL = field.NewAsterisk(tableName)
-	_sysTenant.ID = field.NewInt64(tableName, "id")
+	_sysTenant.ID = field.NewString(tableName, "id")
 	_sysTenant.TenantID = field.NewString(tableName, "tenant_id")
 	_sysTenant.ContactUserName = field.NewString(tableName, "contact_user_name")
 	_sysTenant.ContactPhone = field.NewString(tableName, "contact_phone")
@@ -58,7 +58,7 @@ type sysTenant struct {
 	sysTenantDo sysTenantDo
 
 	ALL             field.Asterisk
-	ID              field.Int64  // id
+	ID              field.String // id
 	TenantID        field.String // 租户编号
 	ContactUserName field.String // 联系人
 	ContactPhone    field.String // 联系电话
@@ -94,7 +94,7 @@ func (s sysTenant) As(alias string) *sysTenant {
 
 func (s *sysTenant) updateTableName(table string) *sysTenant {
 	s.ALL = field.NewAsterisk(table)
-	s.ID = field.NewInt64(table, "id")
+	s.ID = field.NewString(table, "id")
 	s.TenantID = field.NewString(table, "tenant_id")
 	s.ContactUserName = field.NewString(table, "contact_user_name")
 	s.ContactPhone = field.NewString(table, "contact_phone")

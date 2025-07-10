@@ -43,7 +43,7 @@ func (l *QueryPageUserListLogic) QueryPageUserList(req *types.QueryPageUserListR
 		)
 
 	// 条件查询
-	if req.DeptId != 0 {
+	if req.DeptId != "" {
 		deptIds, err := GetDeptIds(req, l.svcCtx.Db, l.ctx)
 		if err != nil {
 			return nil, errx.GORMErr(err)
@@ -101,14 +101,16 @@ func (l *QueryPageUserListLogic) QueryPageUserList(req *types.QueryPageUserListR
 		_ = copier.Copy(&userDetail, row.SysUser)
 		userDetail.CreateTime = row.CreateTime.Format(time.DateTime)
 		userDetail.DeptName = row.DeptName
+		userDetail.UserID = row.UserID
+		userDetail.DeptID = row.DeptID
 		resp.Rows[i] = userDetail
 	}
 
 	return
 }
 
-func GetDeptIds(req *types.QueryPageUserListReq, db *gorm.DB, ctx context.Context) ([]int64, error) {
-	var deptIds []int64
+func GetDeptIds(req *types.QueryPageUserListReq, db *gorm.DB, ctx context.Context) ([]string, error) {
+	var deptIds []string
 	err := db.WithContext(ctx).
 		Table("sys_dept").
 		Select("dept_id").

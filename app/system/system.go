@@ -9,7 +9,6 @@ import (
 	"system/internal/handler"
 	"system/internal/middleware"
 	"system/internal/svc"
-	"time"
 	"toolkit/helper"
 	"toolkit/utils"
 
@@ -21,7 +20,7 @@ var configFile = flag.String("f", "etc/system.yaml", "the config file")
 
 func main() {
 	flag.Parse()
-	if err := utils.Init(time.Now().Format(time.DateOnly), 1); err != nil {
+	if err := utils.Init("2024-01-01", 1); err != nil {
 		fmt.Printf("init snowflake failed, err:%v\n", err)
 		return
 	}

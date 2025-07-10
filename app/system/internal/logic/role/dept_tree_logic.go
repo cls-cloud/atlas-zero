@@ -3,7 +3,6 @@ package role
 import (
 	"context"
 	"system/internal/logic/user"
-
 	"system/internal/svc"
 	"system/internal/types"
 
@@ -31,7 +30,7 @@ func (l *DeptTreeLogic) DeptTree(req *types.IdReq) (resp *types.DeptTreeResp, er
 	//获取角色已经分配的部门
 	q := l.svcCtx.Query
 	roleDept, err := q.SysRoleDept.WithContext(l.ctx).Where(q.SysRoleDept.RoleID.Eq(req.Id)).Find()
-	deptIds := make([]int64, 0, len(roleDept))
+	deptIds := make([]string, 0, len(roleDept))
 	for i := range roleDept {
 		deptIds[i] = roleDept[i].DeptID
 	}

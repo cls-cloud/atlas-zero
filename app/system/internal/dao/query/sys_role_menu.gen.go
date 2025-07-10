@@ -27,8 +27,8 @@ func newSysRoleMenu(db *gorm.DB, opts ...gen.DOOption) sysRoleMenu {
 
 	tableName := _sysRoleMenu.sysRoleMenuDo.TableName()
 	_sysRoleMenu.ALL = field.NewAsterisk(tableName)
-	_sysRoleMenu.RoleID = field.NewInt64(tableName, "role_id")
-	_sysRoleMenu.MenuID = field.NewInt64(tableName, "menu_id")
+	_sysRoleMenu.RoleID = field.NewString(tableName, "role_id")
+	_sysRoleMenu.MenuID = field.NewString(tableName, "menu_id")
 
 	_sysRoleMenu.fillFieldMap()
 
@@ -40,8 +40,8 @@ type sysRoleMenu struct {
 	sysRoleMenuDo sysRoleMenuDo
 
 	ALL    field.Asterisk
-	RoleID field.Int64 // 角色ID
-	MenuID field.Int64 // 菜单ID
+	RoleID field.String // 角色ID
+	MenuID field.String // 菜单ID
 
 	fieldMap map[string]field.Expr
 }
@@ -58,8 +58,8 @@ func (s sysRoleMenu) As(alias string) *sysRoleMenu {
 
 func (s *sysRoleMenu) updateTableName(table string) *sysRoleMenu {
 	s.ALL = field.NewAsterisk(table)
-	s.RoleID = field.NewInt64(table, "role_id")
-	s.MenuID = field.NewInt64(table, "menu_id")
+	s.RoleID = field.NewString(table, "role_id")
+	s.MenuID = field.NewString(table, "menu_id")
 
 	s.fillFieldMap()
 

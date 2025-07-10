@@ -2,10 +2,9 @@ package menu
 
 import (
 	"context"
-	"toolkit/errx"
-
 	"system/internal/svc"
 	"system/internal/types"
+	"toolkit/errx"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -34,7 +33,7 @@ func (l *RoleMenuTreeLogic) RoleMenuTree(req *types.IdReq) (resp *types.RoleMenu
 	if err != nil {
 		return nil, errx.GORMErr(err)
 	}
-	menuIds := make([]int64, 0, len(roleMenus))
+	menuIds := make([]string, 0, len(roleMenus))
 	for _, roleMenu := range roleMenus {
 		menuIds = append(menuIds, roleMenu.MenuID)
 	}

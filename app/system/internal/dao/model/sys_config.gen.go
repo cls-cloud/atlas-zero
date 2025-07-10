@@ -12,7 +12,7 @@ const TableNameSysConfig = "sys_config"
 
 // SysConfig 参数配置表
 type SysConfig struct {
-	ConfigID    int64     `gorm:"column:config_id;primaryKey;comment:参数主键" json:"config_id"`           // 参数主键
+	ConfigID    string    `gorm:"column:config_id;primaryKey;comment:参数主键" json:"config_id"`           // 参数主键
 	TenantID    string    `gorm:"column:tenant_id;default:000000;comment:租户编号" json:"tenant_id"`       // 租户编号
 	ConfigName  string    `gorm:"column:config_name;comment:参数名称" json:"config_name"`                  // 参数名称
 	ConfigKey   string    `gorm:"column:config_key;comment:参数键名" json:"config_key"`                    // 参数键名

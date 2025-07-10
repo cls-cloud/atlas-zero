@@ -27,7 +27,7 @@ func newSysTenantPackage(db *gorm.DB, opts ...gen.DOOption) sysTenantPackage {
 
 	tableName := _sysTenantPackage.sysTenantPackageDo.TableName()
 	_sysTenantPackage.ALL = field.NewAsterisk(tableName)
-	_sysTenantPackage.PackageID = field.NewInt64(tableName, "package_id")
+	_sysTenantPackage.PackageID = field.NewString(tableName, "package_id")
 	_sysTenantPackage.PackageName = field.NewString(tableName, "package_name")
 	_sysTenantPackage.MenuIds = field.NewString(tableName, "menu_ids")
 	_sysTenantPackage.Remark = field.NewString(tableName, "remark")
@@ -50,7 +50,7 @@ type sysTenantPackage struct {
 	sysTenantPackageDo sysTenantPackageDo
 
 	ALL               field.Asterisk
-	PackageID         field.Int64  // 租户套餐id
+	PackageID         field.String // 租户套餐id
 	PackageName       field.String // 套餐名称
 	MenuIds           field.String // 关联菜单id
 	Remark            field.String // 备注
@@ -78,7 +78,7 @@ func (s sysTenantPackage) As(alias string) *sysTenantPackage {
 
 func (s *sysTenantPackage) updateTableName(table string) *sysTenantPackage {
 	s.ALL = field.NewAsterisk(table)
-	s.PackageID = field.NewInt64(table, "package_id")
+	s.PackageID = field.NewString(table, "package_id")
 	s.PackageName = field.NewString(table, "package_name")
 	s.MenuIds = field.NewString(table, "menu_ids")
 	s.Remark = field.NewString(table, "remark")

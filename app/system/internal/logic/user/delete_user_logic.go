@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"strconv"
 	"strings"
 	"toolkit/errx"
 
@@ -28,8 +27,7 @@ func NewDeleteUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delete
 
 func (l *DeleteUserLogic) DeleteUser(req *types.CodeReq) error {
 	userIds := strings.Split(req.Code, ",")
-	for _, id := range userIds {
-		userId, _ := strconv.ParseInt(id, 10, 64)
+	for _, userId := range userIds {
 		q := l.svcCtx.Query
 		_, err := q.SysUser.WithContext(l.ctx).Where(q.SysUser.UserID.Eq(userId)).Unscoped().Delete()
 		if err != nil {

@@ -12,14 +12,14 @@ const TableNameSysDept = "sys_dept"
 
 // SysDept 部门表
 type SysDept struct {
-	DeptID       int64     `gorm:"column:dept_id;primaryKey;comment:部门id" json:"dept_id"`               // 部门id
+	DeptID       string    `gorm:"column:dept_id;primaryKey;comment:部门id" json:"dept_id"`               // 部门id
 	TenantID     string    `gorm:"column:tenant_id;default:000000;comment:租户编号" json:"tenant_id"`       // 租户编号
-	ParentID     int64     `gorm:"column:parent_id;comment:父部门id" json:"parent_id"`                     // 父部门id
+	ParentID     string    `gorm:"column:parent_id;default:0;comment:父部门id" json:"parent_id"`           // 父部门id
 	Ancestors    string    `gorm:"column:ancestors;comment:祖级列表" json:"ancestors"`                      // 祖级列表
 	DeptName     string    `gorm:"column:dept_name;comment:部门名称" json:"dept_name"`                      // 部门名称
 	DeptCategory string    `gorm:"column:dept_category;comment:部门类别编码" json:"dept_category"`            // 部门类别编码
 	OrderNum     int32     `gorm:"column:order_num;comment:显示顺序" json:"order_num"`                      // 显示顺序
-	Leader       int64     `gorm:"column:leader;comment:负责人" json:"leader"`                             // 负责人
+	Leader       string    `gorm:"column:leader;comment:负责人" json:"leader"`                             // 负责人
 	Phone        string    `gorm:"column:phone;comment:联系电话" json:"phone"`                              // 联系电话
 	Email        string    `gorm:"column:email;comment:邮箱" json:"email"`                                // 邮箱
 	Status       string    `gorm:"column:status;default:0;comment:部门状态（0正常 1停用）" json:"status"`         // 部门状态（0正常 1停用）

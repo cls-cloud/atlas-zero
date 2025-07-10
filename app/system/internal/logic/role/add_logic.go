@@ -25,16 +25,16 @@ func NewAddLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddLogic {
 }
 
 func (l *AddLogic) Add(req *types.AddOrUpdateRoleReq) error {
-	if req.RoleID != 0 {
+	if req.RoleID != "" {
 		return errx.BizErr("角色ID不为空")
 	}
 	q := l.svcCtx.Query
 	if oRoles, err := q.SysRole.WithContext(l.ctx).Where(q.SysRole.RoleKey.Eq(req.RoleKey)).First(); err == nil && oRoles != nil {
 		return errx.BizErr("角色编码已存在")
 	}
-	req.RoleID = utils.GetIDInt64()
+	roleId := utils.GetID()
 	role := &model.SysRole{
-		RoleID:    req.RoleID,
+		RoleID:    roleId,
 		RoleKey:   req.RoleKey,
 		RoleName:  req.RoleName,
 		RoleSort:  req.RoleSort,
@@ -42,14 +42,14 @@ func (l *AddLogic) Add(req *types.AddOrUpdateRoleReq) error {
 		Remark:    req.Remark,
 		DataScope: req.DataScope,
 	}
-	if err := q.SysRole.WithContext(l.ctx).Where(q.SysRole.RoleID.Eq(req.RoleID)).Create(role); err != nil {
+	if err := q.SysRole.WithContext(l.ctx).Create(role); err != nil {
 		return errx.GORMErr(err)
 	}
 	if len(req.MenuIds) != 0 {
 		roleMenus := make([]*model.SysRoleMenu, 0, len(req.MenuIds))
 		for _, menuId := range req.MenuIds {
 			roleMenus = append(roleMenus, &model.SysRoleMenu{
-				RoleID: req.RoleID,
+				RoleID: roleId,
 				MenuID: menuId,
 			})
 		}

@@ -3,10 +3,9 @@ package role
 import (
 	"context"
 	"github.com/jinzhu/copier"
-	"toolkit/errx"
-
 	"system/internal/svc"
 	"system/internal/types"
+	"toolkit/errx"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

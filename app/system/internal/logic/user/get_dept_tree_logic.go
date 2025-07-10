@@ -2,10 +2,9 @@ package user
 
 import (
 	"context"
-	"toolkit/errx"
-
 	"system/internal/svc"
 	"system/internal/types"
+	"toolkit/errx"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -37,11 +36,11 @@ func (l *GetDeptTreeLogic) GetDeptTree() (resp []types.DeptTree, err error) {
 			Label:    dept.DeptName,
 		})
 	}
-	resp = BuildDeptTree(resp, 0)
+	resp = BuildDeptTree(resp, "0")
 	return
 }
 
-func BuildDeptTree(list []types.DeptTree, pid int64) []types.DeptTree {
+func BuildDeptTree(list []types.DeptTree, pid string) []types.DeptTree {
 	var tree []types.DeptTree
 	for _, item := range list {
 		if item.ParentId == pid {

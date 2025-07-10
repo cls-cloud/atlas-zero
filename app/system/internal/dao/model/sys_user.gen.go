@@ -12,16 +12,16 @@ const TableNameSysUser = "sys_user"
 
 // SysUser 用户信息表
 type SysUser struct {
-	UserID      int64     `gorm:"column:user_id;primaryKey;comment:用户ID" json:"user_id"`                         // 用户ID
+	UserID      string    `gorm:"column:user_id;primaryKey;comment:用户ID" json:"user_id"`                         // 用户ID
 	TenantID    string    `gorm:"column:tenant_id;default:000000;comment:租户编号" json:"tenant_id"`                 // 租户编号
-	DeptID      int64     `gorm:"column:dept_id;comment:部门ID" json:"dept_id"`                                    // 部门ID
+	DeptID      string    `gorm:"column:dept_id;comment:部门ID" json:"dept_id"`                                    // 部门ID
 	UserName    string    `gorm:"column:user_name;not null;comment:用户账号" json:"user_name"`                       // 用户账号
 	NickName    string    `gorm:"column:nick_name;not null;comment:用户昵称" json:"nick_name"`                       // 用户昵称
 	UserType    string    `gorm:"column:user_type;default:sys_user;comment:用户类型（sys_user系统用户）" json:"user_type"` // 用户类型（sys_user系统用户）
 	Email       string    `gorm:"column:email;comment:用户邮箱" json:"email"`                                        // 用户邮箱
 	Phonenumber string    `gorm:"column:phonenumber;comment:手机号码" json:"phonenumber"`                            // 手机号码
 	Sex         string    `gorm:"column:sex;default:0;comment:用户性别（0男 1女 2未知）" json:"sex"`                       // 用户性别（0男 1女 2未知）
-	Avatar      int64     `gorm:"column:avatar;comment:头像地址" json:"avatar"`                                      // 头像地址
+	Avatar      string    `gorm:"column:avatar;comment:头像地址" json:"avatar"`                                      // 头像地址
 	Password    string    `gorm:"column:password;comment:密码" json:"password"`                                    // 密码
 	Status      string    `gorm:"column:status;default:0;comment:帐号状态（0正常 1停用）" json:"status"`                   // 帐号状态（0正常 1停用）
 	DelFlag     string    `gorm:"column:del_flag;default:0;comment:删除标志（0代表存在 1代表删除）" json:"del_flag"`           // 删除标志（0代表存在 1代表删除）

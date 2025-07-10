@@ -12,7 +12,7 @@ const TableNameSysTenantPackage = "sys_tenant_package"
 
 // SysTenantPackage 租户套餐表
 type SysTenantPackage struct {
-	PackageID         int64     `gorm:"column:package_id;primaryKey;comment:租户套餐id" json:"package_id"`                        // 租户套餐id
+	PackageID         string    `gorm:"column:package_id;primaryKey;comment:租户套餐id" json:"package_id"`                        // 租户套餐id
 	PackageName       string    `gorm:"column:package_name;comment:套餐名称" json:"package_name"`                                 // 套餐名称
 	MenuIds           string    `gorm:"column:menu_ids;comment:关联菜单id" json:"menu_ids"`                                       // 关联菜单id
 	Remark            string    `gorm:"column:remark;comment:备注" json:"remark"`                                               // 备注

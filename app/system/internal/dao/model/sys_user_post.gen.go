@@ -8,8 +8,8 @@ const TableNameSysUserPost = "sys_user_post"
 
 // SysUserPost 用户与岗位关联表
 type SysUserPost struct {
-	UserID int64 `gorm:"column:user_id;primaryKey;comment:用户ID" json:"user_id"` // 用户ID
-	PostID int64 `gorm:"column:post_id;primaryKey;comment:岗位ID" json:"post_id"` // 岗位ID
+	UserID string `gorm:"column:user_id;primaryKey;comment:用户ID" json:"user_id"` // 用户ID
+	PostID string `gorm:"column:post_id;primaryKey;comment:岗位ID" json:"post_id"` // 岗位ID
 }
 
 // TableName SysUserPost's table name

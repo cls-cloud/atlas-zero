@@ -3,11 +3,10 @@ package user
 import (
 	"context"
 	"github.com/jinzhu/copier"
+	"github.com/zeromicro/go-zero/core/logx"
 	"system/internal/svc"
 	"system/internal/types"
 	"toolkit/errx"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type QueryUserDetailLogic struct {
@@ -40,8 +39,9 @@ func (l *QueryUserDetailLogic) QueryUserDetail(req *types.IdReq) (resp *types.Us
 		return
 	}
 	// 查询用户基本信息
+	id := req.Id
 	sysUser, err := q.SysUser.WithContext(l.ctx).
-		Where(q.SysUser.UserID.Eq(req.Id)).
+		Where(q.SysUser.UserID.Eq(id)).
 		First()
 	user := new(types.UserRoles)
 	if err != nil {
@@ -54,21 +54,21 @@ func (l *QueryUserDetailLogic) QueryUserDetail(req *types.IdReq) (resp *types.Us
 	// 查询用户的角色ID列表
 	userRoles, err := q.SysUserRole.WithContext(l.ctx).
 		Select(q.SysUserRole.RoleID).
-		Where(q.SysUserRole.UserID.Eq(req.Id)).
+		Where(q.SysUserRole.UserID.Eq(id)).
 		Find()
 	if err != nil {
 		return nil, errx.GORMErr(err)
 	}
-	roleIds := make([]int64, 0)
+	roleIds := make([]string, 0)
 	for _, r := range userRoles {
 		roleIds = append(roleIds, r.RoleID)
 	}
 
 	// 查询用户的岗位ID列表
-	postIds := make([]int64, 0)
+	postIds := make([]string, 0)
 	userPosts, err := q.SysUserPost.WithContext(l.ctx).
 		Select(q.SysUserPost.PostID).
-		Where(q.SysUserPost.UserID.Eq(req.Id)).
+		Where(q.SysUserPost.UserID.Eq(id)).
 		Find()
 	if err != nil {
 		return nil, errx.GORMErr(err)

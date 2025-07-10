@@ -27,7 +27,7 @@ func newSysConfig(db *gorm.DB, opts ...gen.DOOption) sysConfig {
 
 	tableName := _sysConfig.sysConfigDo.TableName()
 	_sysConfig.ALL = field.NewAsterisk(tableName)
-	_sysConfig.ConfigID = field.NewInt64(tableName, "config_id")
+	_sysConfig.ConfigID = field.NewString(tableName, "config_id")
 	_sysConfig.TenantID = field.NewString(tableName, "tenant_id")
 	_sysConfig.ConfigName = field.NewString(tableName, "config_name")
 	_sysConfig.ConfigKey = field.NewString(tableName, "config_key")
@@ -50,7 +50,7 @@ type sysConfig struct {
 	sysConfigDo sysConfigDo
 
 	ALL         field.Asterisk
-	ConfigID    field.Int64  // 参数主键
+	ConfigID    field.String // 参数主键
 	TenantID    field.String // 租户编号
 	ConfigName  field.String // 参数名称
 	ConfigKey   field.String // 参数键名
@@ -78,7 +78,7 @@ func (s sysConfig) As(alias string) *sysConfig {
 
 func (s *sysConfig) updateTableName(table string) *sysConfig {
 	s.ALL = field.NewAsterisk(table)
-	s.ConfigID = field.NewInt64(table, "config_id")
+	s.ConfigID = field.NewString(table, "config_id")
 	s.TenantID = field.NewString(table, "tenant_id")
 	s.ConfigName = field.NewString(table, "config_name")
 	s.ConfigKey = field.NewString(table, "config_key")

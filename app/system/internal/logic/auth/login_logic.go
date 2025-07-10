@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"strconv"
 	"system/internal/svc"
 	"system/internal/types"
 	"toolkit/errx"
@@ -48,7 +47,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	}
 	accessExpire := l.svcCtx.Config.JwtAuth.AccessExpire
 	accessSecret := l.svcCtx.Config.JwtAuth.AccessSecret
-	userid := strconv.FormatInt(user.UserID, 10)
+	userid := user.UserID
 	token, err := helper.GenerateToken(userid, user.TenantID, accessSecret, accessExpire)
 	if err != nil {
 		return nil, err

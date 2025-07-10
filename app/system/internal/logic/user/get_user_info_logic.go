@@ -5,7 +5,6 @@ import (
 	"errors"
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
-	"strconv"
 	"toolkit/errx"
 	"toolkit/helper"
 
@@ -32,11 +31,7 @@ func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoResp, err error) {
 	// 获取用户权限
 	// 获取用户角色
-	userIdStr := helper.GetUserId(l.ctx)
-	userId, err := strconv.ParseInt(userIdStr, 10, 64)
-	if err != nil {
-		return nil, errx.BizErr("userId 解析失败")
-	}
+	userId := helper.GetUserId(l.ctx)
 	resp = new(types.UserInfoResp)
 	sysUser := l.svcCtx.Query.SysUser
 	user, err := sysUser.WithContext(l.ctx).Where(sysUser.UserID.Eq(userId)).First()
@@ -48,14 +43,14 @@ func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoResp, err error) {
 	}
 	sysRole := l.svcCtx.Query.SysRole
 	sysUserRole := l.svcCtx.Query.SysUserRole
-	var roleIds []int64
+	var roleIds []string
 	err = sysUserRole.WithContext(l.ctx).Select(sysUserRole.RoleID).Where(sysUserRole.UserID.Eq(userId)).Scan(&roleIds)
 	if err != nil {
 		return nil, err
 	}
 	isAdmin := false
 	for _, item := range roleIds {
-		if item == 1 {
+		if item == "1" {
 			isAdmin = true
 		}
 	}

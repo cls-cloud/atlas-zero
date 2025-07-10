@@ -27,8 +27,8 @@ func newSysUserRole(db *gorm.DB, opts ...gen.DOOption) sysUserRole {
 
 	tableName := _sysUserRole.sysUserRoleDo.TableName()
 	_sysUserRole.ALL = field.NewAsterisk(tableName)
-	_sysUserRole.UserID = field.NewInt64(tableName, "user_id")
-	_sysUserRole.RoleID = field.NewInt64(tableName, "role_id")
+	_sysUserRole.UserID = field.NewString(tableName, "user_id")
+	_sysUserRole.RoleID = field.NewString(tableName, "role_id")
 
 	_sysUserRole.fillFieldMap()
 
@@ -40,8 +40,8 @@ type sysUserRole struct {
 	sysUserRoleDo sysUserRoleDo
 
 	ALL    field.Asterisk
-	UserID field.Int64 // 用户ID
-	RoleID field.Int64 // 角色ID
+	UserID field.String // 用户ID
+	RoleID field.String // 角色ID
 
 	fieldMap map[string]field.Expr
 }
@@ -58,8 +58,8 @@ func (s sysUserRole) As(alias string) *sysUserRole {
 
 func (s *sysUserRole) updateTableName(table string) *sysUserRole {
 	s.ALL = field.NewAsterisk(table)
-	s.UserID = field.NewInt64(table, "user_id")
-	s.RoleID = field.NewInt64(table, "role_id")
+	s.UserID = field.NewString(table, "user_id")
+	s.RoleID = field.NewString(table, "role_id")
 
 	s.fillFieldMap()
 

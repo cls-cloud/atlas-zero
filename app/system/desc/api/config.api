@@ -16,53 +16,31 @@ type (
 
         // 请求过滤参数
     ConfigQuery {
-        // 参数主键
-        configId int64 `json:"configId,optional"`
-        // 租户编号
-        tenantId string `json:"tenantId,optional"`
-        // 参数名称
-        configName string `json:"configName,optional"`
-        // 参数键名
-        configKey string `json:"configKey,optional"`
-        // 参数键值
-        configValue string `json:"configValue,optional"`
-        // 系统内置（Y是 N否）
-        configType string `json:"configType,optional"`
-        // 创建部门
-        createDept int64 `json:"createDept,optional"`
-        // 创建者
-        createBy int64 `json:"createBy,optional"`
-        // 创建时间
-        createTime string `json:"createTime,optional"`
-        // 更新者
-        updateBy int64 `json:"updateBy,optional"`
-        // 更新时间
-        updateTime string `json:"updateTime,optional"`
-        // 备注
-        remark string `json:"remark,optional"`
+        ConfigId string `form:"configId,optional"`        // 参数主键
+        TenantId string `form:"tenantId,optional"`       // 租户编号
+        ConfigName string `form:"configName,optional"`   // 参数名称
+        ConfigKey string `form:"configKey,optional"`     // 参数键名
+        ConfigValue string `form:"configValue,optional"` // 参数键值
+        ConfigType string `form:"configType,optional"`   // 系统内置（Y是 N否）
+        CreateDept int64 `form:"createDept,optional"`    // 创建部门
+        CreateBy int64 `form:"createBy,optional"`        // 创建者
+        CreateTime string `form:"createTime,optional"`   // 创建时间
+        UpdateBy int64 `form:"updateBy,optional"`        // 更新者
+        UpdateTime string `form:"updateTime,optional"`   // 更新时间
+        Remark string `form:"remark,optional"`           // 备注
     }
+
         // 分页请求过滤参数
-    QueryPageConfigListReq {
+    PageSetConfigReq {
         PageReq
         ConfigQuery
     }
         // 分页响应
-    QueryPageConfigListResp {
+    PageSetConfigResp {
         Total int64 `json:"total"`
-        Rows []ConfigDetailResp `json:"rows"`
+        Rows []*ConfigBase `json:"rows"`
     }
 
-    QueryConfigListReq {
-        ConfigQuery
-    }
-
-    ConfigDetailResp {
-        ConfigBase
-    }
-
-    ConfigInfoResp {
-        ConfigBase
-    }
 
     ConfigKeyResp {
         Data string `json:"data"`
@@ -79,21 +57,18 @@ service System {
     @handler ConfigKey
     get /configKey/:code (CodeReq) returns (ConfigKeyResp)
 
-    @handler GetConfigInfo
-    get /info returns (ConfigInfoResp)
+    @handler Info
+    get /:id (IdReq) returns (ConfigBase)
 
-    @handler AddConfig
-    post /add (ModifyConfigReq)
+    @handler Add
+    post / (ModifyConfigReq)
 
-    @handler DeleteConfig
-    get /delete (IdsReq)
+    @handler Delete
+    delete /:code (CodeReq)
 
-    @handler UpdateConfig
-    post /update (ModifyConfigReq)
+    @handler Update
+    put / (ModifyConfigReq)
 
-    @handler QueryPageConfigList
-    get /queryPageList (QueryPageConfigListReq) returns (QueryPageConfigListResp)
-
-    @handler QueryConfigList
-    get /queryList (QueryConfigListReq) returns ([]ConfigDetailResp)
+    @handler PageSet
+    get /list (PageSetConfigReq) returns (PageSetConfigResp)
 }

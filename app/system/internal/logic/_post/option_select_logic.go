@@ -25,8 +25,8 @@ func NewOptionSelectLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Opti
 	}
 }
 
-func (l *OptionSelectLogic) OptionSelect(req *types.PostQuery) (resp []types.PostInfoResp, err error) {
-	resp = make([]types.PostInfoResp, 0)
+func (l *OptionSelectLogic) OptionSelect(req *types.PostQuery) (resp []types.DeptBase, err error) {
+	resp = make([]types.DeptBase, 0)
 	q := l.svcCtx.Query
 	posts, err := q.SysPost.WithContext(l.ctx).Where(q.SysPost.DeptID.Eq(req.DeptId)).Find()
 	if err != nil {

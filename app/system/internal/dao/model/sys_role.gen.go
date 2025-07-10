@@ -12,7 +12,7 @@ const TableNameSysRole = "sys_role"
 
 // SysRole 角色信息表
 type SysRole struct {
-	RoleID            int64     `gorm:"column:role_id;primaryKey;comment:角色ID" json:"role_id"`                                                                         // 角色ID
+	RoleID            string    `gorm:"column:role_id;primaryKey;comment:角色ID" json:"role_id"`                                                                         // 角色ID
 	TenantID          string    `gorm:"column:tenant_id;default:000000;comment:租户编号" json:"tenant_id"`                                                                 // 租户编号
 	RoleName          string    `gorm:"column:role_name;not null;comment:角色名称" json:"role_name"`                                                                       // 角色名称
 	RoleKey           string    `gorm:"column:role_key;not null;comment:角色权限字符串" json:"role_key"`                                                                      // 角色权限字符串

@@ -16,87 +16,56 @@ type (
 
         // 请求过滤参数
     DeptQuery {
-        // 部门id
-        deptId int64 `json:"deptId,optional"`
-        // 租户编号
-        tenantId string `json:"tenantId,optional"`
-        // 父部门id
-        parentId int64 `json:"parentId,optional"`
-        // 祖级列表
-        ancestors string `json:"ancestors,optional"`
-        // 部门名称
-        deptName string `json:"deptName,optional"`
-        // 部门类别编码
-        deptCategory string `json:"deptCategory,optional"`
-        // 显示顺序
-        orderNum int32 `json:"orderNum,optional"`
-        // 负责人
-        leader int64 `json:"leader,optional"`
-        // 联系电话
-        phone string `json:"phone,optional"`
-        // 邮箱
-        email string `json:"email,optional"`
-        // 部门状态（0正常 1停用）
-        status string `json:"status,optional"`
-        // 删除标志（0代表存在 1代表删除）
-        delFlag string `json:"delFlag,optional"`
-        // 创建部门
-        createDept int64 `json:"createDept,optional"`
-        // 创建者
-        createBy int64 `json:"createBy,optional"`
-        // 创建时间
-        createTime string `json:"createTime,optional"`
-        // 更新者
-        updateBy int64 `json:"updateBy,optional"`
-        // 更新时间
-        updateTime string `json:"updateTime,optional"`
-    }
-        // 分页请求过滤参数
-    QueryPageDeptListReq {
-        PageReq
-        DeptQuery
+        DeptId string `form:"deptId,optional"`              // 部门ID
+        TenantId string `form:"tenantId,optional"`         // 租户编号
+        ParentId string `form:"parentId,optional"`          // 父部门ID
+        Ancestors string `form:"ancestors,optional"`       // 祖级列表
+        DeptName string `form:"deptName,optional"`         // 部门名称
+        DeptCategory string `form:"deptCategory,optional"` // 部门类别编码
+        OrderNum int32 `form:"orderNum,optional"`          // 显示顺序
+        Leader int64 `form:"leader,optional"`              // 负责人
+        Phone string `form:"phone,optional"`               // 联系电话
+        Email string `form:"email,optional"`               // 邮箱
+        Status string `form:"status,optional"`             // 部门状态（0正常 1停用）
+        DelFlag string `form:"delFlag,optional"`           // 删除标志（0代表存在 1代表删除）
+        CreateDept int64 `form:"createDept,optional"`      // 创建部门
+        CreateBy int64 `form:"createBy,optional"`          // 创建者
+        CreateTime string `form:"createTime,optional"`     // 创建时间
+        UpdateBy int64 `form:"updateBy,optional"`          // 更新者
+        UpdateTime string `form:"updateTime,optional"`     // 更新时间
     }
         // 分页响应
-    QueryPageDeptListResp {
+    PageSetDeptResp {
         Total int64 `json:"total"`
-        Rows []DeptDetailResp `json:"rows"`
+        Rows []DeptBase `json:"rows"`
     }
 
-    QueryDeptListReq {
-        DeptQuery
-    }
-
-    DeptDetailResp {
-        DeptBase
-    }
-
-    DeptInfoResp {
-        DeptBase
-    }
 )
 
 @server(
     tags: "部门"
-    group: sysDept
+    group: dept
     prefix: /system/dept
     middleware: Auth
 )
 service System {
-    @handler GetDeptInfo
-    get /info returns (DeptInfoResp)
+    @handler Info
+    get /:id (IdReq) returns (DeptBase)
 
-    @handler AddDept
-    post /add (ModifyDeptReq)
+    @handler Add
+    post / (ModifyDeptReq)
 
-    @handler DeleteDept
-    get /delete (IdsReq)
+    @handler Delete
+    delete /:code (CodeReq)
 
-    @handler UpdateDept
-    post /update (ModifyDeptReq)
+    @handler Update
+    put / (ModifyDeptReq)
 
-    @handler QueryPageDeptList
-    get /queryPageList (QueryPageDeptListReq) returns (QueryPageDeptListResp)
+    @handler Exclude
+    get /list/exclude/:id (IdReq) returns ([]*DeptBase)
 
-    @handler QueryDeptList
-    get /queryList (QueryDeptListReq) returns ([]DeptDetailResp)
+    @handler List
+    get /list (DeptQuery) returns ([]*DeptBase)
 }
+
+

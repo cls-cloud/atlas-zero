@@ -27,16 +27,16 @@ func newSysUser(db *gorm.DB, opts ...gen.DOOption) sysUser {
 
 	tableName := _sysUser.sysUserDo.TableName()
 	_sysUser.ALL = field.NewAsterisk(tableName)
-	_sysUser.UserID = field.NewInt64(tableName, "user_id")
+	_sysUser.UserID = field.NewString(tableName, "user_id")
 	_sysUser.TenantID = field.NewString(tableName, "tenant_id")
-	_sysUser.DeptID = field.NewInt64(tableName, "dept_id")
+	_sysUser.DeptID = field.NewString(tableName, "dept_id")
 	_sysUser.UserName = field.NewString(tableName, "user_name")
 	_sysUser.NickName = field.NewString(tableName, "nick_name")
 	_sysUser.UserType = field.NewString(tableName, "user_type")
 	_sysUser.Email = field.NewString(tableName, "email")
 	_sysUser.Phonenumber = field.NewString(tableName, "phonenumber")
 	_sysUser.Sex = field.NewString(tableName, "sex")
-	_sysUser.Avatar = field.NewInt64(tableName, "avatar")
+	_sysUser.Avatar = field.NewString(tableName, "avatar")
 	_sysUser.Password = field.NewString(tableName, "password")
 	_sysUser.Status = field.NewString(tableName, "status")
 	_sysUser.DelFlag = field.NewString(tableName, "del_flag")
@@ -59,16 +59,16 @@ type sysUser struct {
 	sysUserDo sysUserDo
 
 	ALL         field.Asterisk
-	UserID      field.Int64  // 用户ID
+	UserID      field.String // 用户ID
 	TenantID    field.String // 租户编号
-	DeptID      field.Int64  // 部门ID
+	DeptID      field.String // 部门ID
 	UserName    field.String // 用户账号
 	NickName    field.String // 用户昵称
 	UserType    field.String // 用户类型（sys_user系统用户）
 	Email       field.String // 用户邮箱
 	Phonenumber field.String // 手机号码
 	Sex         field.String // 用户性别（0男 1女 2未知）
-	Avatar      field.Int64  // 头像地址
+	Avatar      field.String // 头像地址
 	Password    field.String // 密码
 	Status      field.String // 帐号状态（0正常 1停用）
 	DelFlag     field.String // 删除标志（0代表存在 1代表删除）
@@ -96,16 +96,16 @@ func (s sysUser) As(alias string) *sysUser {
 
 func (s *sysUser) updateTableName(table string) *sysUser {
 	s.ALL = field.NewAsterisk(table)
-	s.UserID = field.NewInt64(table, "user_id")
+	s.UserID = field.NewString(table, "user_id")
 	s.TenantID = field.NewString(table, "tenant_id")
-	s.DeptID = field.NewInt64(table, "dept_id")
+	s.DeptID = field.NewString(table, "dept_id")
 	s.UserName = field.NewString(table, "user_name")
 	s.NickName = field.NewString(table, "nick_name")
 	s.UserType = field.NewString(table, "user_type")
 	s.Email = field.NewString(table, "email")
 	s.Phonenumber = field.NewString(table, "phonenumber")
 	s.Sex = field.NewString(table, "sex")
-	s.Avatar = field.NewInt64(table, "avatar")
+	s.Avatar = field.NewString(table, "avatar")
 	s.Password = field.NewString(table, "password")
 	s.Status = field.NewString(table, "status")
 	s.DelFlag = field.NewString(table, "del_flag")

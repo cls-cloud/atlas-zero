@@ -15,51 +15,29 @@ type (
     ModifyDictTypeReq {
         DictTypeBase
     }
-
         // 请求过滤参数
     DictTypeQuery {
-        // 字典主键
-        dictId int64 `json:"dictId,optional"`
-        // 租户编号
-        tenantId string `json:"tenantId,optional"`
-        // 字典名称
-        dictName string `json:"dictName,optional"`
-        // 字典类型
-        dictType string `json:"dictType,optional"`
-        // 创建部门
-        createDept int64 `json:"createDept,optional"`
-        // 创建者
-        createBy int64 `json:"createBy,optional"`
-        // 创建时间
-        createTime string `json:"createTime,optional"`
-        // 更新者
-        updateBy int64 `json:"updateBy,optional"`
-        // 更新时间
-        updateTime string `json:"updateTime,optional"`
-        // 备注
-        remark string `json:"remark,optional"`
+        DictId string `form:"dictId,optional"`          // 字典主键
+        TenantId string `form:"tenantId,optional"`     // 租户编号
+        DictName string `form:"dictName,optional"`     // 字典名称
+        DictType string `form:"dictType,optional"`     // 字典类型
+        CreateDept int64 `form:"createDept,optional"`  // 创建部门
+        CreateBy int64 `form:"createBy,optional"`      // 创建者
+        CreateTime string `form:"createTime,optional"` // 创建时间
+        UpdateBy int64 `form:"updateBy,optional"`      // 更新者
+        UpdateTime string `form:"updateTime,optional"` // 更新时间
+        Remark string `form:"remark,optional"`         // 备注
     }
-        // 分页请求过滤参数
-    QueryPageDictTypeListReq {
+
+
+    PageSetDictTypeReq {
         PageReq
         DictTypeQuery
     }
-        // 分页响应
-    QueryPageDictTypeListResp {
+
+    PageSetDictTypeResp {
         Total int64 `json:"total"`
-        Rows []DictTypeDetailResp `json:"rows"`
-    }
-
-    QueryDictTypeListReq {
-        DictTypeQuery
-    }
-
-    DictTypeDetailResp {
-        DictTypeBase
-    }
-
-    DictTypeInfoResp {
-        DictTypeBase
+        Rows []*DictTypeBase `json:"rows"`
     }
 )
 
@@ -70,21 +48,18 @@ type (
     middleware: Auth
 )
 service System {
-    @handler GetDictTypeInfo
-    get /info returns (DictTypeInfoResp)
+    @handler Info
+    get /:id (IdReq) returns (DictTypeBase)
 
-    @handler AddDictType
-    post /add (ModifyDictTypeReq)
+    @handler Add
+    post / (ModifyDictTypeReq)
 
-    @handler DeleteDictType
-    get /delete (IdsReq)
+    @handler Delete
+    delete /:code (CodeReq)
 
-    @handler UpdateDictType
-    post /update (ModifyDictTypeReq)
+    @handler Update
+    put / (ModifyDictTypeReq)
 
-    @handler QueryPageDictTypeList
-    get /queryPageList (QueryPageDictTypeListReq) returns (QueryPageDictTypeListResp)
-
-    @handler QueryDictTypeList
-    get /queryList (QueryDictTypeListReq) returns ([]DictTypeDetailResp)
+    @handler PageSet
+    get /list (PageSetDictTypeReq) returns (PageSetDictTypeResp)
 }

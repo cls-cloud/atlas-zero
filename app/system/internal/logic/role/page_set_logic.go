@@ -3,10 +3,9 @@ package role
 import (
 	"context"
 	"fmt"
-	"time"
-
 	"system/internal/svc"
 	"system/internal/types"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -63,7 +62,7 @@ func (l *PageSetLogic) PageSet(req *types.RolePageSetReq) (resp *types.RolePageS
 			MenuCheckStrictly: v.MenuCheckStrictly,
 			DeptCheckStrictly: v.DeptCheckStrictly,
 			DataScope:         v.DataScope,
-			SuperAdmin:        v.RoleID == 1,
+			SuperAdmin:        v.RoleID == "1",
 		})
 	}
 	resp.Rows = roles

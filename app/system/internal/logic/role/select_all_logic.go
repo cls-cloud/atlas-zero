@@ -2,7 +2,6 @@ package role
 
 import (
 	"context"
-	"strconv"
 	"strings"
 	"system/internal/dao/model"
 	"toolkit/errx"
@@ -31,8 +30,7 @@ func (l *SelectAllLogic) SelectAll(req *types.SelectAllReq) error {
 	userIds := strings.Split(req.UserIds, ",")
 	q := l.svcCtx.Query
 	userRoles := make([]*model.SysUserRole, len(userIds))
-	for i, id := range userIds {
-		userId, _ := strconv.ParseInt(id, 10, 64)
+	for i, userId := range userIds {
 		userRole := &model.SysUserRole{
 			UserID: userId,
 			RoleID: req.RoleId,

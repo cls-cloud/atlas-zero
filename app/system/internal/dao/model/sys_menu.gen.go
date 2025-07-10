@@ -12,9 +12,9 @@ const TableNameSysMenu = "sys_menu"
 
 // SysMenu 菜单权限表
 type SysMenu struct {
-	MenuID     int64     `gorm:"column:menu_id;primaryKey;comment:菜单ID" json:"menu_id"`          // 菜单ID
+	MenuID     string    `gorm:"column:menu_id;primaryKey;comment:菜单ID" json:"menu_id"`          // 菜单ID
 	MenuName   string    `gorm:"column:menu_name;not null;comment:菜单名称" json:"menu_name"`        // 菜单名称
-	ParentID   int64     `gorm:"column:parent_id;comment:父菜单ID" json:"parent_id"`                // 父菜单ID
+	ParentID   string    `gorm:"column:parent_id;default:0;comment:父菜单ID" json:"parent_id"`      // 父菜单ID
 	OrderNum   int32     `gorm:"column:order_num;comment:显示顺序" json:"order_num"`                 // 显示顺序
 	Path       string    `gorm:"column:path;comment:路由地址" json:"path"`                           // 路由地址
 	Component  string    `gorm:"column:component;comment:组件路径" json:"component"`                 // 组件路径

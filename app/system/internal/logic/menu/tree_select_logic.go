@@ -41,13 +41,13 @@ func (l *TreeSelectLogic) TreeSelect() (resp []*types.RoleMenuTree, err error) {
 			Label:    menu.MenuName,
 		})
 	}
-	tree := l.Tree(menuTree, 0)
+	tree := l.Tree(menuTree, "0")
 	resp = tree
 
 	return
 }
 
-func (l *TreeSelectLogic) Tree(node []*types.RoleMenuTree, pid int64) []*types.RoleMenuTree {
+func (l *TreeSelectLogic) Tree(node []*types.RoleMenuTree, pid string) []*types.RoleMenuTree {
 	res := make([]*types.RoleMenuTree, 0)
 	for _, v := range node {
 		if v.ParentId == pid {

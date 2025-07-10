@@ -9,28 +9,28 @@ import "base.api"
 type (
     // 创建和更新共用结构
     AddOrUpdateUserReq {
-        RoleIds []int64 `json:"roleIds"`
-        PostIds []int64 `json:"postIds"`
+        RoleIds []string `json:"roleIds"`
+        PostIds []string `json:"postIds"`
         UserBase
     }
         // 更新用户状态
     UpdateUserStatusReq {
-        UserId int64 `json:"userId"`
+        UserId string `json:"userId"`
         Status string `json:"status"`
     }
         // 查询详情响应（包含创建更新信息）
     UserDetailResp {
-        PostIds []int64 `json:"postIds"`
+        PostIds []string `json:"postIds"`
         Posts []*PostBase `json:"posts"`
-        RoleIds []int64 `json:"roleIds"`
+        RoleIds []string `json:"roleIds"`
         Roles []*RoleBase `json:"roles"`
         User *UserRoles `json:"user"`
     }
         // 用户分页请求过滤参数
     UserQuery {
-        UserId int64 `form:"userId,optional"`
+        UserId string `form:"userId,optional"`
         TenantId string `form:"tenantId,optional"`
-        DeptId int64 `form:"deptId,optional"`
+        DeptId string `form:"deptId,optional"`
         UserName string `form:"userName,optional"`
         NickName string `form:"nickName,optional"`
         UserType string `form:"userType,optional"`
@@ -69,7 +69,7 @@ type (
         Roles []RoleBase `json:"roles,omitempty"`
     }
     ResetPwdReq {
-        UserId int64 `json:"userId"`
+        UserId string `json:"userId"`
         Password string `json:"password"`
     }
     UserProfileResp {
@@ -115,6 +115,9 @@ service System {
 
     @handler ResetPwd
     put /resetPwd (ResetPwdReq)
+
+    @handler DeptList
+    get /list/dept/:id (IdReq) returns ([]*UserBase)
 
     @handler QueryPageUserList
     get /list (QueryPageUserListReq) returns (QueryPageUserListResp)

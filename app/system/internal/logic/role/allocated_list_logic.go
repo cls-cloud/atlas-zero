@@ -37,7 +37,7 @@ func (l *AllocatedListLogic) GetUserList(req *types.AllocatedReq, type_ bool) (r
 	resp = new(types.AllocatedResp)
 	offset := (req.PageNum - 1) * req.PageSize
 	d := l.svcCtx.Query
-	var userIds []int64
+	var userIds []string
 	if err = d.SysUserRole.WithContext(l.ctx).Select(d.SysUserRole.UserID).Where(d.SysUserRole.RoleID.Eq(req.RoleId)).Scan(&userIds); err != nil {
 		return nil, errx.GORMErr(err)
 	}

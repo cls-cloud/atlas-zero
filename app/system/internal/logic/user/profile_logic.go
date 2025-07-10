@@ -30,7 +30,7 @@ func NewProfileLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ProfileLo
 }
 
 func (l *ProfileLogic) Profile() (resp *types.UserProfileResp, err error) {
-	userId := helper.GetUserIdInt(l.ctx)
+	userId := helper.GetUserId(l.ctx)
 	resp = new(types.UserProfileResp)
 	q := l.svcCtx.Query
 	var result struct {

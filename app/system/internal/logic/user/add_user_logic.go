@@ -29,13 +29,13 @@ func NewAddUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddUserLo
 }
 
 func (l *AddUserLogic) AddUser(req *types.AddOrUpdateUserReq) error {
-	if req.UserID != 0 {
+	if req.UserID != "" {
 		return errx.BizErr("用户ID不为空")
 	}
 	if req.Password == "" {
 		return errx.BizErr("密码不能为空")
 	}
-	req.UserID = utils.GetIDInt64()
+	req.UserID = utils.GetID()
 	user := &model.SysUser{
 		UserID:      req.UserID,
 		UserName:    req.UserName,

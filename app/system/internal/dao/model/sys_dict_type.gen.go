@@ -12,7 +12,7 @@ const TableNameSysDictType = "sys_dict_type"
 
 // SysDictType 字典类型表
 type SysDictType struct {
-	DictID     int64     `gorm:"column:dict_id;primaryKey;comment:字典主键" json:"dict_id"`         // 字典主键
+	DictID     string    `gorm:"column:dict_id;primaryKey;comment:字典主键" json:"dict_id"`         // 字典主键
 	TenantID   string    `gorm:"column:tenant_id;default:000000;comment:租户编号" json:"tenant_id"` // 租户编号
 	DictName   string    `gorm:"column:dict_name;comment:字典名称" json:"dict_name"`                // 字典名称
 	DictType   string    `gorm:"column:dict_type;comment:字典类型" json:"dict_type"`                // 字典类型

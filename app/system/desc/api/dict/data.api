@@ -14,61 +14,34 @@ type (
     ModifyDictDataReq {
         DictDataBase
     }
-
         // 请求过滤参数
     DictDataQuery {
-        // 字典编码
-        dictCode int64 `json:"dictCode,optional"`
-        // 租户编号
-        tenantId string `json:"tenantId,optional"`
-        // 字典排序
-        dictSort int32 `json:"dictSort,optional"`
-        // 字典标签
-        dictLabel string `json:"dictLabel,optional"`
-        // 字典键值
-        dictValue string `json:"dictValue,optional"`
-        // 字典类型
-        dictType string `json:"dictType,optional"`
-        // 样式属性（其他样式扩展）
-        cssClass string `json:"cssClass,optional"`
-        // 表格回显样式
-        listClass string `json:"listClass,optional"`
-        // 是否默认（Y是 N否）
-        isDefault string `json:"isDefault,optional"`
-        // 创建部门
-        createDept int64 `json:"createDept,optional"`
-        // 创建者
-        createBy int64 `json:"createBy,optional"`
-        // 创建时间
-        createTime string `json:"createTime,optional"`
-        // 更新者
-        updateBy int64 `json:"updateBy,optional"`
-        // 更新时间
-        updateTime string `json:"updateTime,optional"`
-        // 备注
-        remark string `json:"remark,optional"`
+        DictCode int64 `form:"dictCode,optional"`      // 字典编码
+        TenantId string `form:"tenantId,optional"`     // 租户编号
+        DictSort int32 `form:"dictSort,optional"`      // 字典排序
+        DictLabel string `form:"dictLabel,optional"`   // 字典标签
+        DictValue string `form:"dictValue,optional"`   // 字典键值
+        DictType string `form:"dictType,optional"`     // 字典类型
+        CssClass string `form:"cssClass,optional"`     // 样式属性（其他样式扩展）
+        ListClass string `form:"listClass,optional"`   // 表格回显样式
+        IsDefault string `form:"isDefault,optional"`   // 是否默认（Y是 N否）
+        CreateDept int64 `form:"createDept,optional"`  // 创建部门
+        CreateBy int64 `form:"createBy,optional"`      // 创建者
+        CreateTime string `form:"createTime,optional"` // 创建时间
+        UpdateBy int64 `form:"updateBy,optional"`      // 更新者
+        UpdateTime string `form:"updateTime,optional"` // 更新时间
+        Remark string `form:"remark,optional"`         // 备注
     }
+
         // 分页请求过滤参数
-    QueryPageDictDataListReq {
+    PageSetDictDataReq {
         PageReq
         DictDataQuery
     }
         // 分页响应
-    QueryPageDictDataListResp {
+    PageSetDictDataResp {
         Total int64 `json:"total"`
-        Rows []DictDataDetailResp `json:"rows"`
-    }
-
-    QueryDictDataListReq {
-        DictDataQuery
-    }
-
-    DictDataDetailResp {
-        DictDataBase
-    }
-
-    DictDataInfoResp {
-        DictDataBase
+        Rows []*DictDataBase `json:"rows"`
     }
 )
 
@@ -79,25 +52,21 @@ type (
     middleware: Auth
 )
 service System {
+    @handler DataByType
+    get /type/:code (CodeReq) returns ([]*DictDataBase)
 
-    @handler GetDataByType
-    get /type/:code (CodeReq) returns ([]DictDataDetailResp)
+    @handler Info
+    get /:id (IdReq) returns (DictDataBase)
 
-    @handler GetDictDataInfo
-    get /info returns (DictDataInfoResp)
-
-    @handler AddDictData
-    post /add (ModifyDictDataReq)
+    @handler Add
+    post / (ModifyDictDataReq)
 
     @handler DeleteDictData
-    get /delete (IdsReq)
+    delete /:code (CodeReq)
 
-    @handler UpdateDictData
-    post /update (ModifyDictDataReq)
+    @handler Update
+    put / (ModifyDictDataReq)
 
-    @handler QueryPageDictDataList
-    get /queryPageList (QueryPageDictDataListReq) returns (QueryPageDictDataListResp)
-
-    @handler QueryDictDataList
-    get /queryList (QueryDictDataListReq) returns ([]DictDataDetailResp)
+    @handler PageSet
+    get /list (PageSetDictDataReq) returns (PageSetDictDataResp)
 }

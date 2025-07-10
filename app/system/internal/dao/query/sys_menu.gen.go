@@ -27,9 +27,9 @@ func newSysMenu(db *gorm.DB, opts ...gen.DOOption) sysMenu {
 
 	tableName := _sysMenu.sysMenuDo.TableName()
 	_sysMenu.ALL = field.NewAsterisk(tableName)
-	_sysMenu.MenuID = field.NewInt64(tableName, "menu_id")
+	_sysMenu.MenuID = field.NewString(tableName, "menu_id")
 	_sysMenu.MenuName = field.NewString(tableName, "menu_name")
-	_sysMenu.ParentID = field.NewInt64(tableName, "parent_id")
+	_sysMenu.ParentID = field.NewString(tableName, "parent_id")
 	_sysMenu.OrderNum = field.NewInt32(tableName, "order_num")
 	_sysMenu.Path = field.NewString(tableName, "path")
 	_sysMenu.Component = field.NewString(tableName, "component")
@@ -58,9 +58,9 @@ type sysMenu struct {
 	sysMenuDo sysMenuDo
 
 	ALL        field.Asterisk
-	MenuID     field.Int64  // 菜单ID
+	MenuID     field.String // 菜单ID
 	MenuName   field.String // 菜单名称
-	ParentID   field.Int64  // 父菜单ID
+	ParentID   field.String // 父菜单ID
 	OrderNum   field.Int32  // 显示顺序
 	Path       field.String // 路由地址
 	Component  field.String // 组件路径
@@ -94,9 +94,9 @@ func (s sysMenu) As(alias string) *sysMenu {
 
 func (s *sysMenu) updateTableName(table string) *sysMenu {
 	s.ALL = field.NewAsterisk(table)
-	s.MenuID = field.NewInt64(table, "menu_id")
+	s.MenuID = field.NewString(table, "menu_id")
 	s.MenuName = field.NewString(table, "menu_name")
-	s.ParentID = field.NewInt64(table, "parent_id")
+	s.ParentID = field.NewString(table, "parent_id")
 	s.OrderNum = field.NewInt32(table, "order_num")
 	s.Path = field.NewString(table, "path")
 	s.Component = field.NewString(table, "component")

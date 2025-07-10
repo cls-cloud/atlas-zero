@@ -9,6 +9,7 @@ info (
 import "api/auth.api"
 import "api/user.api"
 import "api/role.api"
+import "api/dept.api"
 import "api/menu.api"
 import "api/post.api"
 import "api/config.api"

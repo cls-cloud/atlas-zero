@@ -12,7 +12,7 @@ const TableNameSysTenant = "sys_tenant"
 
 // SysTenant 租户表
 type SysTenant struct {
-	ID              int64     `gorm:"column:id;primaryKey;comment:id" json:"id"`                                // id
+	ID              string    `gorm:"column:id;primaryKey;comment:id" json:"id"`                                // id
 	TenantID        string    `gorm:"column:tenant_id;not null;comment:租户编号" json:"tenant_id"`                  // 租户编号
 	ContactUserName string    `gorm:"column:contact_user_name;comment:联系人" json:"contact_user_name"`            // 联系人
 	ContactPhone    string    `gorm:"column:contact_phone;comment:联系电话" json:"contact_phone"`                   // 联系电话

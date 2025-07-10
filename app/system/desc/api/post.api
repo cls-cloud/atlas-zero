@@ -12,59 +12,33 @@ type (
     ModifyPostReq {
         PostBase
     }
-
         // 请求过滤参数
     PostQuery {
-        // 岗位ID
-        postId int64 `json:"postId,optional"`
-        // 租户编号
-        tenantId string `json:"tenantId,optional"`
-        // 部门id
-        deptId int64 `form:"deptId,optional"`
-        // 岗位编码
-        postCode string `json:"postCode,optional"`
-        // 岗位类别编码
-        postCategory string `json:"postCategory,optional"`
-        // 岗位名称
-        postName string `json:"postName,optional"`
-        // 显示顺序
-        postSort int32 `json:"postSort,optional"`
-        // 状态（0正常 1停用）
-        status string `json:"status,optional"`
-        // 创建部门
-        createDept int64 `json:"createDept,optional"`
-        // 创建者
-        createBy int64 `json:"createBy,optional"`
-        // 创建时间
-        createTime string `json:"createTime,optional"`
-        // 更新者
-        updateBy int64 `json:"updateBy,optional"`
-        // 更新时间
-        updateTime string `json:"updateTime,optional"`
-        // 备注
-        remark string `json:"remark,optional"`
+        PostId string `form:"postId,optional"`              // 岗位ID
+        TenantId string `form:"tenantId,optional"`         // 租户编号
+        DeptId string `form:"deptId,optional"`              // 部门ID
+        PostCode string `form:"postCode,optional"`         // 岗位编码
+        PostCategory string `form:"postCategory,optional"` // 岗位类别编码
+        PostName string `form:"postName,optional"`         // 岗位名称
+        PostSort int32 `form:"postSort,optional"`          // 显示顺序
+        Status string `form:"status,optional"`             // 状态（0正常 1停用）
+        CreateDept int64 `form:"createDept,optional"`      // 创建部门
+        CreateBy int64 `form:"createBy,optional"`          // 创建者
+        CreateTime string `form:"createTime,optional"`     // 创建时间
+        UpdateBy int64 `form:"updateBy,optional"`          // 更新者
+        UpdateTime string `form:"updateTime,optional"`     // 更新时间
+        Remark string `form:"remark,optional"`             // 备注
     }
-        // 分页请求过滤参数
-    QueryPagePostListReq {
+
+
+    PageSetRoleReq {
         PageReq
         PostQuery
+        BelongDeptId string `form:"belongDeptId, optional"`
     }
-        // 分页响应
-    QueryPagePostListResp {
+    PageSetRoleResp {
         Total int64 `json:"total"`
-        Rows []PostDetailResp `json:"rows"`
-    }
-
-    QueryPostListReq {
-        PostQuery
-    }
-
-    PostDetailResp {
-        PostBase
-    }
-
-    PostInfoResp {
-        PostBase
+        Rows []*PostBase `json:"rows"`
     }
 )
 
@@ -77,22 +51,20 @@ type (
 service System {
     // 根据所属部门选择岗位
     @handler OptionSelect
-    get /optionselect (PostQuery) returns ([]PostInfoResp)
-    @handler GetPostInfo
-    get /info returns (PostInfoResp)
+    get /optionselect (PostQuery) returns ([]PostBase)
 
-    @handler AddPost
-    post /add (ModifyPostReq)
+    @handler Info
+    get /:id (IdReq) returns (PostBase)
 
-    @handler DeletePost
-    get /delete (IdsReq)
+    @handler Add
+    post / (ModifyPostReq)
 
-    @handler UpdatePost
-    post /update (ModifyPostReq)
+    @handler Delete
+    delete /:code (CodeReq)
 
-    @handler QueryPagePostList
-    get /queryPageList (QueryPagePostListReq) returns (QueryPagePostListResp)
+    @handler Update
+    put / (ModifyPostReq)
 
-    @handler QueryPostList
-    get /queryList (QueryPostListReq) returns ([]PostDetailResp)
+    @handler PageSet
+    get /list (PageSetRoleReq) returns (PageSetRoleResp)
 }

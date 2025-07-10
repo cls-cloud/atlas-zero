@@ -2,7 +2,6 @@ package role
 
 import (
 	"context"
-	"strconv"
 	"toolkit/errx"
 
 	"system/internal/svc"
@@ -27,7 +26,7 @@ func NewCancelLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CancelLogi
 
 func (l *CancelLogic) Cancel(req *types.CancelReq) error {
 	q := l.svcCtx.Query
-	roleId, _ := strconv.ParseInt(req.RoleId, 10, 64)
+	roleId := req.RoleId
 	if _, err := q.SysUserRole.WithContext(l.ctx).Where(q.SysUserRole.UserID.Eq(req.UserId)).Where(q.SysUserRole.RoleID.Eq(roleId)).Unscoped().Delete(); err != nil {
 		return errx.GORMErr(err)
 	}

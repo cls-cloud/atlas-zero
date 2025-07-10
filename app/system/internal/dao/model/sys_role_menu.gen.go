@@ -8,8 +8,8 @@ const TableNameSysRoleMenu = "sys_role_menu"
 
 // SysRoleMenu 角色和菜单关联表
 type SysRoleMenu struct {
-	RoleID int64 `gorm:"column:role_id;primaryKey;comment:角色ID" json:"role_id"` // 角色ID
-	MenuID int64 `gorm:"column:menu_id;primaryKey;comment:菜单ID" json:"menu_id"` // 菜单ID
+	RoleID string `gorm:"column:role_id;primaryKey;comment:角色ID" json:"role_id"` // 角色ID
+	MenuID string `gorm:"column:menu_id;primaryKey;comment:菜单ID" json:"menu_id"` // 菜单ID
 }
 
 // TableName SysRoleMenu's table name

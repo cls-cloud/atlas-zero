@@ -2,7 +2,6 @@ package role
 
 import (
 	"context"
-	"strconv"
 	"strings"
 	"toolkit/errx"
 
@@ -29,12 +28,7 @@ func NewCancelAllLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CancelA
 func (l *CancelAllLogic) CancelAll(req *types.SelectAllReq) error {
 	userIds := strings.Split(req.UserIds, ",")
 	q := l.svcCtx.Query
-	var userIdsInt []int64
-	for _, id := range userIds {
-		userId, _ := strconv.ParseInt(id, 10, 64)
-		userIdsInt = append(userIdsInt, userId)
-	}
-	if _, err := q.SysUserRole.WithContext(l.ctx).Where(q.SysUserRole.UserID.In(userIdsInt...)).Unscoped().Delete(); err != nil {
+	if _, err := q.SysUserRole.WithContext(l.ctx).Where(q.SysUserRole.UserID.In(userIds...)).Unscoped().Delete(); err != nil {
 		return errx.GORMErr(err)
 	}
 

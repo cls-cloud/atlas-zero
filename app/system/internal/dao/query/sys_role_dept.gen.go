@@ -27,8 +27,8 @@ func newSysRoleDept(db *gorm.DB, opts ...gen.DOOption) sysRoleDept {
 
 	tableName := _sysRoleDept.sysRoleDeptDo.TableName()
 	_sysRoleDept.ALL = field.NewAsterisk(tableName)
-	_sysRoleDept.RoleID = field.NewInt64(tableName, "role_id")
-	_sysRoleDept.DeptID = field.NewInt64(tableName, "dept_id")
+	_sysRoleDept.RoleID = field.NewString(tableName, "role_id")
+	_sysRoleDept.DeptID = field.NewString(tableName, "dept_id")
 
 	_sysRoleDept.fillFieldMap()
 
@@ -40,8 +40,8 @@ type sysRoleDept struct {
 	sysRoleDeptDo sysRoleDeptDo
 
 	ALL    field.Asterisk
-	RoleID field.Int64 // 角色ID
-	DeptID field.Int64 // 部门ID
+	RoleID field.String // 角色ID
+	DeptID field.String // 部门ID
 
 	fieldMap map[string]field.Expr
 }
@@ -58,8 +58,8 @@ func (s sysRoleDept) As(alias string) *sysRoleDept {
 
 func (s *sysRoleDept) updateTableName(table string) *sysRoleDept {
 	s.ALL = field.NewAsterisk(table)
-	s.RoleID = field.NewInt64(table, "role_id")
-	s.DeptID = field.NewInt64(table, "dept_id")
+	s.RoleID = field.NewString(table, "role_id")
+	s.DeptID = field.NewString(table, "dept_id")
 
 	s.fillFieldMap()
 

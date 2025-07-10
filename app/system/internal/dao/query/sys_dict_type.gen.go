@@ -27,7 +27,7 @@ func newSysDictType(db *gorm.DB, opts ...gen.DOOption) sysDictType {
 
 	tableName := _sysDictType.sysDictTypeDo.TableName()
 	_sysDictType.ALL = field.NewAsterisk(tableName)
-	_sysDictType.DictID = field.NewInt64(tableName, "dict_id")
+	_sysDictType.DictID = field.NewString(tableName, "dict_id")
 	_sysDictType.TenantID = field.NewString(tableName, "tenant_id")
 	_sysDictType.DictName = field.NewString(tableName, "dict_name")
 	_sysDictType.DictType = field.NewString(tableName, "dict_type")
@@ -48,7 +48,7 @@ type sysDictType struct {
 	sysDictTypeDo sysDictTypeDo
 
 	ALL        field.Asterisk
-	DictID     field.Int64  // 字典主键
+	DictID     field.String // 字典主键
 	TenantID   field.String // 租户编号
 	DictName   field.String // 字典名称
 	DictType   field.String // 字典类型
@@ -74,7 +74,7 @@ func (s sysDictType) As(alias string) *sysDictType {
 
 func (s *sysDictType) updateTableName(table string) *sysDictType {
 	s.ALL = field.NewAsterisk(table)
-	s.DictID = field.NewInt64(table, "dict_id")
+	s.DictID = field.NewString(table, "dict_id")
 	s.TenantID = field.NewString(table, "tenant_id")
 	s.DictName = field.NewString(table, "dict_name")
 	s.DictType = field.NewString(table, "dict_type")

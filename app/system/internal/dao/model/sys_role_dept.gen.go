@@ -8,8 +8,8 @@ const TableNameSysRoleDept = "sys_role_dept"
 
 // SysRoleDept 角色和部门关联表
 type SysRoleDept struct {
-	RoleID int64 `gorm:"column:role_id;primaryKey;comment:角色ID" json:"role_id"` // 角色ID
-	DeptID int64 `gorm:"column:dept_id;primaryKey;comment:部门ID" json:"dept_id"` // 部门ID
+	RoleID string `gorm:"column:role_id;primaryKey;comment:角色ID" json:"role_id"` // 角色ID
+	DeptID string `gorm:"column:dept_id;primaryKey;comment:部门ID" json:"dept_id"` // 部门ID
 }
 
 // TableName SysRoleDept's table name

@@ -19,7 +19,14 @@ database:
     - sys_user_post
     - sys_dict_data
     - sys_dict_type
-    - sys_role_post
+    - sys_role_dept
+    - sys_social
+    - sys_oss
+    - sys_oss_config
+    - sys_oper_log
+    - sys_notice
+    - sys_logininfor
+    - sys_client
   # specify a directory for output
   outPath: "./internal/dao/query"
   # query code file name, default: gen.go

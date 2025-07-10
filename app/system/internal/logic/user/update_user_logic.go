@@ -27,26 +27,27 @@ func NewUpdateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Update
 }
 
 func (l *UpdateUserLogic) UpdateUser(req *types.AddOrUpdateUserReq) error {
-	if req.UserID == 0 {
+	if req.UserID == "" {
 		return errx.BizErr("用户ID不能为空")
 	}
+	userId := req.UserID
 	userToMap := utils.StructToMapOmit(req.UserBase, nil, []string{"Password"}, true)
 	//更新数据
 	q := l.svcCtx.Query
-	if _, err := q.SysUser.WithContext(l.ctx).Where(q.SysUser.UserID.Eq(req.UserID)).Updates(userToMap); err != nil {
+	if _, err := q.SysUser.WithContext(l.ctx).Where(q.SysUser.UserID.Eq(userId)).Updates(userToMap); err != nil {
 		return errx.GORMErr(err)
 	}
-	if _, err := q.SysUserPost.WithContext(l.ctx).Where(q.SysUserPost.UserID.Eq(req.UserID)).Delete(); err != nil {
+	if _, err := q.SysUserPost.WithContext(l.ctx).Where(q.SysUserPost.UserID.Eq(userId)).Delete(); err != nil {
 		return errx.GORMErr(err)
 	}
-	if _, err := q.SysUserRole.WithContext(l.ctx).Where(q.SysUserRole.UserID.Eq(req.UserID)).Delete(); err != nil {
+	if _, err := q.SysUserRole.WithContext(l.ctx).Where(q.SysUserRole.UserID.Eq(userId)).Delete(); err != nil {
 		return errx.GORMErr(err)
 	}
 	if len(req.RoleIds) != 0 {
 		userRole := make([]*model.SysUserRole, len(req.RoleIds))
 		for i, roleId := range req.RoleIds {
 			userRole[i] = &model.SysUserRole{
-				UserID: req.UserID,
+				UserID: userId,
 				RoleID: roleId,
 			}
 		}
@@ -58,7 +59,7 @@ func (l *UpdateUserLogic) UpdateUser(req *types.AddOrUpdateUserReq) error {
 		userPost := make([]*model.SysUserPost, len(req.PostIds))
 		for i, postId := range req.PostIds {
 			userPost[i] = &model.SysUserPost{
-				UserID: req.UserID,
+				UserID: userId,
 				PostID: postId,
 			}
 		}

@@ -12,7 +12,7 @@ const TableNameSysDictDatum = "sys_dict_data"
 
 // SysDictDatum 字典数据表
 type SysDictDatum struct {
-	DictCode   int64     `gorm:"column:dict_code;primaryKey;comment:字典编码" json:"dict_code"`         // 字典编码
+	DictCode   string    `gorm:"column:dict_code;primaryKey;comment:字典编码" json:"dict_code"`         // 字典编码
 	TenantID   string    `gorm:"column:tenant_id;default:000000;comment:租户编号" json:"tenant_id"`     // 租户编号
 	DictSort   int32     `gorm:"column:dict_sort;comment:字典排序" json:"dict_sort"`                    // 字典排序
 	DictLabel  string    `gorm:"column:dict_label;comment:字典标签" json:"dict_label"`                  // 字典标签
