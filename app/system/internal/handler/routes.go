@@ -13,6 +13,7 @@ import (
 	dict_type "system/internal/handler/dict/_type"
 	dictdata "system/internal/handler/dict/data"
 	menu "system/internal/handler/menu"
+	notice "system/internal/handler/notice"
 	ping "system/internal/handler/ping"
 	role "system/internal/handler/role"
 	user "system/internal/handler/user"
@@ -321,6 +322,40 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/system/post"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/:id",
+					Handler: notice.InfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/",
+					Handler: notice.AddHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodDelete,
+					Path:    "/:ids",
+					Handler: notice.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/",
+					Handler: notice.UpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/list",
+					Handler: notice.PageSetHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/notice"),
 	)
 
 	server.AddRoutes(

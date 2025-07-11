@@ -13,7 +13,7 @@ type (
         Code string `path:"code"`
     }
     IdsReq {
-        id []string `json:"ids"`
+        id string `json:"ids"`
     }
     TimeReq {
         BeginTime string `form:"params[beginTime],optional"`
@@ -167,6 +167,8 @@ type (
         NoticeContent string `json:"noticeContent,optional"`
         Status        string `json:"status,optional"`
         Remark        string `json:"remark,optional"`
+        CreateTime string `json:"createTime,optional,omitempty"`
+        CreateByName string `json:"createByName,optional,omitempty"`
     }
     OperLogBase {
         OperID        string `json:"operId,optional"`

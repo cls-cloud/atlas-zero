@@ -135,7 +135,7 @@ type CodeReq struct {
 }
 
 type IdsReq struct {
-	Id []string `json:"ids"`
+	Id string `json:"ids"`
 }
 
 type TimeReq struct {
@@ -301,6 +301,8 @@ type NoticeBase struct {
 	NoticeContent string `json:"noticeContent,optional"`
 	Status        string `json:"status,optional"`
 	Remark        string `json:"remark,optional"`
+	CreateTime    string `json:"createTime,optional,omitempty"`
+	CreateByName  string `json:"createByName,optional,omitempty"`
 }
 
 type OperLogBase struct {
@@ -497,7 +499,6 @@ type CancelReq struct {
 
 type ModifyDeptReq struct {
 	DeptBase
-	ParentIdInt int64 `form:"parentId,optional"` // 父部门ID
 }
 
 type DeptQuery struct {
@@ -623,6 +624,35 @@ type PageSetRoleReq struct {
 type PageSetRoleResp struct {
 	Total int64       `json:"total"`
 	Rows  []*PostBase `json:"rows"`
+}
+
+type ModifyNoticeReq struct {
+	NoticeBase
+}
+
+type NoticeQuery struct {
+	NoticeId      string `form:"noticeId,optional"`      // 公告ID
+	TenantId      string `form:"tenantId,optional"`      // 租户编号
+	NoticeTitle   string `form:"noticeTitle,optional"`   // 公告标题
+	NoticeType    string `form:"noticeType,optional"`    // 公告类型（1通知 2公告）
+	NoticeContent string `form:"noticeContent,optional"` // 公告内容
+	Status        string `form:"status,optional"`        // 公告状态（0正常 1关闭）
+	CreateDept    int64  `form:"createDept,optional"`    // 创建部门
+	CreateBy      string `form:"createBy,optional"`      // 创建者
+	CreateTime    string `form:"createTime,optional"`    // 创建时间
+	UpdateBy      int64  `form:"updateBy,optional"`      // 更新者
+	UpdateTime    string `form:"updateTime,optional"`    // 更新时间
+	Remark        string `form:"remark,optional"`        // 备注
+}
+
+type PageSetNoticeReq struct {
+	PageReq
+	NoticeQuery
+}
+
+type PageSetNoticeResp struct {
+	Rows  []NoticeBase `json:"rows"`
+	Total int64        `json:"total"`
 }
 
 type ModifyConfigReq struct {
