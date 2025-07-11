@@ -23,7 +23,7 @@ func ApiMiddleware(cfg config.Config) func(http.HandlerFunc) http.HandlerFunc {
 
 func isUpdateMethod(method string) bool {
 	switch method {
-	case http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete:
+	case http.MethodPut, http.MethodDelete:
 		return true
 	default:
 		return false
