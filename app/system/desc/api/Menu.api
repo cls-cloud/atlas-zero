@@ -61,18 +61,18 @@ type (
         NoCache bool `json:"noCache"`
         Link string `json:"link,optional"`
     }
-    RoleMenuTreeResp {
+    SelectMenuTreeResp {
         CheckedKeys []string `json:"checkedKeys"`
-        Menus []*RoleMenuTree `json:"menus"`
+        Menus []*SelectMenuTree `json:"menus"`
     }
-    RoleMenuTree {
+    SelectMenuTree {
         Id string `json:"id"`
         ParentId string `json:"parentId"`
         MenuType string `json:"menuType"`
         Icon string `json:"icon"`
         Weight int32 `json:"weight"`
         Label string `json:"label"`
-        Children []*RoleMenuTree `json:"children,omitempty"`
+        Children []*SelectMenuTree `json:"children,omitempty"`
     }
 )
 
@@ -84,10 +84,14 @@ type (
 )
 service System {
     @handler TreeSelect
-    get /treeselect returns ([]*RoleMenuTree)
+    get /treeselect returns ([]*SelectMenuTree)
 
     @handler RoleMenuTree
-    get /roleMenuTreeselect/:id (IdReq) returns (RoleMenuTreeResp)
+    get /roleMenuTreeselect/:id (IdReq) returns (SelectMenuTreeResp)
+
+
+    @handler TenantPackageTree
+    get /tenantPackageMenuTreeselect/:id (IdReq) returns (SelectMenuTreeResp)
 
     @handler GetRouters
     get /getRouters returns ([]RouterMenuResp)
@@ -106,4 +110,5 @@ service System {
 
     @handler List
     get /list (QueryMenuListReq) returns ([]*MenuBase)
+
 }

@@ -64,16 +64,16 @@ func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoResp, err error) {
 		}
 		return nil, err
 	}
-	roleNames := make([]string, len(roles))
+	roleKeys := make([]string, len(roles))
 	for i, item := range roles {
-		roleNames[i] = item.RoleName
+		roleKeys[i] = item.RoleKey
 	}
 	if isAdmin {
 		//TODO Permissions 菜单权限
 		resp.Permissions = append(resp.Permissions, "*:*:*")
 		resp.Roles = append(resp.Roles, "superadmin")
 	} else {
-		resp.Roles = roleNames
+		resp.Roles = roleKeys
 	}
 
 	err = copier.Copy(&resp.User, user)

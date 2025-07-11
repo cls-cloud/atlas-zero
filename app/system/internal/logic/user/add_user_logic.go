@@ -52,6 +52,9 @@ func (l *AddUserLogic) AddUser(req *types.AddOrUpdateUserReq) error {
 		Remark:      req.Remark,
 		Sex:         req.Sex,
 	}
+	if req.TenantID != "" {
+		user.TenantID = req.TenantID
+	}
 	q := l.svcCtx.Query
 	if err := q.SysUser.WithContext(l.ctx).Create(user); err != nil {
 		return errx.GORMErr(err)

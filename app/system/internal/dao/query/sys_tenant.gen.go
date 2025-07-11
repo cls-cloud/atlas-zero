@@ -37,7 +37,7 @@ func newSysTenant(db *gorm.DB, opts ...gen.DOOption) sysTenant {
 	_sysTenant.Intro = field.NewString(tableName, "intro")
 	_sysTenant.Domain = field.NewString(tableName, "domain")
 	_sysTenant.Remark = field.NewString(tableName, "remark")
-	_sysTenant.PackageID = field.NewInt64(tableName, "package_id")
+	_sysTenant.PackageID = field.NewString(tableName, "package_id")
 	_sysTenant.ExpireTime = field.NewTime(tableName, "expire_time")
 	_sysTenant.AccountCount = field.NewInt32(tableName, "account_count")
 	_sysTenant.Status = field.NewString(tableName, "status")
@@ -68,7 +68,7 @@ type sysTenant struct {
 	Intro           field.String // 企业简介
 	Domain          field.String // 域名
 	Remark          field.String // 备注
-	PackageID       field.Int64  // 租户套餐编号
+	PackageID       field.String // 套餐ID
 	ExpireTime      field.Time   // 过期时间
 	AccountCount    field.Int32  // 用户数量（-1不限制）
 	Status          field.String // 租户状态（0正常 1停用）
@@ -104,7 +104,7 @@ func (s *sysTenant) updateTableName(table string) *sysTenant {
 	s.Intro = field.NewString(table, "intro")
 	s.Domain = field.NewString(table, "domain")
 	s.Remark = field.NewString(table, "remark")
-	s.PackageID = field.NewInt64(table, "package_id")
+	s.PackageID = field.NewString(table, "package_id")
 	s.ExpireTime = field.NewTime(table, "expire_time")
 	s.AccountCount = field.NewInt32(table, "account_count")
 	s.Status = field.NewString(table, "status")

@@ -29,21 +29,28 @@ func NewAddLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddLogic {
 func (l *AddLogic) Add(req *types.ModifyDeptReq) error {
 	q := l.svcCtx.Query
 	var ancestors string
-	parendIdInt := req.ParentID
+	parentId := req.ParentID
 	//获取祖级列表
-	if err := q.SysDept.WithContext(l.ctx).Select(q.SysDept.Ancestors).Where(q.SysDept.DeptID.Eq(parendIdInt)).Scan(&ancestors); err != nil {
-		return errx.GORMErr(err)
+	if parentId != "0" {
+		if err := q.SysDept.WithContext(l.ctx).Select(q.SysDept.Ancestors).Where(q.SysDept.DeptID.Eq(parentId)).Scan(&ancestors); err != nil {
+			return errx.GORMErr(err)
+		}
+		ancestors = ancestors + "," + req.ParentID
+	} else {
+		ancestors = req.ParentID
 	}
-	ancestors = ancestors + "," + req.ParentID
 	dept := &model.SysDept{
 		DeptID:    utils.GetID(),
 		DeptName:  req.DeptName,
 		Ancestors: ancestors,
-		ParentID:  parendIdInt,
+		ParentID:  parentId,
 		OrderNum:  req.OrderNum,
 		Phone:     req.Phone,
 		Email:     req.Email,
 		Status:    req.Status,
+	}
+	if req.TenantID != "" {
+		dept.TenantID = req.TenantID
 	}
 	if err := q.SysDept.WithContext(l.ctx).Create(dept); err != nil {
 		return errx.GORMErr(err)

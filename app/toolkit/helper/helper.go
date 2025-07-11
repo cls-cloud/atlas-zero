@@ -64,6 +64,16 @@ func GetUserId(ctx context.Context) string {
 	return userIdStr
 }
 
+func GetTenantId(ctx context.Context) string {
+	val := ctx.Value("tenant_id")
+	tenantIdStr, ok := val.(string)
+	if tenantIdStr == "" || !ok {
+		fmt.Printf("============> GetUserId Error")
+		return ""
+	}
+	return tenantIdStr
+}
+
 func GetUserIdInt(ctx context.Context) int64 {
 	userIdStr := GetUserId(ctx)
 	userId, _ := strconv.ParseInt(userIdStr, 10, 64)

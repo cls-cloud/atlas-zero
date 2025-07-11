@@ -22,7 +22,7 @@ type SysTenant struct {
 	Intro           string    `gorm:"column:intro;comment:企业简介" json:"intro"`                                   // 企业简介
 	Domain          string    `gorm:"column:domain;comment:域名" json:"domain"`                                   // 域名
 	Remark          string    `gorm:"column:remark;comment:备注" json:"remark"`                                   // 备注
-	PackageID       int64     `gorm:"column:package_id;comment:租户套餐编号" json:"package_id"`                       // 租户套餐编号
+	PackageID       string    `gorm:"column:package_id;comment:套餐ID" json:"package_id"`                         // 套餐ID
 	ExpireTime      time.Time `gorm:"column:expire_time;comment:过期时间" json:"expire_time"`                       // 过期时间
 	AccountCount    int32     `gorm:"column:account_count;default:-1;comment:用户数量（-1不限制）" json:"account_count"` // 用户数量（-1不限制）
 	Status          string    `gorm:"column:status;default:0;comment:租户状态（0正常 1停用）" json:"status"`              // 租户状态（0正常 1停用）

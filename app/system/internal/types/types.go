@@ -357,7 +357,7 @@ type OssConfigBase struct {
 
 type TenantBase struct {
 	ID              string `json:"id,optional"`
-	TenantID        string `json:"tenantId"`
+	TenantID        string `json:"tenantId,optional"`
 	ContactUserName string `json:"contactUserName,optional"`
 	ContactPhone    string `json:"contactPhone,optional"`
 	CompanyName     string `json:"companyName,optional"`
@@ -372,12 +372,12 @@ type TenantBase struct {
 	Status          string `json:"status,optional"`
 }
 
-type TenantPackagBase struct {
+type TenantPackageBase struct {
 	PackageID         string `json:"packageId,optional"`
 	PackageName       string `json:"packageName,optional"`
 	MenuIds           string `json:"menuIds,optional"`
 	Remark            string `json:"remark,optional"`
-	MenuCheckStrictly int32  `json:"menuCheckStrictly,optional"`
+	MenuCheckStrictly bool   `json:"menuCheckStrictly,optional"`
 	Status            string `json:"status,optional"`
 }
 
@@ -579,19 +579,19 @@ type RouterMenuMeta struct {
 	Link    string `json:"link,optional"`
 }
 
-type RoleMenuTreeResp struct {
-	CheckedKeys []string        `json:"checkedKeys"`
-	Menus       []*RoleMenuTree `json:"menus"`
+type SelectMenuTreeResp struct {
+	CheckedKeys []string          `json:"checkedKeys"`
+	Menus       []*SelectMenuTree `json:"menus"`
 }
 
-type RoleMenuTree struct {
-	Id       string          `json:"id"`
-	ParentId string          `json:"parentId"`
-	MenuType string          `json:"menuType"`
-	Icon     string          `json:"icon"`
-	Weight   int32           `json:"weight"`
-	Label    string          `json:"label"`
-	Children []*RoleMenuTree `json:"children,omitempty"`
+type SelectMenuTree struct {
+	Id       string            `json:"id"`
+	ParentId string            `json:"parentId"`
+	MenuType string            `json:"menuType"`
+	Icon     string            `json:"icon"`
+	Weight   int32             `json:"weight"`
+	Label    string            `json:"label"`
+	Children []*SelectMenuTree `json:"children,omitempty"`
 }
 
 type ModifyPostReq struct {
@@ -651,8 +651,117 @@ type PageSetNoticeReq struct {
 }
 
 type PageSetNoticeResp struct {
-	Rows  []NoticeBase `json:"rows"`
-	Total int64        `json:"total"`
+	Rows  []*NoticeBase `json:"rows"`
+	Total int64         `json:"total"`
+}
+
+type ModifyClientReq struct {
+	ClientBase
+}
+
+type ClientQuery struct {
+	Id            string `form:"id,optional"`            // id
+	ClientId      string `form:"clientId,optional"`      // 客户端id
+	ClientKey     string `form:"clientKey,optional"`     // 客户端key
+	ClientSecret  string `form:"clientSecret,optional"`  // 客户端秘钥
+	GrantType     string `form:"grantType,optional"`     // 授权类型
+	DeviceType    string `form:"deviceType,optional"`    // 设备类型
+	ActiveTimeout int32  `form:"activeTimeout,optional"` // token活跃超时时间
+	Timeout       int32  `form:"timeout,optional"`       // token固定超时
+	Status        string `form:"status,optional"`        // 状态（0正常 1停用）
+	DelFlag       string `form:"delFlag,optional"`       // 删除标志（0代表存在 1代表删除）
+	CreateDept    int64  `form:"createDept,optional"`    // 创建部门
+	CreateBy      int64  `form:"createBy,optional"`      // 创建者
+	CreateTime    string `form:"createTime,optional"`    // 创建时间
+	UpdateBy      int64  `form:"updateBy,optional"`      // 更新者
+	UpdateTime    string `form:"updateTime,optional"`    // 更新时间
+}
+
+type PageSetClientReq struct {
+	PageReq
+	ClientQuery
+}
+
+type PageSetClientResp struct {
+	Rows  []*ClientBase `json:"rows"`
+	Total int64         `json:"total"`
+}
+
+type ChangeStatusClientReq struct {
+	ClientID string `json:"clientId"`
+	Status   string `json:"status"`
+}
+
+type ModifyTenantReq struct {
+	TenantBase
+	UserName string `json:"username"`
+	Password string `json:"password"`
+}
+
+type TenantQuery struct {
+	Id              string `form:"id,optional"`              // id
+	TenantId        string `form:"tenantId,optional"`        // 租户编号
+	ContactUserName string `form:"contactUserName,optional"` // 联系人
+	ContactPhone    string `form:"contactPhone,optional"`    // 联系电话
+	CompanyName     string `form:"companyName,optional"`     // 企业名称
+	LicenseNumber   string `form:"licenseNumber,optional"`   // 统一社会信用代码
+	Address         string `form:"address,optional"`         // 地址
+	Intro           string `form:"intro,optional"`           // 企业简介
+	Domain          string `form:"domain,optional"`          // 域名
+	Remark          string `form:"remark,optional"`          // 备注
+	PackageId       int64  `form:"packageId,optional"`       // 租户套餐编号
+	ExpireTime      string `form:"expireTime,optional"`      // 过期时间
+	AccountCount    int32  `form:"accountCount,optional"`    // 用户数量（-1不限制）
+	Status          string `form:"status,optional"`          // 租户状态（0正常 1停用）
+	DelFlag         string `form:"delFlag,optional"`         // 删除标志（0代表存在 1代表删除）
+	CreateDept      int64  `form:"createDept,optional"`      // 创建部门
+	CreateBy        int64  `form:"createBy,optional"`        // 创建者
+	CreateTime      string `form:"createTime,optional"`      // 创建时间
+	UpdateBy        int64  `form:"updateBy,optional"`        // 更新者
+	UpdateTime      string `form:"updateTime,optional"`      // 更新时间
+}
+
+type PageSetTenantReq struct {
+	PageReq
+	TenantQuery
+}
+
+type PageSetTenantResp struct {
+	Rows  []*TenantBase `json:"rows"`
+	Total int64         `json:"total"`
+}
+
+type ModifyTenantPackageReq struct {
+	PackageID         string   `json:"packageId,optional"`
+	PackageName       string   `json:"packageName,optional"`
+	MenuIds           []string `json:"menuIds,optional"`
+	Remark            string   `json:"remark,optional"`
+	MenuCheckStrictly bool     `json:"menuCheckStrictly,optional"`
+}
+
+type TenantPackageQuery struct {
+	PackageId         string `form:"packageId,optional"`         // 租户套餐id
+	PackageName       string `form:"packageName,optional"`       // 套餐名称
+	MenuIds           string `form:"menuIds,optional"`           // 关联菜单id
+	Remark            string `form:"remark,optional"`            // 备注
+	MenuCheckStrictly bool   `form:"menuCheckStrictly,optional"` // 菜单树选择项是否关联显示
+	Status            string `form:"status,optional"`            // 状态（0正常 1停用）
+	DelFlag           string `form:"delFlag,optional"`           // 删除标志（0代表存在 1代表删除）
+	CreateDept        int64  `form:"createDept,optional"`        // 创建部门
+	CreateBy          int64  `form:"createBy,optional"`          // 创建者
+	CreateTime        string `form:"createTime,optional"`        // 创建时间
+	UpdateBy          int64  `form:"updateBy,optional"`          // 更新者
+	UpdateTime        string `form:"updateTime,optional"`        // 更新时间
+}
+
+type PageSetTenantPackageReq struct {
+	PageReq
+	TenantPackageQuery
+}
+
+type PageSetTenantPackageResp struct {
+	Rows  []*TenantPackageBase `json:"rows"`
+	Total int64                `json:"total"`
 }
 
 type ModifyConfigReq struct {

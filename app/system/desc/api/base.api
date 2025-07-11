@@ -219,7 +219,7 @@ type (
     }
     TenantBase {
         ID            string `json:"id,optional"`
-        TenantID      string `json:"tenantId"`
+        TenantID      string `json:"tenantId,optional"`
         ContactUserName string `json:"contactUserName,optional"`
         ContactPhone  string `json:"contactPhone,optional"`
         CompanyName   string `json:"companyName,optional"`
@@ -233,12 +233,12 @@ type (
         AccountCount  int32  `json:"accountCount,optional"`
         Status        string `json:"status,optional"`
     }
-    TenantPackagBase {
+    TenantPackageBase {
         PackageID          string `json:"packageId,optional"`
         PackageName        string `json:"packageName,optional"`
         MenuIds            string `json:"menuIds,optional"`
         Remark             string `json:"remark,optional"`
-        MenuCheckStrictly  int32  `json:"menuCheckStrictly,optional"`
+        MenuCheckStrictly  bool  `json:"menuCheckStrictly,optional"`
         Status             string `json:"status,optional"`
     }
     ClientBase {

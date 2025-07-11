@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/jinzhu/copier"
+	"github.com/zeromicro/go-zero/core/logx"
 	"system/internal/svc"
 	"system/internal/types"
 	"time"
 	"toolkit/errx"
-
-	"github.com/zeromicro/go-zero/core/logx"
+	"toolkit/helper"
 )
 
 type ListLogic struct {
@@ -28,7 +28,14 @@ func NewListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListLogic {
 
 func (l *ListLogic) List(req *types.QueryMenuListReq) (resp []*types.MenuBase, err error) {
 	q := l.svcCtx.Query
+	userId := helper.GetUserId(l.ctx)
 	do := q.SysMenu.WithContext(l.ctx)
+	// 除了超级管理员 其余所有用户都只能查询自己角色绑定的菜单
+	if userId != "1" {
+		do = do.LeftJoin(q.SysRoleMenu, q.SysRoleMenu.MenuID.EqCol(q.SysMenu.MenuID)).
+			LeftJoin(q.SysUserRole, q.SysUserRole.RoleID.EqCol(q.SysRoleMenu.RoleID)).
+			Where(q.SysUserRole.UserID.Eq(userId))
+	}
 	if req.MenuName != "" {
 		do = do.Where(q.SysMenu.MenuName.Like(fmt.Sprintf("%%%s%%", req.MenuName)))
 	}
@@ -38,6 +45,7 @@ func (l *ListLogic) List(req *types.QueryMenuListReq) (resp []*types.MenuBase, e
 	if req.Visible != "" {
 		do = do.Where(q.SysMenu.Visible.Eq(req.Visible))
 	}
+
 	result, err := do.Order(q.SysMenu.OrderNum.Asc(), q.SysMenu.CreateTime.Desc()).Find()
 	if err != nil {
 		return nil, errx.GORMErr(err)

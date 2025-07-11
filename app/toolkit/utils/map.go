@@ -1,6 +1,9 @@
 package utils
 
-import "reflect"
+import (
+	"reflect"
+	"time"
+)
 
 // StructToMap 将结构体转为 map，并支持白名单或黑名单字段过滤
 func StructToMap[T any](input T, includeFields []string, excludeFields []string) map[string]interface{} {
@@ -123,6 +126,19 @@ func isEmptyValue(v reflect.Value) bool {
 
 	case reflect.Float32, reflect.Float64:
 		return v.Float() == 0
+
+	case reflect.Struct:
+		if v.Type().AssignableTo(reflect.TypeOf(time.Time{})) {
+			t := v.Interface().(time.Time)
+			if t.IsZero() {
+				return true
+			}
+			// 明确判断 MySQL 异常时间字符串
+			if t.Format(time.DateTime) == "0000-00-00 00:00:00" {
+				return true
+			}
+		}
+		return false
 	default:
 		return false
 	}

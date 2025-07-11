@@ -9,6 +9,7 @@ import (
 	_config "system/internal/handler/_config"
 	_post "system/internal/handler/_post"
 	auth "system/internal/handler/auth"
+	client "system/internal/handler/client"
 	dept "system/internal/handler/dept"
 	dict_type "system/internal/handler/dict/_type"
 	dictdata "system/internal/handler/dict/data"
@@ -16,6 +17,8 @@ import (
 	notice "system/internal/handler/notice"
 	ping "system/internal/handler/ping"
 	role "system/internal/handler/role"
+	tenant "system/internal/handler/tenant"
+	tenant_package "system/internal/handler/tenant/_package"
 	user "system/internal/handler/user"
 	"system/internal/svc"
 
@@ -252,6 +255,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodGet,
+					Path:    "/tenantPackageMenuTreeselect/:id",
+					Handler: menu.TenantPackageTreeHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
 					Path:    "/getRouters",
 					Handler: menu.GetRoutersHandler(serverCtx),
 				},
@@ -356,6 +364,118 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/system/notice"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/:id",
+					Handler: client.InfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/",
+					Handler: client.AddHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodDelete,
+					Path:    "/:ids",
+					Handler: client.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/changeStatus",
+					Handler: client.ChangeStatusHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/",
+					Handler: client.UpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/list",
+					Handler: client.PageSetHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/client"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/:id",
+					Handler: tenant.InfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/",
+					Handler: tenant.AddHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodDelete,
+					Path:    "/:ids",
+					Handler: tenant.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/",
+					Handler: tenant.UpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/list",
+					Handler: tenant.PageSetHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/tenant"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/:id",
+					Handler: tenant_package.InfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/",
+					Handler: tenant_package.AddHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodDelete,
+					Path:    "/:ids",
+					Handler: tenant_package.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/",
+					Handler: tenant_package.UpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/list",
+					Handler: tenant_package.PageSetHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/selectList",
+					Handler: tenant_package.SelectListHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/system/tenant/package"),
 	)
 
 	server.AddRoutes(

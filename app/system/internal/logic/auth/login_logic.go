@@ -37,7 +37,9 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 		}
 	}
 	sysUser := l.svcCtx.Query.SysUser
-	user, err := sysUser.WithContext(l.ctx).Where(sysUser.UserName.Eq(req.Username)).First()
+	user, err := sysUser.WithContext(l.ctx).Where(sysUser.UserName.Eq(req.Username)).
+		Where(sysUser.TenantID.Eq(req.TenantId)).
+		First()
 	if err != nil {
 		return nil, errx.GORMErrMsg(err, "用户不存在")
 	}

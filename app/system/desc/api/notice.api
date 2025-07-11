@@ -37,7 +37,7 @@ type (
     }
 
     PageSetNoticeResp {
-        Rows []NoticeBase `json:"rows"`
+        Rows []*NoticeBase `json:"rows"`
         Total int64 `json:"total"`
     }
 )

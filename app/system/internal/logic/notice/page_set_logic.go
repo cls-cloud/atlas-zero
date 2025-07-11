@@ -7,6 +7,7 @@ import (
 	"system/internal/dao/model"
 	"time"
 	"toolkit/errx"
+	"toolkit/helper"
 
 	"system/internal/svc"
 	"system/internal/types"
@@ -48,15 +49,19 @@ func (l *PageSetLogic) PageSet(req *types.PageSetNoticeReq) (resp *types.PageSet
 		do.Where(q.SysUser.UserName.Eq(fmt.Sprintf("%%%s%%", req.CreateBy)))
 	}
 	total, err := do.Count()
+	tenantId := helper.GetTenantId(l.ctx)
+	if tenantId != "" {
+		do = do.Where(q.SysNotice.TenantID.Eq(tenantId))
+	}
 	err = do.Order(q.SysNotice.CreateTime.Desc()).Offset(int(offset)).Limit(int(req.PageSize)).Scan(&result)
 	if err != nil {
 		return nil, errx.GORMErr(err)
 	}
 	resp = new(types.PageSetNoticeResp)
 	resp.Total = total
-	list := make([]types.NoticeBase, len(result))
+	list := make([]*types.NoticeBase, len(result))
 	for i, item := range result {
-		list[i] = *new(types.NoticeBase)
+		list[i] = new(types.NoticeBase)
 		if err = copier.Copy(&list[i], item); err != nil {
 			return nil, err
 		}

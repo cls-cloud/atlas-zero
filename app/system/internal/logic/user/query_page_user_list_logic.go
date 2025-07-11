@@ -12,6 +12,7 @@ import (
 	"system/internal/types"
 	"time"
 	"toolkit/errx"
+	"toolkit/helper"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -91,6 +92,10 @@ func (l *QueryPageUserListLogic) QueryPageUserList(req *types.QueryPageUserListR
 	var result []struct {
 		model.SysUser
 		DeptName string `gorm:"column:dept_name"`
+	}
+	tenantId := helper.GetTenantId(l.ctx)
+	if tenantId != "" {
+		do = do.Where(sysUser.TenantID.Eq(tenantId))
 	}
 	err = do.Offset(int(offset)).Limit(int(req.PageSize)).Scan(&result)
 	if err != nil {

@@ -41,6 +41,10 @@ Tenant:
     - sys_user_post
     - sys_role_menu
     - sys_role_dept
+    - sys_client
+    - sys_config
+    - sys_dict_data
+    - sys_dict_type
 
 Data:
   Database:
