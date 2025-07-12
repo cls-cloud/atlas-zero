@@ -31,6 +31,7 @@ func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoResp, err error) {
 	// 获取用户权限
 	// 获取用户角色
+	q := l.svcCtx.Query
 	userId := helper.GetUserId(l.ctx)
 	resp = new(types.UserInfoResp)
 	sysUser := l.svcCtx.Query.SysUser
@@ -74,6 +75,18 @@ func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoResp, err error) {
 		resp.Roles = append(resp.Roles, "superadmin")
 	} else {
 		resp.Roles = roleKeys
+		permissions := make([]string, 0)
+		err = q.SysMenu.WithContext(l.ctx).Select(q.SysMenu.Perms).
+			LeftJoin(q.SysRoleMenu, q.SysRoleMenu.MenuID.EqCol(q.SysMenu.MenuID)).
+			LeftJoin(q.SysUserRole, q.SysUserRole.RoleID.EqCol(q.SysRoleMenu.RoleID)).
+			Where(q.SysUserRole.UserID.Eq(user.UserID)).
+			Where(q.SysMenu.Perms.IsNotNull(), q.SysMenu.Perms.Neq("")).
+			Distinct(q.SysMenu.Perms).
+			Scan(&permissions)
+		if err != nil {
+			return nil, err
+		}
+		resp.Permissions = permissions
 	}
 
 	err = copier.Copy(&resp.User, user)
