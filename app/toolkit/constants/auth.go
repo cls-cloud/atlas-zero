@@ -1,5 +1,5 @@
 package constants
 
 const (
-	TOKEN = "token:%s:%s" // token:clientId:userId
+	TOKEN_CACHE string = "token:%s:%s" // token:clientId:userId
 )

@@ -2,8 +2,10 @@ package auth
 
 import (
 	"context"
+	"fmt"
 	"system/internal/svc"
 	"system/internal/types"
+	"toolkit/constants"
 	"toolkit/errx"
 	"toolkit/helper"
 
@@ -25,6 +27,19 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err error) {
+	//判断clientId是否正常
+	q := l.svcCtx.Query
+	if req.ClientId == "" {
+		return nil, errx.AuthErr("clientId不能为空")
+	}
+	client, err := q.SysClient.WithContext(l.ctx).Where(q.SysClient.ClientID.Eq(req.ClientId)).First()
+	if err != nil {
+		return nil, errx.GORMErrMsg(err, "clientId不存在")
+	}
+	_, err = q.SysTenant.WithContext(l.ctx).Where(q.SysTenant.TenantID.Eq(req.TenantId)).First()
+	if err != nil {
+		return nil, errx.GORMErrMsg(err, "租户不存在")
+	}
 	if l.svcCtx.Config.Captcha.Enabled {
 		data, err := l.svcCtx.Rds.GetCtx(l.ctx, "captcha:"+req.Uuid)
 		if err != nil {
@@ -40,6 +55,7 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	user, err := sysUser.WithContext(l.ctx).Where(sysUser.UserName.Eq(req.Username)).
 		Where(sysUser.TenantID.Eq(req.TenantId)).
 		First()
+
 	if err != nil {
 		return nil, errx.GORMErrMsg(err, "用户不存在")
 	}
@@ -51,6 +67,10 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 	accessSecret := l.svcCtx.Config.JwtAuth.AccessSecret
 	userid := user.UserID
 	token, err := helper.GenerateToken(userid, user.TenantID, accessSecret, accessExpire)
+	if err != nil {
+		return nil, err
+	}
+	err = l.svcCtx.Rds.SetexCtx(l.ctx, fmt.Sprintf(constants.TOKEN_CACHE, client.ClientID, userid), token, int(client.Timeout))
 	if err != nil {
 		return nil, err
 	}
