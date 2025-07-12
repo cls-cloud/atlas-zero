@@ -1,0 +1,82 @@
+info(
+    desc: "OSS对象存储"
+    author: "atlas"
+    email: "ut1221@icloud.com"
+    date: "2025-07-12 17:32:13"
+)
+
+import "base.api"
+
+type (
+    OssBase {
+        OssId string `json:"ossId,optional"`               // 对象存储主键
+        TenantId string `json:"tenantId,optional"`         // 租户编号
+        FileName string `json:"fileName,optional"`         // 文件名
+        OriginalName string `json:"originalName,optional"` // 原名
+        FileSuffix string `json:"fileSuffix,optional"`     // 文件后缀名
+        Url string `json:"url,optional"`                   // URL地址
+        Ext1 string `json:"ext1,optional"`                 // 扩展字段
+        CreateDept int64 `json:"createDept,optional"`      // 创建部门
+        CreateTime string `json:"createTime,optional"`     // 创建时间
+        CreateBy int64 `json:"createBy,optional"`          // 上传人
+        UpdateTime string `json:"updateTime,optional"`     // 更新时间
+        UpdateBy int64 `json:"updateBy,optional"`          // 更新人
+        Service string `json:"service,optional"`           // 服务商
+    }
+
+        // 创建和更新共用结构
+    ModifyOssReq {
+        OssBase
+    }
+
+        // 请求过滤参数
+    OssQuery {
+        OssId string `form:"ossId,optional"`               // 对象存储主键
+        TenantId string `form:"tenantId,optional"`         // 租户编号
+        FileName string `form:"fileName,optional"`         // 文件名
+        OriginalName string `form:"originalName,optional"` // 原名
+        FileSuffix string `form:"fileSuffix,optional"`     // 文件后缀名
+        Url string `form:"url,optional"`                   // URL地址
+        Ext1 string `form:"ext1,optional"`                 // 扩展字段
+        CreateDept int64 `form:"createDept,optional"`      // 创建部门
+        CreateTime string `form:"createTime,optional"`     // 创建时间
+        CreateBy int64 `form:"createBy,optional"`          // 上传人
+        UpdateTime string `form:"updateTime,optional"`     // 更新时间
+        UpdateBy int64 `form:"updateBy,optional"`          // 更新人
+        Service string `form:"service,optional"`           // 服务商
+    }
+
+        // 分页请求过滤参数
+    PageSetOssReq {
+        PageReq
+        OssQuery
+    }
+
+    PageSetOssResp {
+        Rows []OssBase `json:"rows"`
+        Total int64 `json:"total"`
+    }
+)
+
+@server(
+    tags: "OSS对象存储"
+    group: oss
+    prefix: /system/oss
+middleware: Auth
+)
+service Resource {
+    @handler Info
+    get /:id (IdReq) returns (OssBase)
+
+    @handler Add
+    post / (ModifyOssReq)
+
+    @handler Delete
+    delete /:ids (IdsReq)
+
+    @handler Update
+    put / (ModifyOssReq)
+
+    @handler PageSet
+    get /list (PageSetOssReq) returns (PageSetOssResp)
+}
