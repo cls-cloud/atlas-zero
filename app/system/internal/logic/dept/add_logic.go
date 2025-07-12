@@ -39,8 +39,12 @@ func (l *AddLogic) Add(req *types.ModifyDeptReq) error {
 	} else {
 		ancestors = req.ParentID
 	}
+	deptId := utils.GetID()
+	if req.DeptID != "" {
+		deptId = req.DeptID
+	}
 	dept := &model.SysDept{
-		DeptID:    utils.GetID(),
+		DeptID:    deptId,
 		DeptName:  req.DeptName,
 		Ancestors: ancestors,
 		ParentID:  parentId,

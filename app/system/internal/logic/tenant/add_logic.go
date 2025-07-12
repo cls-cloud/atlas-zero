@@ -2,7 +2,6 @@ package tenant
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 	"strings"
 	"system/internal/dao/model"
@@ -112,7 +111,7 @@ func (l *AddLogic) createAdminUser(tenant *model.SysTenant, req *types.ModifyTen
 	if err := user.NewAddUserLogic(l.ctx, l.svcCtx).AddUser(&types.AddOrUpdateUserReq{
 		UserBase: types.UserBase{
 			UserName: req.UserName,
-			NickName: fmt.Sprintf("%s管理员", tenant.CompanyName),
+			NickName: "管理员",
 			Password: req.Password,
 			Status:   "0",
 			TenantID: tenant.TenantID,
