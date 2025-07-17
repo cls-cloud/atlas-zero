@@ -2,7 +2,8 @@ package tenant
 
 import (
 	"context"
-	"strconv"
+	"fmt"
+	"math/rand"
 	"strings"
 	"system/internal/dao/model"
 	"system/internal/logic/dept"
@@ -35,18 +36,17 @@ func NewAddLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddLogic {
 func (l *AddLogic) Add(req *types.ModifyTenantReq) error {
 	q := l.svcCtx.Query
 	//获取当前最大的租户编号
-	var maxTenantId string
-	if err := q.SysTenant.WithContext(l.ctx).Select(q.SysTenant.TenantID).Order(q.SysTenant.TenantID.Desc()).Limit(1).Scan(&maxTenantId); err != nil {
-		return errx.GORMErr(err)
+	tenantID, err := l.generateUniqueTenantID()
+	if err != nil {
+		return errx.BizErr("租户编号生成失败")
 	}
-	tenantId := strconv.Itoa(int(utils.StrAtoi(maxTenantId) + 1))
 	expireTime, err := time.Parse(time.DateTime, req.ExpireTime)
 	if err != nil {
 		return errx.BizErr("时间格式错误")
 	}
 	tenant := &model.SysTenant{
 		ID:              utils.GetID(),
-		TenantID:        tenantId,
+		TenantID:        tenantID,
 		ContactUserName: req.ContactUserName,
 		ContactPhone:    req.ContactPhone,
 		CompanyName:     req.CompanyName,
@@ -62,12 +62,26 @@ func (l *AddLogic) Add(req *types.ModifyTenantReq) error {
 	if err := q.SysTenant.WithContext(l.ctx).Create(tenant); err != nil {
 		return errx.GORMErr(err)
 	}
-	//TODO 根据租户套餐新增租户的管理员账号
 	err = l.createAdminUser(tenant, req)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (l *AddLogic) generateUniqueTenantID() (string, error) {
+	q := l.svcCtx.Query
+	rand.NewSource(time.Now().UnixNano())
+	for {
+		tenantId := fmt.Sprintf("%06d", rand.Intn(1000000))
+		count, err := q.SysTenant.WithContext(l.ctx).Where(q.SysTenant.TenantID.Eq(tenantId)).Count()
+		if err != nil {
+			return "", errx.GORMErr(err)
+		}
+		if count == 0 {
+			return tenantId, nil
+		}
+	}
 }
 
 func (l *AddLogic) createAdminUser(tenant *model.SysTenant, req *types.ModifyTenantReq) error {

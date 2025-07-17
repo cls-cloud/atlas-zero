@@ -50,8 +50,6 @@ Tenant:
     - sys_role_dept
     - sys_client
     - sys_config
-    - sys_dict_data
-    - sys_dict_type
 
 Data:
   Database:

@@ -59,6 +59,10 @@ type (
     middleware: Auth
 )
 service System {
+
+    @handler SyncTenantDict
+    get /syncTenantDict
+
     @handler Info
     get /:id (IdReq) returns (TenantBase)
 

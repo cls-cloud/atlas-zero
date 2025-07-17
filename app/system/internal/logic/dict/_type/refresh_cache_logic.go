@@ -3,8 +3,6 @@ package _type
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-	"toolkit/auth"
 	"toolkit/constants"
 	"toolkit/errx"
 
@@ -29,10 +27,6 @@ func NewRefreshCacheLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Refr
 func (l *RefreshCacheLogic) RefreshCache() error {
 	q := l.svcCtx.Query
 	key := constants.DICT_CACHE
-	if l.svcCtx.Config.Tenant.Enabled {
-		tenantId := auth.GetTenantId(l.ctx)
-		key = fmt.Sprintf("%s:%s", constants.DICT_CACHE, tenantId)
-	}
 	dictTypes, err := q.SysDictType.WithContext(l.ctx).Find()
 	if err != nil {
 		return errx.GORMErr(err)

@@ -3,10 +3,8 @@ package data
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/jinzhu/copier"
 	"system/internal/logic/dict/_type"
-	"toolkit/auth"
 	"toolkit/constants"
 	"toolkit/errx"
 
@@ -33,10 +31,6 @@ func NewDataByTypeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DataBy
 func (l *DataByTypeLogic) DataByType(req *types.CodeReq) (resp []*types.DictDataBase, err error) {
 	resp = make([]*types.DictDataBase, 0)
 	cacheKey := constants.DICT_CACHE
-	if l.svcCtx.Config.Tenant.Enabled {
-		tenantId := auth.GetTenantId(l.ctx)
-		cacheKey = fmt.Sprintf("%s:%s", constants.DICT_CACHE, tenantId)
-	}
 	dataJson, err := l.svcCtx.Rds.HgetCtx(l.ctx, cacheKey, req.Code)
 	if err == nil && len(dataJson) > 0 {
 		type dictDataFromCache struct {

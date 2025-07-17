@@ -411,6 +411,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodGet,
+					Path:    "/syncTenantDict",
+					Handler: tenant.SyncTenantDictHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
 					Path:    "/:id",
 					Handler: tenant.InfoHandler(serverCtx),
 				},
