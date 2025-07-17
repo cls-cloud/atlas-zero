@@ -731,6 +731,11 @@ type PageSetTenantResp struct {
 	Total int64         `json:"total"`
 }
 
+type SyncTenantPackageReq struct {
+	TenantId  string `form:"tenantId"`
+	PackageId string `form:"packageId"`
+}
+
 type ModifyTenantPackageReq struct {
 	PackageID         string   `json:"packageId,optional"`
 	PackageName       string   `json:"packageName,optional"`

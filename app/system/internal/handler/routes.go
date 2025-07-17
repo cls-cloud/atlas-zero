@@ -416,6 +416,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodGet,
+					Path:    "/syncTenantPackage",
+					Handler: tenant.SyncTenantPackageHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
 					Path:    "/:id",
 					Handler: tenant.InfoHandler(serverCtx),
 				},

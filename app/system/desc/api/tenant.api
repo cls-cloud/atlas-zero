@@ -50,6 +50,10 @@ type (
         Rows []*TenantBase `json:"rows"`
         Total int64 `json:"total"`
     }
+    SyncTenantPackageReq {
+        TenantId string `form:"tenantId"`
+        PackageId string `form:"packageId"`
+    }
 )
 
 @server(
@@ -62,6 +66,9 @@ service System {
 
     @handler SyncTenantDict
     get /syncTenantDict
+
+    @handler SyncTenantPackage
+    get /syncTenantPackage (SyncTenantPackageReq)
 
     @handler Info
     get /:id (IdReq) returns (TenantBase)
