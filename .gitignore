@@ -43,6 +43,7 @@ yarn.lock
 deploy/bin/
 log/
 keystore
+app/bin/traefik/traefik
 
 # OS General
 Thumbs.db
