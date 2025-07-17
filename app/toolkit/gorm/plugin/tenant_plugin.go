@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm/clause"
 	"reflect"
 	"strings"
+	"toolkit/auth"
 )
 
 // TenantPlugin 多租户插件
@@ -20,7 +21,7 @@ func (tp *TenantPlugin) Name() string {
 
 // getTenantID 从 context 中获取 tenant_id（string）
 func getTenantID(db *gorm.DB) (string, bool) {
-	v, ok := db.Statement.Context.Value("tenant_id").(string)
+	v, ok := db.Statement.Context.Value(auth.TenantIDKey).(string)
 	return v, ok
 }
 

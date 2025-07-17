@@ -6,15 +6,14 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jinzhu/copier"
+	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/gorm"
 	"system/internal/dao/model"
 	"system/internal/svc"
 	"system/internal/types"
 	"time"
+	"toolkit/auth"
 	"toolkit/errx"
-	"toolkit/helper"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type QueryPageUserListLogic struct {
@@ -93,7 +92,7 @@ func (l *QueryPageUserListLogic) QueryPageUserList(req *types.QueryPageUserListR
 		model.SysUser
 		DeptName string `gorm:"column:dept_name"`
 	}
-	tenantId := helper.GetTenantId(l.ctx)
+	tenantId := auth.GetTenantId(l.ctx)
 	if tenantId != "" {
 		do = do.Where(sysUser.TenantID.Eq(tenantId))
 	}

@@ -8,8 +8,8 @@ import (
 	"system/internal/svc"
 	"system/internal/types"
 	"time"
+	"toolkit/auth"
 	"toolkit/errx"
-	"toolkit/helper"
 )
 
 type ListLogic struct {
@@ -28,7 +28,7 @@ func NewListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListLogic {
 
 func (l *ListLogic) List(req *types.QueryMenuListReq) (resp []*types.MenuBase, err error) {
 	q := l.svcCtx.Query
-	userId := helper.GetUserId(l.ctx)
+	userId := auth.GetUserId(l.ctx)
 	do := q.SysMenu.WithContext(l.ctx)
 	// 除了超级管理员 其余所有用户都只能查询自己角色绑定的菜单
 	if userId != "1" {

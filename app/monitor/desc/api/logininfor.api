@@ -8,25 +8,6 @@ info(
 import "base.api"
 
 type (
-    LogininforBase {
-        InfoId string `json:"infoId,optional"`               // 访问ID
-        TenantId string `json:"tenantId,optional"`           // 租户编号
-        UserName string `json:"userName,optional"`           // 用户账号
-        ClientKey string `json:"clientKey,optional"`         // 客户端
-        DeviceType string `json:"deviceType,optional"`       // 设备类型
-        Ipaddr string `json:"ipaddr,optional"`               // 登录IP地址
-        LoginLocation string `json:"loginLocation,optional"` // 登录地点
-        Browser string `json:"browser,optional"`             // 浏览器类型
-        Os string `json:"os,optional"`                       // 操作系统
-        Status string `json:"status,optional"`               // 登录状态（0成功 1失败）
-        Msg string `json:"msg,optional"`                     // 提示消息
-        LoginTime string `json:"loginTime,optional"`         // 访问时间
-    }
-
-        // 创建和更新共用结构
-    ModifyLogininforReq {
-        LogininforBase
-    }
 
         // 请求过滤参数
     LogininforQuery {
@@ -51,7 +32,7 @@ type (
     }
 
     PageSetLogininforResp {
-        Rows []LogininforBase `json:"rows"`
+        Rows []*LogininforBase `json:"rows"`
         Total int64 `json:"total"`
     }
 )
@@ -62,18 +43,13 @@ type (
     prefix: /monitor/logininfor
     middleware: Auth
 )
-service Logininfor {
-    @handler Info
-    get /:id (IdReq) returns (LogininforBase)
+service Monitor {
 
-    @handler Add
-    post / (ModifyLogininforReq)
+    @handler Clean
+    delete /clean
 
     @handler Delete
     delete /:ids (IdsReq)
-
-    @handler Update
-    put / (ModifyLogininforReq)
 
     @handler PageSet
     get /list (PageSetLogininforReq) returns (PageSetLogininforResp)

@@ -2,11 +2,10 @@ package menu
 
 import (
 	"context"
-	"toolkit/errx"
-	"toolkit/helper"
-
 	"system/internal/svc"
 	"system/internal/types"
+	"toolkit/auth"
+	"toolkit/errx"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -29,7 +28,7 @@ func (l *TreeSelectLogic) TreeSelect() (resp []*types.SelectMenuTree, err error)
 	resp = make([]*types.SelectMenuTree, 0)
 	q := l.svcCtx.Query
 
-	userId := helper.GetUserId(l.ctx)
+	userId := auth.GetUserId(l.ctx)
 	do := q.SysMenu.WithContext(l.ctx)
 	// 除了超级管理员 其余所有用户都只能查询自己角色绑定的菜单
 	if userId != "1" {

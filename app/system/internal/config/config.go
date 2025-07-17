@@ -7,11 +7,12 @@ import (
 )
 
 type Config struct {
-	RestConf rest.RestConf
-	RpcConf  zrpc.RpcServerConf
-	Tenant   TenantConfig
-	Data     DataConfig
-	JwtAuth  struct {
+	RestConf   rest.RestConf
+	RpcConf    zrpc.RpcServerConf
+	Tenant     TenantConfig
+	Data       DataConfig
+	MonitorRpc zrpc.RpcClientConf
+	JwtAuth    struct {
 		AccessSecret string
 		AccessExpire int64
 	}

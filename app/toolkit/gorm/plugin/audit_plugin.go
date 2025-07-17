@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"strconv"
 	"time"
+	"toolkit/auth"
 )
 
 // AuditPlugin（用于自动填充 create_by 和 update_by）
@@ -17,7 +18,7 @@ func (ap *AuditPlugin) Name() string {
 
 // getUserID 从 context 中获取 user_id（string 类型）
 func getUserID(db *gorm.DB) (string, bool) {
-	v, ok := db.Statement.Context.Value("user_id").(string)
+	v, ok := db.Statement.Context.Value(auth.UserIDKey).(string)
 	return v, ok
 }
 

@@ -2,7 +2,7 @@ RestConf:
   Mode: dev
   Name: system
   Host: 0.0.0.0
-  Port: 8080
+  Port: 8090
   Log:
     ServiceName: system-api
     Level: debug
@@ -12,11 +12,18 @@ RestConf:
     Path: /metrics
 RpcConf:
   Name: system
-  ListenOn: 0.0.0.0:8888
+  ListenOn: 0.0.0.0:9091
   Etcd:
     Hosts:
       - 127.0.0.1:2379
-    Key: desc.rpc
+    Key: system.rpc
+
+MonitorRpc:
+  Etcd:
+    Hosts:
+    - 127.0.0.1:2379
+    Key: monitor.rpc
+
 
 JwtAuth:
   AccessSecret: YXTsYXMtYWRtaW4=

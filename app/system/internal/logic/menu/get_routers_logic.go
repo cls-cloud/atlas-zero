@@ -3,13 +3,12 @@ package menu
 import (
 	"context"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 	"strings"
 	"system/internal/dao/model"
 	"system/internal/svc"
 	"system/internal/types"
-	"toolkit/helper"
-
-	"github.com/zeromicro/go-zero/core/logx"
+	"toolkit/auth"
 )
 
 type GetRoutersLogic struct {
@@ -28,7 +27,7 @@ func NewGetRoutersLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetRou
 
 func (l *GetRoutersLogic) GetRouters() (resp []*types.RouterMenuResp, err error) {
 	resp = make([]*types.RouterMenuResp, 0)
-	userId := helper.GetUserId(l.ctx)
+	userId := auth.GetUserId(l.ctx)
 	// 判断用户是否属于超级管理员
 	isAdmin := false
 	sysUserRole := l.svcCtx.Query.SysUserRole

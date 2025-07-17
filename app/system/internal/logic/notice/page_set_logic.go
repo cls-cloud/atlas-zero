@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"github.com/jinzhu/copier"
 	"system/internal/dao/model"
-	"time"
-	"toolkit/errx"
-	"toolkit/helper"
-
 	"system/internal/svc"
 	"system/internal/types"
+	"time"
+	"toolkit/auth"
+	"toolkit/errx"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -49,7 +48,7 @@ func (l *PageSetLogic) PageSet(req *types.PageSetNoticeReq) (resp *types.PageSet
 		do.Where(q.SysUser.UserName.Eq(fmt.Sprintf("%%%s%%", req.CreateBy)))
 	}
 	total, err := do.Count()
-	tenantId := helper.GetTenantId(l.ctx)
+	tenantId := auth.GetTenantId(l.ctx)
 	if tenantId != "" {
 		do = do.Where(q.SysNotice.TenantID.Eq(tenantId))
 	}

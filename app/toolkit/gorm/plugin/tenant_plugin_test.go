@@ -12,6 +12,7 @@ import (
 	"os"
 	"testing"
 	"time"
+	"toolkit/auth"
 	"toolkit/gorm/plugin"
 )
 
@@ -83,7 +84,7 @@ func TestTenantPlugin(t *testing.T) {
 	t.Run("Query with TenantID", func(t *testing.T) {
 		// 使用 context 传递 tenant_id
 		tenantID := "1"
-		db = db.WithContext(context.WithValue(context.Background(), "tenant_id", tenantID))
+		db = db.WithContext(context.WithValue(context.Background(), auth.TenantIDKey, tenantID))
 
 		// 插入数据时，应该自动设置 tenant_id
 		err := db.Create(&User{Name: "Alice Doe"}).Error

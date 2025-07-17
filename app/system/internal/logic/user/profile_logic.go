@@ -5,12 +5,11 @@ import (
 	"github.com/jinzhu/copier"
 	"strings"
 	"system/internal/dao/model"
-	"time"
-	"toolkit/errx"
-	"toolkit/helper"
-
 	"system/internal/svc"
 	"system/internal/types"
+	"time"
+	"toolkit/auth"
+	"toolkit/errx"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -30,7 +29,7 @@ func NewProfileLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ProfileLo
 }
 
 func (l *ProfileLogic) Profile() (resp *types.UserProfileResp, err error) {
-	userId := helper.GetUserId(l.ctx)
+	userId := auth.GetUserId(l.ctx)
 	resp = new(types.UserProfileResp)
 	q := l.svcCtx.Query
 	var result struct {

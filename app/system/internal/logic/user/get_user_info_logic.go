@@ -5,11 +5,10 @@ import (
 	"errors"
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
-	"toolkit/errx"
-	"toolkit/helper"
-
 	"system/internal/svc"
 	"system/internal/types"
+	"toolkit/auth"
+	"toolkit/errx"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -32,7 +31,7 @@ func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoResp, err error) {
 	// 获取用户权限
 	// 获取用户角色
 	q := l.svcCtx.Query
-	userId := helper.GetUserId(l.ctx)
+	userId := auth.GetUserId(l.ctx)
 	resp = new(types.UserInfoResp)
 	sysUser := l.svcCtx.Query.SysUser
 	user, err := sysUser.WithContext(l.ctx).Where(sysUser.UserID.Eq(userId)).First()
