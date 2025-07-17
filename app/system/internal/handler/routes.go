@@ -572,6 +572,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodDelete,
+					Path:    "/refreshCache",
+					Handler: dict_type.RefreshCacheHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodDelete,
 					Path:    "/:code",
 					Handler: dict_type.DeleteHandler(serverCtx),
 				},

@@ -54,6 +54,9 @@ service System {
     @handler Add
     post / (ModifyDictTypeReq)
 
+    @handler RefreshCache
+    delete /refreshCache
+
     @handler Delete
     delete /:code (CodeReq)
 
