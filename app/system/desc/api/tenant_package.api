@@ -43,6 +43,11 @@ type (
         Rows []*TenantPackageBase `json:"rows"`
         Total int64 `json:"total"`
     }
+
+    ChangeStatusTenantPackageReq {
+        PackageId string `json:"packageId"`
+        Status string `json:"status"`
+    }
 )
 
 @server(
@@ -60,6 +65,9 @@ service System {
 
     @handler Delete
     delete /:ids (IdsReq)
+
+    @handler ChangeStatus
+    put /changeStatus (ChangeStatusTenantPackageReq)
 
     @handler Update
     put / (ModifyTenantPackageReq)

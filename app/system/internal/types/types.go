@@ -736,6 +736,12 @@ type SyncTenantPackageReq struct {
 	PackageId string `form:"packageId"`
 }
 
+type ChangeStatusTenantReq struct {
+	Id       string `json:"id"`
+	Status   string `json:"status"`
+	TenantId string `json:"tenantId"`
+}
+
 type ModifyTenantPackageReq struct {
 	PackageID         string   `json:"packageId,optional"`
 	PackageName       string   `json:"packageName,optional"`
@@ -767,6 +773,11 @@ type PageSetTenantPackageReq struct {
 type PageSetTenantPackageResp struct {
 	Rows  []*TenantPackageBase `json:"rows"`
 	Total int64                `json:"total"`
+}
+
+type ChangeStatusTenantPackageReq struct {
+	PackageId string `json:"packageId"`
+	Status    string `json:"status"`
 }
 
 type ModifyConfigReq struct {

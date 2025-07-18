@@ -62,15 +62,15 @@ func (l *LoginLogic) LoginHandler(req *types.LoginReq, err error) (*types.LoginR
 	if req.ClientId == "" {
 		return nil, errx.AuthErr("clientId不能为空")
 	}
-	client, err := q.SysClient.WithContext(l.ctx).Where(q.SysClient.ClientID.Eq(req.ClientId)).
+	client, err := q.SysClient.WithContext(l.ctx).Where(q.SysClient.ClientID.Eq(req.ClientId), q.SysClient.Status.Eq("0")).
 		Where(q.SysClient.GrantType.Like(fmt.Sprintf("%%%s%%", req.GrantType))).
 		First()
 	if err != nil {
 		return nil, errx.GORMErrMsg(err, fmt.Sprintf("客户端id: %s 认证类型：%s 认证异常!", req.ClientId, req.GrantType))
 	}
-	_, err = q.SysTenant.WithContext(l.ctx).Where(q.SysTenant.TenantID.Eq(req.TenantId)).First()
+	_, err = q.SysTenant.WithContext(l.ctx).Where(q.SysTenant.TenantID.Eq(req.TenantId), q.SysTenant.Status.Eq("0")).First()
 	if err != nil {
-		return nil, errx.GORMErrMsg(err, "租户不存在")
+		return nil, errx.GORMErrMsg(err, "租户不存在或已停用")
 	}
 	if l.svcCtx.Config.Captcha.Enabled {
 		data, err := l.svcCtx.Rds.GetCtx(l.ctx, "captcha:"+req.Uuid)

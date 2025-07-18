@@ -17,6 +17,7 @@ require (
 	gorm.io/gen v0.3.27
 	gorm.io/gorm v1.30.0
 	gorm.io/plugin/dbresolver v1.6.0
+	gorm.io/plugin/soft_delete v1.2.1
 	monitor v0.0.0-00010101000000-000000000000
 	toolkit v0.0.0-20230425142604-c0c5c0c0c0c0
 )

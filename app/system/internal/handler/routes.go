@@ -436,6 +436,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPut,
+					Path:    "/changeStatus",
+					Handler: tenant.ChangeStatusHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
 					Path:    "/",
 					Handler: tenant.UpdateHandler(serverCtx),
 				},
@@ -467,6 +472,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodDelete,
 					Path:    "/:ids",
 					Handler: tenant_package.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/changeStatus",
+					Handler: tenant_package.ChangeStatusHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPut,

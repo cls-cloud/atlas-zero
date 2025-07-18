@@ -54,6 +54,11 @@ type (
         TenantId string `form:"tenantId"`
         PackageId string `form:"packageId"`
     }
+    ChangeStatusTenantReq {
+        Id string `json:"id"`
+        Status string `json:"status"`
+        TenantId string `json:"tenantId"`
+    }
 )
 
 @server(
@@ -78,6 +83,9 @@ service System {
 
     @handler Delete
     delete /:ids (IdsReq)
+
+    @handler ChangeStatus
+    put /changeStatus (ChangeStatusTenantReq)
 
     @handler Update
     put / (ModifyTenantReq)
