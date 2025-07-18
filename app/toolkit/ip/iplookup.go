@@ -9,6 +9,7 @@ import (
 	"net/url"
 )
 
+// IP查询通过阿里云市场购买获取，当前apiKey仅为测试使用
 const (
 	ipAPIHost = "https://c2ba.api.huachen.cn"
 	ipAPIPath = "/ip"
