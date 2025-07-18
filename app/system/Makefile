@@ -19,6 +19,8 @@ build:
 	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -tags no_k8s \
 	  -o $(APP_NAME) system.go
 	tar -czvf $(TAR_NAME) $(APP_NAME) Makefile etc/
+	rm -f $(APP_NAME)
+
 
 back_run:
 	nohup ./$(APP_NAME) > $(APP_NAME).log 2>&1 &

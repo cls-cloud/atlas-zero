@@ -135,7 +135,7 @@ type CodeReq struct {
 }
 
 type IdsReq struct {
-	Id string `json:"ids"`
+	Id string `path:"ids"`
 }
 
 type TimeReq struct {

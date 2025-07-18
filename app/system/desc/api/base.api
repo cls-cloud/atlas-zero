@@ -13,7 +13,7 @@ type (
         Code string `path:"code"`
     }
     IdsReq {
-        id string `json:"ids"`
+        id string `path:"ids"`
     }
     TimeReq {
         BeginTime string `form:"params[beginTime],optional"`
