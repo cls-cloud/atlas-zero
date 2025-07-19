@@ -8,21 +8,7 @@ info(
 import "base.api"
 
 type (
-    OssBase {
-        OssId string `json:"ossId,optional"`               // 对象存储主键
-        TenantId string `json:"tenantId,optional"`         // 租户编号
-        FileName string `json:"fileName,optional"`         // 文件名
-        OriginalName string `json:"originalName,optional"` // 原名
-        FileSuffix string `json:"fileSuffix,optional"`     // 文件后缀名
-        Url string `json:"url,optional"`                   // URL地址
-        Ext1 string `json:"ext1,optional"`                 // 扩展字段
-        CreateDept int64 `json:"createDept,optional"`      // 创建部门
-        CreateTime string `json:"createTime,optional"`     // 创建时间
-        CreateBy int64 `json:"createBy,optional"`          // 上传人
-        UpdateTime string `json:"updateTime,optional"`     // 更新时间
-        UpdateBy int64 `json:"updateBy,optional"`          // 更新人
-        Service string `json:"service,optional"`           // 服务商
-    }
+
 
         // 创建和更新共用结构
     ModifyOssReq {
@@ -53,7 +39,7 @@ type (
     }
 
     PageSetOssResp {
-        Rows []OssBase `json:"rows"`
+        Rows []*OssBase `json:"rows"`
         Total int64 `json:"total"`
     }
 )
@@ -61,7 +47,7 @@ type (
 @server(
     tags: "OSS对象存储"
     group: oss
-    prefix: /system/oss
+    prefix: /resource/oss
 middleware: Auth
 )
 service Resource {
