@@ -94,7 +94,12 @@ func desensitizeLocation(location string) string {
 	parts := strings.Split(location, "|")
 	if len(parts) == 3 {
 		country := parts[0]
-		return fmt.Sprintf("%s***", country)
+		province := parts[1]
+		return fmt.Sprintf("%s|%s|**", country, province)
+	}
+	if len(parts) == 2 {
+		country := parts[0]
+		return fmt.Sprintf("%s|**", country)
 	}
 	return location
 }

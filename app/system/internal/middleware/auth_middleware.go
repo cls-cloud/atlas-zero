@@ -8,6 +8,7 @@ import (
 	"strings"
 	"system/internal/config"
 	"toolkit/auth"
+	"toolkit/tenant"
 )
 
 type AuthMiddleware struct {
@@ -48,12 +49,16 @@ func (m *AuthMiddleware) ExecHandle(next http.HandlerFunc) http.HandlerFunc {
 			http.Error(w, "Unauthorized: token expired (idle timeout)", http.StatusUnauthorized)
 			return
 		}
-
+		tenantId, err := tenant.GetTenantId(r.Context(), m.rds, &uc.UserInfo)
+		if err != nil {
+			http.Error(w, "Unauthorized: invalid token", http.StatusUnauthorized)
+			return
+		}
 		r.Header.Set(auth.UserIDKey, uc.UserId)
-		r.Header.Set(auth.TenantIDKey, uc.TenantId)
+		r.Header.Set(auth.TenantIDKey, tenantId)
 		r.Header.Set(auth.ClientIDKey, uc.ClientId)
 		ctx := context.WithValue(r.Context(), auth.UserIDKey, uc.UserId)
-		ctx = context.WithValue(ctx, auth.TenantIDKey, uc.TenantId)
+		ctx = context.WithValue(ctx, auth.TenantIDKey, tenantId)
 		ctx = context.WithValue(ctx, auth.ClientIDKey, uc.ClientId)
 		next(w, r.WithContext(ctx))
 	}

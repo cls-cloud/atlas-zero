@@ -3,12 +3,14 @@ package user
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
 	"system/internal/svc"
 	"system/internal/types"
 	"toolkit/auth"
 	"toolkit/errx"
+	"toolkit/tenant"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -32,9 +34,31 @@ func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoResp, err error) {
 	// 获取用户角色
 	q := l.svcCtx.Query
 	userId := auth.GetUserId(l.ctx)
+	tenantKey := fmt.Sprintf(tenant.TENANT_KEY, userId)
+	//删除租户ID缓存
+	// 先判断redis中是否存在
+	ex, err := l.svcCtx.Rds.ExistsCtx(l.ctx, tenantKey)
+	if err != nil {
+		return nil, err
+	}
+	tenantId := auth.GetTenantId(l.ctx)
+	if ex {
+		tenantId, err = l.svcCtx.Rds.HgetCtx(l.ctx, tenantKey, "ot")
+		if err != nil {
+			return nil, err
+		}
+		err = l.svcCtx.Rds.HsetCtx(l.ctx, tenantKey, "nt", tenantId)
+		if err != nil {
+			return nil, err
+		}
+	}
 	resp = new(types.UserInfoResp)
 	sysUser := l.svcCtx.Query.SysUser
-	user, err := sysUser.WithContext(l.ctx).Where(sysUser.UserID.Eq(userId)).First()
+	udo := sysUser.WithContext(l.ctx).Where(sysUser.UserID.Eq(userId))
+	if tenantId != "" {
+		udo.Where(sysUser.TenantID.Eq(tenantId))
+	}
+	user, err := udo.First()
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, errx.GORMErrMsg(err, "用户不存在")
@@ -55,9 +79,12 @@ func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoResp, err error) {
 		}
 	}
 	sysRole.WithContext(l.ctx).Where(sysRole.RoleID.In())
-	roles, err := sysRole.WithContext(l.ctx).
-		Where(sysRole.RoleID.In(roleIds...)).
-		Find()
+	rdo := sysRole.WithContext(l.ctx).
+		Where(sysRole.RoleID.In(roleIds...))
+	if tenantId != "" {
+		rdo.Where(sysRole.TenantID.Eq(tenantId))
+	}
+	roles, err := rdo.Find()
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, errx.GORMErr(err)
@@ -69,7 +96,6 @@ func (l *GetUserInfoLogic) GetUserInfo() (resp *types.UserInfoResp, err error) {
 		roleKeys[i] = item.RoleKey
 	}
 	if isAdmin {
-		//TODO Permissions 菜单权限
 		resp.Permissions = append(resp.Permissions, "*:*:*")
 		resp.Roles = append(resp.Roles, "superadmin")
 	} else {

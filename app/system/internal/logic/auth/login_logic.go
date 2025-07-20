@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/mssola/useragent"
+	"github.com/zeromicro/go-zero/core/logx"
 	"monitor/pb/monitor"
 	"net/http"
 	"strings"
@@ -15,8 +16,6 @@ import (
 	"toolkit/errx"
 	"toolkit/helper"
 	"toolkit/ip"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type LoginLogic struct {
@@ -116,7 +115,7 @@ func (l *LoginLogic) LoginHandler(req *types.LoginReq, err error) (*types.LoginR
 	if err != nil {
 		return nil, err
 	}
-	return &types.LoginResp{AccessToken: token}, nil
+	return &types.LoginResp{AccessToken: token, ClientId: client.ClientID, ExpireIn: int64(client.Timeout), RefreshExpireIn: int64(client.ActiveTimeout)}, nil
 }
 
 func (l *LoginLogic) LoginInfo(msg string, status bool, req *types.LoginReq) {

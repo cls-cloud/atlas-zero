@@ -92,4 +92,7 @@ service System {
 
     @handler PageSet
     get /list (PageSetTenantReq) returns (PageSetTenantResp)
+
+    @handler Dynamic
+    get /dynamic/:id (IdReq)
 }

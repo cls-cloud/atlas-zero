@@ -449,6 +449,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/list",
 					Handler: tenant.PageSetHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/dynamic/:id",
+					Handler: tenant.DynamicHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/system/tenant"),
