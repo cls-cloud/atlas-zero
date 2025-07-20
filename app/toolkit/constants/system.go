@@ -1,5 +1,7 @@
 package constants
 
 const (
-	DICT_CACHE = "sys_dict"
+	DictCache             = "sys_dict"
+	OssConfigDefaultCache = "oss_config:default"
+	OssConfigCache        = "oss_config:%s"
 )

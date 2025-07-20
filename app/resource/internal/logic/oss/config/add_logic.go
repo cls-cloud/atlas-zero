@@ -2,6 +2,9 @@ package config
 
 import (
 	"context"
+	"resource/internal/dao/model"
+	"toolkit/errx"
+	"toolkit/utils"
 
 	"resource/internal/svc"
 	"resource/internal/types"
@@ -24,7 +27,24 @@ func NewAddLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddLogic {
 }
 
 func (l *AddLogic) Add(req *types.ModifyOssConfigReq) error {
-	// todo: add your logic here and delete this line
-
+	ossConfig := &model.SysOssConfig{
+		OssConfigID:  utils.GetID(),
+		ConfigKey:    req.ConfigKey,
+		AccessKey:    req.AccessKey,
+		SecretKey:    req.SecretKey,
+		BucketName:   req.BucketName,
+		Prefix:       req.Prefix,
+		Endpoint:     req.Endpoint,
+		Domain:       req.Domain,
+		IsHTTPS:      req.IsHTTPS,
+		Region:       req.Region,
+		AccessPolicy: req.AccessPolicy,
+		Status:       req.Status,
+		Ext1:         req.Ext1,
+		Remark:       req.Remark,
+	}
+	if err := l.svcCtx.Query.SysOssConfig.WithContext(l.ctx).Create(ossConfig); err != nil {
+		return errx.GORMErr(err)
+	}
 	return nil
 }

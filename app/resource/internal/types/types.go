@@ -69,7 +69,7 @@ type OssBase struct {
 }
 
 type OssConfigBase struct {
-	OssConfigId  string `json:"ossConfigId,optional"`  // 主键
+	OssConfigID  string `json:"ossConfigId,optional"`  // 主键
 	TenantId     string `json:"tenantId,optional"`     // 租户编号
 	ConfigKey    string `json:"configKey,optional"`    // 配置key
 	AccessKey    string `json:"accessKey,optional"`    // accessKey
@@ -78,7 +78,7 @@ type OssConfigBase struct {
 	Prefix       string `json:"prefix,optional"`       // 前缀
 	Endpoint     string `json:"endpoint,optional"`     // 访问站点
 	Domain       string `json:"domain,optional"`       // 自定义域名
-	IsHttps      string `json:"isHttps,optional"`      // 是否https（Y=是,N=否）
+	IsHTTPS      string `json:"isHttps,optional"`      // 是否https（Y=是,N=否）
 	Region       string `json:"region,optional"`       // 域
 	AccessPolicy string `json:"accessPolicy,optional"` // 桶权限类型(0=private 1=public 2=custom)
 	Status       string `json:"status,optional"`       // 是否默认（0=是,1=否）
@@ -96,7 +96,7 @@ type ModifyOssConfigReq struct {
 }
 
 type OssConfigQuery struct {
-	OssConfigId  string `form:"ossConfigId,optional"`  // 主键
+	OssConfigID  string `form:"ossConfigId,optional"`  // 主键
 	TenantId     string `form:"tenantId,optional"`     // 租户编号
 	ConfigKey    string `form:"configKey,optional"`    // 配置key
 	AccessKey    string `form:"accessKey,optional"`    // accessKey
@@ -105,7 +105,7 @@ type OssConfigQuery struct {
 	Prefix       string `form:"prefix,optional"`       // 前缀
 	Endpoint     string `form:"endpoint,optional"`     // 访问站点
 	Domain       string `form:"domain,optional"`       // 自定义域名
-	IsHttps      string `form:"isHttps,optional"`      // 是否https（Y=是,N=否）
+	IsHTTPS      string `form:"isHttps,optional"`      // 是否https（Y=是,N=否）
 	Region       string `form:"region,optional"`       // 域
 	AccessPolicy string `form:"accessPolicy,optional"` // 桶权限类型(0=private 1=public 2=custom)
 	Status       string `form:"status,optional"`       // 是否默认（0=是,1=否）
@@ -126,4 +126,10 @@ type PageSetOssConfigReq struct {
 type PageSetOssConfigResp struct {
 	Rows  []*OssConfigBase `json:"rows"`
 	Total int64            `json:"total"`
+}
+
+type ChangeStatusOssConfigReq struct {
+	OssConfigId string `json:"ossConfigId"`
+	ConfigKey   string `json:"configKey"`
+	Status      string `json:"status"`
 }

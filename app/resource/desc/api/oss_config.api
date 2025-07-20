@@ -17,7 +17,7 @@ type (
 
         // 请求过滤参数
     OssConfigQuery {
-        OssConfigId string `form:"ossConfigId,optional"`   // 主键
+        OssConfigID string `form:"ossConfigId,optional"`   // 主键
         TenantId string `form:"tenantId,optional"`         // 租户编号
         ConfigKey string `form:"configKey,optional"`       // 配置key
         AccessKey string `form:"accessKey,optional"`       // accessKey
@@ -26,7 +26,7 @@ type (
         Prefix string `form:"prefix,optional"`             // 前缀
         Endpoint string `form:"endpoint,optional"`         // 访问站点
         Domain string `form:"domain,optional"`             // 自定义域名
-        IsHttps string `form:"isHttps,optional"`           // 是否https（Y=是,N=否）
+        IsHTTPS string `form:"isHttps,optional"`           // 是否https（Y=是,N=否）
         Region string `form:"region,optional"`             // 域
         AccessPolicy string `form:"accessPolicy,optional"` // 桶权限类型(0=private 1=public 2=custom)
         Status string `form:"status,optional"`             // 是否默认（0=是,1=否）
@@ -49,6 +49,12 @@ type (
         Rows []*OssConfigBase `json:"rows"`
         Total int64 `json:"total"`
     }
+
+    ChangeStatusOssConfigReq {
+        OssConfigId string `json:"ossConfigId"`
+        ConfigKey string `json:"configKey"`
+        Status string `json:"status"`
+    }
 )
 
 @server(
@@ -66,6 +72,9 @@ service Resource {
 
     @handler Delete
     delete /:ids (IdsReq)
+
+    @handler ChangeStatus
+    put /changeStatus (ChangeStatusOssConfigReq)
 
     @handler Update
     put / (ModifyOssConfigReq)

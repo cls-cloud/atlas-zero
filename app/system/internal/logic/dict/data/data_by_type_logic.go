@@ -30,7 +30,7 @@ func NewDataByTypeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DataBy
 
 func (l *DataByTypeLogic) DataByType(req *types.CodeReq) (resp []*types.DictDataBase, err error) {
 	resp = make([]*types.DictDataBase, 0)
-	cacheKey := constants.DICT_CACHE
+	cacheKey := constants.DictCache
 	dataJson, err := l.svcCtx.Rds.HgetCtx(l.ctx, cacheKey, req.Code)
 	if err == nil && len(dataJson) > 0 {
 		type dictDataFromCache struct {

@@ -2,6 +2,9 @@ package config
 
 import (
 	"context"
+	"github.com/jinzhu/copier"
+	"strings"
+	"toolkit/errx"
 
 	"resource/internal/svc"
 	"resource/internal/types"
@@ -24,7 +27,31 @@ func NewInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *InfoLogic {
 }
 
 func (l *InfoLogic) Info(req *types.IdReq) (resp *types.OssConfigBase, err error) {
-	// todo: add your logic here and delete this line
-
+	resp = new(types.OssConfigBase)
+	q := l.svcCtx.Query
+	ossConfig, err := q.SysOssConfig.WithContext(l.ctx).Where(q.SysOssConfig.OssConfigID.Eq(req.Id)).First()
+	if err != nil {
+		return nil, errx.GORMErr(err)
+	}
+	if err := copier.Copy(&resp, ossConfig); err != nil {
+		return nil, err
+	}
+	resp.SecretKey = MaskKey(ossConfig.SecretKey)
+	resp.AccessKey = MaskKey(ossConfig.AccessKey)
 	return
+}
+
+func MaskKey(key string) string {
+	if len(key) <= 5 {
+		return key
+	}
+	return key[:5] + strings.Repeat("*", len(key)-5)
+}
+
+func IsMasked(key string) bool {
+	if len(key) <= 5 {
+		return false
+	}
+	suffix := key[5:]
+	return strings.Trim(suffix, "*") == ""
 }

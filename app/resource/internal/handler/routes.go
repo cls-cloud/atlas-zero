@@ -19,24 +19,14 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.Auth},
 			[]rest.Route{
 				{
-					Method:  http.MethodGet,
-					Path:    "/:id",
-					Handler: oss.InfoHandler(serverCtx),
-				},
-				{
 					Method:  http.MethodPost,
-					Path:    "/",
-					Handler: oss.AddHandler(serverCtx),
+					Path:    "/upload",
+					Handler: oss.UploadHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodDelete,
 					Path:    "/:ids",
 					Handler: oss.DeleteHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPut,
-					Path:    "/",
-					Handler: oss.UpdateHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodGet,
@@ -66,6 +56,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodDelete,
 					Path:    "/:ids",
 					Handler: ossconfig.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/changeStatus",
+					Handler: ossconfig.ChangeStatusHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPut,

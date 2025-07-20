@@ -5,6 +5,7 @@ go 1.24.1
 replace toolkit => ./../toolkit
 
 require (
+	github.com/aliyun/alibabacloud-oss-go-sdk-v2 v1.2.3
 	github.com/jinzhu/copier v0.4.0
 	github.com/zeromicro/go-zero v1.8.5
 	gorm.io/driver/mysql v1.5.7

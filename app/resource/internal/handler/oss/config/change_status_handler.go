@@ -1,28 +1,28 @@
-package oss
+package config
 
 import (
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"resource/internal/logic/oss"
+	"resource/internal/logic/oss/config"
 	"resource/internal/svc"
 	"resource/internal/types"
 )
 
-func InfoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func ChangeStatusHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.IdReq
+		var req types.ChangeStatusOssConfigReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := oss.NewInfoLogic(r.Context(), svcCtx)
-		resp, err := l.Info(&req)
+		l := config.NewChangeStatusLogic(r.Context(), svcCtx)
+		err := l.ChangeStatus(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			httpx.OkJsonCtx(r.Context(), w, resp)
+			httpx.OkJsonCtx(r.Context(), w, nil)
 		}
 	}
 }

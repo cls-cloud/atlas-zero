@@ -51,17 +51,11 @@ type (
 middleware: Auth
 )
 service Resource {
-    @handler Info
-    get /:id (IdReq) returns (OssBase)
-
-    @handler Add
-    post / (ModifyOssReq)
+    @handler Upload
+    post /upload
 
     @handler Delete
     delete /:ids (IdsReq)
-
-    @handler Update
-    put / (ModifyOssReq)
 
     @handler PageSet
     get /list (PageSetOssReq) returns (PageSetOssResp)
