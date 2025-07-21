@@ -11,7 +11,7 @@ import (
 // TenantPlugin 多租户插件
 type TenantPlugin struct {
 	Enabled      bool     // 是否启用多租户
-	IgnoreTables []string // 忽略多租户处理的表名（小写）
+	IgnoreTables []string // 忽略多租户处理的表名
 }
 
 // Name 插件名称

@@ -6,6 +6,11 @@
 + 前端项目：基于 [Ruoyi-Plus-Vben5](https://gitee.com/dapppp/ruoyi-plus-vben5.git) 
 + 后端项目：基于 [RuoYi-Vue-Plus](https://gitee.com/dromara/RuoYi-Vue-Plus.git) 的功能模型，使用 Go-Zero 重写。
 
+## 在线体验
+> 账号密码：admin/admin
++ 演示地址：https://vben5.go-atlas.cn/
++ 文档地址：https://portal.go-atlas.cn/
+
 ## 内置功能
 1.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
 2.  部门管理：配置系统组织机构（公司、部门、小组），树结构展现支持数据权限。
@@ -23,13 +28,9 @@
 ## 待完成功能
 + [ ] 代码生成，需结合代码生成器（采用GoLand插件形式，仅实现后端生成功能）
 
-## 在线体验
-- admin/admin123
-
-演示地址：https://vben5.go-atlas.cn/
-
 ## 快速启动（开发环境）
 > 后端需安装 Go 1.24+，数据库为 MySQL（推荐 8.0+） 
+
 ### 后端运行
 ```shell
 # 克隆后端代码
