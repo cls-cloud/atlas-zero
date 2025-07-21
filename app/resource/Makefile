@@ -17,7 +17,7 @@ db:
 
 build:
 	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -tags no_k8s \
-	  -o $(APP_NAME) monitor.go
+	  -o $(APP_NAME) resource.go
 	tar -czvf $(TAR_NAME) $(APP_NAME) Makefile etc/
 
 back_run:

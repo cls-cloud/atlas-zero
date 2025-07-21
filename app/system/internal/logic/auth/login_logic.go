@@ -145,6 +145,7 @@ func (l *LoginLogic) LoginInfo(msg string, status bool, req *types.LoginReq) {
 	if status {
 		statusStr = "0"
 	}
+	os := ParseOS(ua.OS())
 	if _, err := l.svcCtx.LoginInfoRpc.Save(l.ctx, &monitor.LoginInfoReq{
 		Username:      req.Username,
 		TenantId:      req.TenantId,
@@ -153,7 +154,7 @@ func (l *LoginLogic) LoginInfo(msg string, status bool, req *types.LoginReq) {
 		Ipaddr:        ipAddr,
 		LoginLocation: location,
 		Browser:       browserName,
-		Os:            ParseOS(ua.OS()),
+		Os:            os,
 		Status:        statusStr,
 		Msg:           msg,
 	}); err != nil {
@@ -164,15 +165,13 @@ func (l *LoginLogic) LoginInfo(msg string, status bool, req *types.LoginReq) {
 func ParseOS(ua string) string {
 	ua = strings.ToLower(ua)
 	switch {
-	case strings.Contains(ua, "windows nt 10.0"):
-		return "Windows 10"
-	case strings.Contains(ua, "windows nt 11.0"):
-		return "Windows 11"
+	case strings.Contains(ua, "windows"):
+		return "Windows"
 	case strings.Contains(ua, "mac os x"):
 		return "OSX"
 	case strings.Contains(ua, "android"):
 		return "Android"
-	case strings.Contains(ua, "harmonyos"):
+	case strings.Contains(ua, "harmony"):
 		return "Harmony"
 	case strings.Contains(ua, "linux"):
 		return "Linux"

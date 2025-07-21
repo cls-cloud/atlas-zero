@@ -59,7 +59,7 @@ func (l *PageSetLogic) PageSet(req *types.PageSetLogininforReq) (resp *types.Pag
 		}
 		do = do.Where(q.SysLogininfor.LoginTime.Lte(endTime))
 	}
-	result, count, err := do.Order(q.SysLogininfor.LoginTime.Asc()).FindByPage(int(offset), int(req.PageSize))
+	result, count, err := do.Order(q.SysLogininfor.LoginTime.Desc()).FindByPage(int(offset), int(req.PageSize))
 	if err != nil {
 		return nil, errx.GORMErr(err)
 	}
