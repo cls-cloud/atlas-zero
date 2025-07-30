@@ -13,6 +13,7 @@ const (
 	UserIDKey       = "userId"
 	TenantIDKey     = "tenantId"
 	ClientIDKey     = "clientId"
+	DeptNameKey     = "deptName"
 	DataScopeKey    = "dataScope"
 	CurrentDeptKey  = "currentDept"
 	BellowDeptKey   = "bellowDept"

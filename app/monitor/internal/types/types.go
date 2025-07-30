@@ -3,35 +3,27 @@
 
 package types
 
-type OperLogQuery struct {
-	OperId        string `form:"operId,optional"`        // 日志主键
-	TenantId      string `form:"tenantId,optional"`      // 租户编号
-	Title         string `form:"title,optional"`         // 模块标题
-	BusinessType  int32  `form:"businessType,optional"`  // 业务类型（0其它 1新增 2修改 3删除）
-	Method        string `form:"method,optional"`        // 方法名称
-	RequestMethod string `form:"requestMethod,optional"` // 请求方式
-	OperatorType  int32  `form:"operatorType,optional"`  // 操作类别（0其它 1后台用户 2手机端用户）
-	OperName      string `form:"operName,optional"`      // 操作人员
-	DeptName      string `form:"deptName,optional"`      // 部门名称
-	OperUrl       string `form:"operUrl,optional"`       // 请求URL
-	OperIp        string `form:"operIp,optional"`        // 主机地址
-	OperLocation  string `form:"operLocation,optional"`  // 操作地点
-	OperParam     string `form:"operParam,optional"`     // 请求参数
-	JsonResult    string `form:"jsonResult,optional"`    // 返回参数
-	Status        int32  `form:"status,optional"`        // 操作状态（0正常 1异常）
-	ErrorMsg      string `form:"errorMsg,optional"`      // 错误消息
-	OperTime      string `form:"operTime,optional"`      // 操作时间
-	CostTime      int64  `form:"costTime,optional"`      // 消耗时间
+type OnlineInfo struct {
+	Browser       string `json:"browser,optional"`       // 浏览器类型
+	ClientKey     string `json:"clientKey,optional"`     // 客户端
+	DeptName      string `json:"deptName,optional"`      // 部门名称
+	DeviceType    string `json:"deviceType,optional"`    // 设备类型
+	Ipaddr        string `json:"ipaddr,optional"`        // 登录IP地址
+	LoginLocation string `json:"loginLocation,optional"` // 登录地点
+	LoginTime     string `json:"loginTime,optional"`     // 访问时间
+	Os            string `json:"os,optional"`            // 操作系统
+	Token         string `json:"tokenId,optional"`       // Token
+	UserName      string `json:"userName,optional"`      // 用户账号
 }
 
-type PageSetOperLogReq struct {
-	PageReq
-	OperLogQuery
+type OnlineQuery struct {
+	Ipaddr   string `json:"ipaddr,optional"`
+	UserName string `json:"userName,optional"`
 }
 
-type PageSetOperLogResp struct {
-	Rows  []*OperLogBase `json:"rows"`
-	Total int64          `json:"total"`
+type PageSetOnlineResp struct {
+	Rows  []*OnlineInfo `json:"rows"`
+	Total int64         `json:"total"`
 }
 
 type PageReq struct {
@@ -87,6 +79,37 @@ type OperLogBase struct {
 	ErrorMsg      string `json:"errorMsg,optional"`      // 错误消息
 	OperTime      string `json:"operTime,optional"`      // 操作时间
 	CostTime      int64  `json:"costTime,optional"`      // 消耗时间
+}
+
+type OperLogQuery struct {
+	OperId        string `form:"operId,optional"`        // 日志主键
+	TenantId      string `form:"tenantId,optional"`      // 租户编号
+	Title         string `form:"title,optional"`         // 模块标题
+	BusinessType  int32  `form:"businessType,optional"`  // 业务类型（0其它 1新增 2修改 3删除）
+	Method        string `form:"method,optional"`        // 方法名称
+	RequestMethod string `form:"requestMethod,optional"` // 请求方式
+	OperatorType  int32  `form:"operatorType,optional"`  // 操作类别（0其它 1后台用户 2手机端用户）
+	OperName      string `form:"operName,optional"`      // 操作人员
+	DeptName      string `form:"deptName,optional"`      // 部门名称
+	OperUrl       string `form:"operUrl,optional"`       // 请求URL
+	OperIp        string `form:"operIp,optional"`        // 主机地址
+	OperLocation  string `form:"operLocation,optional"`  // 操作地点
+	OperParam     string `form:"operParam,optional"`     // 请求参数
+	JsonResult    string `form:"jsonResult,optional"`    // 返回参数
+	Status        int32  `form:"status,optional"`        // 操作状态（0正常 1异常）
+	ErrorMsg      string `form:"errorMsg,optional"`      // 错误消息
+	OperTime      string `form:"operTime,optional"`      // 操作时间
+	CostTime      int64  `form:"costTime,optional"`      // 消耗时间
+}
+
+type PageSetOperLogReq struct {
+	PageReq
+	OperLogQuery
+}
+
+type PageSetOperLogResp struct {
+	Rows  []*OperLogBase `json:"rows"`
+	Total int64          `json:"total"`
 }
 
 type LogininforQuery struct {

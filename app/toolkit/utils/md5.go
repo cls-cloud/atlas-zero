@@ -11,7 +11,7 @@ func Md5(s string) string {
 	return hex.EncodeToString(sum[:])
 }
 
-func AuthMd5(ip, browserName, browserVersion string) string {
-	str := fmt.Sprintf("%s.%s.%s", ip, browserName, browserVersion)
+func AuthMd5(ip, browserName, browserVersion, os string) string {
+	str := fmt.Sprintf("%s.%s.%s.%s", ip, browserName, browserVersion, os)
 	return Md5(str)
 }

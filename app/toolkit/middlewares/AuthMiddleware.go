@@ -30,7 +30,7 @@ func ExecHandle(next http.HandlerFunc, accessSecret string, rds *redis.Redis, mu
 		if multipleLoginDevices {
 			ipStr, ua := ip.GetIPUa(r)
 			name, version := ua.Browser()
-			authMd5 := utils.AuthMd5(ipStr, name, version)
+			authMd5 := utils.AuthMd5(ipStr, name, version, ua.OS())
 			key = fmt.Sprintf(auth.TokenKeyMd5, uc.ClientId, uc.UserId, authMd5)
 		} else {
 			key = fmt.Sprintf(auth.TokenKey, uc.ClientId, uc.UserId)

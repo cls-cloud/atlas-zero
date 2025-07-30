@@ -72,14 +72,14 @@ func (l *PageSetLogic) PageSet(req *types.PageSetLogininforReq) (resp *types.Pag
 			return nil, err
 		}
 		list[i].LoginTime = item.LoginTime.Format(time.DateTime)
-		list[i].Ipaddr = desensitizeIP(item.Ipaddr)
-		list[i].LoginLocation = desensitizeLocation(item.LoginLocation)
+		list[i].Ipaddr = DesensitizeIP(item.Ipaddr)
+		list[i].LoginLocation = DesensitizeLocation(item.LoginLocation)
 	}
 	resp.Rows = list
 	return
 }
 
-func desensitizeIP(ipStr string) string {
+func DesensitizeIP(ipStr string) string {
 	parts := strings.Split(ipStr, ".")
 	if len(parts) == 4 {
 		parts[3] = "*"
@@ -90,7 +90,7 @@ func desensitizeIP(ipStr string) string {
 	return ipStr
 }
 
-func desensitizeLocation(location string) string {
+func DesensitizeLocation(location string) string {
 	parts := strings.Split(location, "|")
 	if len(parts) == 3 {
 		country := parts[0]

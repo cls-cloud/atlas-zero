@@ -82,7 +82,7 @@ func (l *LoginLogic) LoginHandler(req *types.LoginReq, loginInfoId string, err e
 			return nil, errx.AuthErr("验证码验证失败")
 		}
 	}
-	sysUser := l.svcCtx.Query.SysUser
+	sysUser := q.SysUser
 	user, err := sysUser.WithContext(l.ctx).Where(sysUser.UserName.Eq(req.Username)).
 		Where(sysUser.TenantID.Eq(req.TenantId)).
 		First()
@@ -98,13 +98,29 @@ func (l *LoginLogic) LoginHandler(req *types.LoginReq, loginInfoId string, err e
 	if int64(client.Timeout) == 0 {
 		accessExpire = l.svcCtx.Config.JwtAuth.AccessExpire
 	}
+	deptName := ""
+	if user.DeptID != "" {
+		dept, err := q.SysDept.WithContext(l.ctx).Where(q.SysDept.DeptID.Eq(user.DeptID)).First()
+		if err != nil {
+			return nil, errx.GORMErr(err)
+		}
+		deptName = dept.DeptName
+	}
+
 	accessSecret := l.svcCtx.Config.JwtAuth.AccessSecret
 	userid := user.UserID
+
+	ipStr, ua := ip.GetIPUa(l.r)
+	name, version := ua.Browser()
+	authMd5 := utils.AuthMd5(ipStr, name, version, ua.OS())
+
 	userInfo := auth.UserInfo{
 		UserId:   userid,
 		TenantId: user.TenantID,
 		ClientId: client.ClientID,
 		Timeout:  client.Timeout,
+		DeptName: deptName,
+		UsMd5:    authMd5,
 	}
 	token, err := auth.GenerateToken(userInfo, accessSecret, accessExpire)
 	if err != nil {
@@ -112,9 +128,6 @@ func (l *LoginLogic) LoginHandler(req *types.LoginReq, loginInfoId string, err e
 	}
 	key := ""
 	if l.svcCtx.Config.JwtAuth.MultipleLoginDevices {
-		ipStr, ua := ip.GetIPUa(l.r)
-		name, version := ua.Browser()
-		authMd5 := utils.AuthMd5(ipStr, name, version)
 		key = fmt.Sprintf(auth.TokenKeyMd5, client.ClientID, userid, authMd5)
 	} else {
 		key = fmt.Sprintf(auth.TokenKey, client.ClientID, userid)

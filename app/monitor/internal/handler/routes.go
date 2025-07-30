@@ -8,6 +8,7 @@ import (
 
 	logininfor "monitor/internal/handler/logininfor"
 	monitor "monitor/internal/handler/monitor"
+	online "monitor/internal/handler/online"
 	operLog "monitor/internal/handler/operLog"
 	"monitor/internal/svc"
 
@@ -15,6 +16,25 @@ import (
 )
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/list",
+					Handler: online.PageSetHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodDelete,
+					Path:    "/:id",
+					Handler: online.OfflineHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/monitor/online"),
+	)
+
 	server.AddRoutes(
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.Auth},

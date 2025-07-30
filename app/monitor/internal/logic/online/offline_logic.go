@@ -1,40 +1,33 @@
-package auth
+package online
 
 import (
 	"context"
 	"fmt"
-	"net/http"
-	"strings"
+	"monitor/internal/svc"
+	"monitor/internal/types"
 	"toolkit/auth"
 	"toolkit/errx"
 
 	"github.com/zeromicro/go-zero/core/logx"
-	"system/internal/svc"
 )
 
-type LogoutLogic struct {
+type OfflineLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
-	r      *http.Request
 }
 
-func NewLogoutLogic(ctx context.Context, svcCtx *svc.ServiceContext, r *http.Request) *LogoutLogic {
-	return &LogoutLogic{
+func NewOfflineLogic(ctx context.Context, svcCtx *svc.ServiceContext) *OfflineLogic {
+	return &OfflineLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
-		r:      r,
 	}
 }
 
-func (l *LogoutLogic) Logout() error {
-	authorization := l.r.Header.Get("Authorization")
-	if authorization == "" {
-		return errx.BizErr("Unauthorized: missing token")
-	}
-	tokenString := strings.TrimPrefix(authorization, "Bearer ")
-	us, err := auth.AnalyseToken(tokenString, l.svcCtx.Config.JwtAuth.AccessSecret)
+func (l *OfflineLogic) Offline(req *types.IdReq) error {
+	token := req.Id
+	us, err := auth.AnalyseToken(token, l.svcCtx.Config.JwtAuth.AccessSecret)
 	if err != nil {
 		return errx.BizErr("系统异常")
 	}
