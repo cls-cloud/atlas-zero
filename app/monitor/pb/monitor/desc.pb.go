@@ -67,6 +67,7 @@ func (x *Request) GetPing() string {
 
 type LoginInfoReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	InfoId        string                 `protobuf:"bytes,11,opt,name=infoId,proto3" json:"infoId,omitempty"`
 	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	TenantId      string                 `protobuf:"bytes,2,opt,name=tenantId,proto3" json:"tenantId,omitempty"`
 	ClientKey     string                 `protobuf:"bytes,3,opt,name=clientKey,proto3" json:"clientKey,omitempty"`
@@ -109,6 +110,13 @@ func (x *LoginInfoReq) ProtoReflect() protoreflect.Message {
 // Deprecated: Use LoginInfoReq.ProtoReflect.Descriptor instead.
 func (*LoginInfoReq) Descriptor() ([]byte, []int) {
 	return file_desc_desc_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *LoginInfoReq) GetInfoId() string {
+	if x != nil {
+		return x.InfoId
+	}
+	return ""
 }
 
 func (x *LoginInfoReq) GetUsername() string {
@@ -447,8 +455,9 @@ const file_desc_desc_proto_rawDesc = "" +
 	"\n" +
 	"\x0fdesc/desc.proto\x12\amonitor\"\x1d\n" +
 	"\aRequest\x12\x12\n" +
-	"\x04ping\x18\x01 \x01(\tR\x04ping\"\x96\x02\n" +
-	"\fLoginInfoReq\x12\x1a\n" +
+	"\x04ping\x18\x01 \x01(\tR\x04ping\"\xae\x02\n" +
+	"\fLoginInfoReq\x12\x16\n" +
+	"\x06infoId\x18\v \x01(\tR\x06infoId\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\btenantId\x18\x02 \x01(\tR\btenantId\x12\x1c\n" +
 	"\tclientKey\x18\x03 \x01(\tR\tclientKey\x12\x1e\n" +

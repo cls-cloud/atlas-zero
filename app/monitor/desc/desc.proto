@@ -8,6 +8,7 @@ message Request {
 }
 
 message LoginInfoReq {
+  string infoId = 11;
   string username = 1;
   string tenantId = 2;
   string clientKey = 3;

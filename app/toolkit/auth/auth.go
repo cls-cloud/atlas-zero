@@ -27,6 +27,7 @@ const (
 	FieldActiveTimeout = "activeTimeout"
 	FieldCurrentTime   = "currentTime"
 	FieldExpireTime    = "expireTime"
+	FieldLoginInfoId   = "loginInfoId"
 )
 
 type Auth struct {
@@ -39,13 +40,14 @@ func NewAuth(rds *redis.Redis, user *UserInfo) *Auth {
 }
 
 // SetToken 保存登录 token 信息到 Redis（含过期与滑动窗口时间）
-func (a *Auth) SetToken(ctx context.Context, key, token string, activeTimeout, ttl int64) error {
+func (a *Auth) SetToken(ctx context.Context, key, token string, activeTimeout, ttl int64, loginInfoId string) error {
 	now := time.Now().Unix()
 
 	fields := map[string]string{
 		FieldToken:         token,
 		FieldActiveTimeout: strconv.FormatInt(activeTimeout, 10),
 		FieldCurrentTime:   strconv.FormatInt(now, 10),
+		FieldLoginInfoId:   loginInfoId,
 	}
 
 	for f, v := range fields {

@@ -34,11 +34,13 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext, r *http.Requ
 
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err error) {
 	loginStatus := false
-	resp, err = l.LoginHandler(req, err)
+	loginInfoId := utils.GetID()
+
+	resp, err = l.LoginHandler(req, loginInfoId, err)
 	q := l.svcCtx.Query
 	if err == nil {
 		loginStatus = true
-		l.LoginInfo("登陆成功", loginStatus, req)
+		l.LoginInfo("登陆成功", loginStatus, req, loginInfoId)
 		//	更新登陆时间
 		userMap := map[string]interface{}{
 			"login_date": time.Now(),
@@ -48,12 +50,12 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 			logx.Error(err)
 		}
 	} else {
-		l.LoginInfo(err.Error(), loginStatus, req)
+		l.LoginInfo(err.Error(), loginStatus, req, loginInfoId)
 	}
 	return
 }
 
-func (l *LoginLogic) LoginHandler(req *types.LoginReq, err error) (*types.LoginResp, error) {
+func (l *LoginLogic) LoginHandler(req *types.LoginReq, loginInfoId string, err error) (*types.LoginResp, error) {
 	//判断clientId是否正常
 	q := l.svcCtx.Query
 	if req.ClientId == "" {
@@ -117,14 +119,14 @@ func (l *LoginLogic) LoginHandler(req *types.LoginReq, err error) (*types.LoginR
 	} else {
 		key = fmt.Sprintf(auth.TokenKey, client.ClientID, userid)
 	}
-	err = auth.NewAuth(l.svcCtx.Rds, &userInfo).SetToken(l.ctx, key, token, int64(client.ActiveTimeout), accessExpire)
+	err = auth.NewAuth(l.svcCtx.Rds, &userInfo).SetToken(l.ctx, key, token, int64(client.ActiveTimeout), accessExpire, loginInfoId)
 	if err != nil {
 		return nil, err
 	}
 	return &types.LoginResp{AccessToken: token, ClientId: client.ClientID, ExpireIn: int64(client.Timeout), RefreshExpireIn: int64(client.ActiveTimeout)}, nil
 }
 
-func (l *LoginLogic) LoginInfo(msg string, status bool, req *types.LoginReq) {
+func (l *LoginLogic) LoginInfo(msg string, status bool, req *types.LoginReq, loginInfoId string) {
 	q := l.svcCtx.Query
 	client, _ := q.SysClient.WithContext(l.ctx).Where(q.SysClient.ClientID.Eq(req.ClientId)).
 		Where(q.SysClient.GrantType.Like(fmt.Sprintf("%%%s%%", req.GrantType))).
@@ -151,6 +153,7 @@ func (l *LoginLogic) LoginInfo(msg string, status bool, req *types.LoginReq) {
 	}
 	os := ip.ParseOS(ua.OS())
 	if _, err := l.svcCtx.LoginInfoRpc.Save(l.ctx, &monitor.LoginInfoReq{
+		InfoId:        loginInfoId,
 		Username:      req.Username,
 		TenantId:      req.TenantId,
 		ClientKey:     client.ClientKey,

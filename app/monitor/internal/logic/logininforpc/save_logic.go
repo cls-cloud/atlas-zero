@@ -28,6 +28,9 @@ func NewSaveLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SaveLogic {
 
 func (l *SaveLogic) Save(in *monitor.LoginInfoReq) (*monitor.EmptyResp, error) {
 	id := utils.GetID()
+	if in.InfoId != "" {
+		id = in.InfoId
+	}
 	logininfor := &model.SysLogininfor{
 		InfoID:        id,
 		TenantID:      in.TenantId,
