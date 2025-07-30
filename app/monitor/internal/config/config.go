@@ -12,8 +12,9 @@ type Config struct {
 	Tenant   TenantConfig
 	Data     DataConfig
 	JwtAuth  struct {
-		AccessSecret string
-		AccessExpire int64
+		AccessSecret         string
+		AccessExpire         int64
+		MultipleLoginDevices bool
 	}
 	ApiDecrypt struct {
 		Enabled    bool

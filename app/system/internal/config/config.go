@@ -13,8 +13,9 @@ type Config struct {
 	Data       DataConfig
 	MonitorRpc zrpc.RpcClientConf
 	JwtAuth    struct {
-		AccessSecret string
-		AccessExpire int64
+		AccessSecret         string
+		AccessExpire         int64
+		MultipleLoginDevices bool
 	}
 	ApiDecrypt struct {
 		Enabled    bool

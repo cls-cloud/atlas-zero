@@ -3,19 +3,17 @@ package auth
 import (
 	"context"
 	"fmt"
-	"github.com/mssola/useragent"
 	"github.com/zeromicro/go-zero/core/logx"
 	"monitor/pb/monitor"
 	"net/http"
-	"strings"
 	"system/internal/svc"
 	"system/internal/types"
 	"time"
 	"toolkit/auth"
-	"toolkit/constants"
 	"toolkit/errx"
 	"toolkit/helper"
 	"toolkit/ip"
+	"toolkit/utils"
 )
 
 type LoginLogic struct {
@@ -110,8 +108,16 @@ func (l *LoginLogic) LoginHandler(req *types.LoginReq, err error) (*types.LoginR
 	if err != nil {
 		return nil, err
 	}
-
-	err = auth.NewAuth(l.svcCtx.Rds, &userInfo).SetToken(l.ctx, fmt.Sprintf(constants.TOKEN_CACHE, client.ClientID, userid), token, int64(client.ActiveTimeout), accessExpire)
+	key := ""
+	if l.svcCtx.Config.JwtAuth.MultipleLoginDevices {
+		ipStr, ua := ip.GetIPUa(l.r)
+		name, version := ua.Browser()
+		authMd5 := utils.AuthMd5(ipStr, name, version)
+		key = fmt.Sprintf(auth.TokenKeyMd5, client.ClientID, userid, authMd5)
+	} else {
+		key = fmt.Sprintf(auth.TokenKey, client.ClientID, userid)
+	}
+	err = auth.NewAuth(l.svcCtx.Rds, &userInfo).SetToken(l.ctx, key, token, int64(client.ActiveTimeout), accessExpire)
 	if err != nil {
 		return nil, err
 	}
@@ -124,7 +130,7 @@ func (l *LoginLogic) LoginInfo(msg string, status bool, req *types.LoginReq) {
 		Where(q.SysClient.GrantType.Like(fmt.Sprintf("%%%s%%", req.GrantType))).
 		First()
 	location := "Unknown"
-	cuRip := ip.GetClientIP(l.r)
+	cuRip, ua := ip.GetIPUa(l.r)
 	ipAddr := "Unknown"
 	logx.Info("请求 IP: ", cuRip)
 	if !ip.IsPrivateIP(cuRip) {
@@ -134,8 +140,6 @@ func (l *LoginLogic) LoginInfo(msg string, status bool, req *types.LoginReq) {
 	} else {
 		ipAddr = "内网IP"
 	}
-	userAgentStr := l.r.Header.Get("User-Agent")
-	ua := useragent.New(userAgentStr)
 	browserName, _ := ua.Browser()
 	deviceType := "PC"
 	if ua.Mobile() {
@@ -145,7 +149,7 @@ func (l *LoginLogic) LoginInfo(msg string, status bool, req *types.LoginReq) {
 	if status {
 		statusStr = "0"
 	}
-	os := ParseOS(ua.OS())
+	os := ip.ParseOS(ua.OS())
 	if _, err := l.svcCtx.LoginInfoRpc.Save(l.ctx, &monitor.LoginInfoReq{
 		Username:      req.Username,
 		TenantId:      req.TenantId,
@@ -159,25 +163,5 @@ func (l *LoginLogic) LoginInfo(msg string, status bool, req *types.LoginReq) {
 		Msg:           msg,
 	}); err != nil {
 		logx.Error(err)
-	}
-}
-
-func ParseOS(ua string) string {
-	ua = strings.ToLower(ua)
-	switch {
-	case strings.Contains(ua, "windows"):
-		return "Windows"
-	case strings.Contains(ua, "mac os x"):
-		return "OSX"
-	case strings.Contains(ua, "android"):
-		return "Android"
-	case strings.Contains(ua, "harmony"):
-		return "Harmony"
-	case strings.Contains(ua, "linux"):
-		return "Linux"
-	case strings.Contains(ua, "iphone") || strings.Contains(ua, "ipad"):
-		return "iPhone"
-	default:
-		return "Unknown"
 	}
 }

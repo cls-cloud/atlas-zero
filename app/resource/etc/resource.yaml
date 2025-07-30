@@ -22,6 +22,7 @@ RpcConf:
 JwtAuth:
   AccessSecret: YXTsYXMtYWRtaW4=
   AccessExpire: 86400
+  MultipleLoginDevices: true # 同账号是否允许多设备登陆
 
 Captcha:
   Enabled: false

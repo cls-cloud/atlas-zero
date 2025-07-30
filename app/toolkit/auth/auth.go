@@ -19,7 +19,8 @@ const (
 	CustomerDeptKey = "customerDept"
 
 	// Redis key 模板
-	TokenKey = "token:%s:%s" // clientId + userId
+	TokenKey    = "token:%s:%s"    // clientId + userId
+	TokenKeyMd5 = "token:%s:%s:%s" // clientId + userId + md5
 
 	// Redis Hash 字段
 	FieldToken         = "token"
@@ -59,7 +60,7 @@ func (a *Auth) SetToken(ctx context.Context, key, token string, activeTimeout, t
 }
 
 // CheckToken 检查 token 是否活跃，并刷新 activeTimeout
-func (a *Auth) CheckToken(ctx context.Context, key string) (bool, error) {
+func (a *Auth) CheckToken(ctx context.Context, key, tokenStr string) (bool, error) {
 	exists, err := a.rds.ExistsCtx(ctx, key)
 	if err != nil {
 		return true, fmt.Errorf("check key exist failed: %v", err)
@@ -68,6 +69,13 @@ func (a *Auth) CheckToken(ctx context.Context, key string) (bool, error) {
 		return true, fmt.Errorf("token key does not exist")
 	}
 
+	tkStr, err := a.rds.HgetCtx(ctx, key, FieldToken)
+	if err != nil {
+		return true, fmt.Errorf("get token failed: %v", err)
+	}
+	if tkStr != tokenStr {
+		return true, fmt.Errorf("invalid token")
+	}
 	curStr, err := a.rds.HgetCtx(ctx, key, FieldCurrentTime)
 	if err != nil {
 		return true, fmt.Errorf("get currentTime failed: %v", err)

@@ -1,6 +1,7 @@
 package ip
 
 import (
+	"github.com/mssola/useragent"
 	"net"
 	"net/http"
 	"strings"
@@ -38,4 +39,31 @@ func GetClientIP(r *http.Request) string {
 	}
 
 	return parsedIP.String()
+}
+
+func ParseOS(ua string) string {
+	ua = strings.ToLower(ua)
+	switch {
+	case strings.Contains(ua, "windows"):
+		return "Windows"
+	case strings.Contains(ua, "mac os x"):
+		return "OSX"
+	case strings.Contains(ua, "android"):
+		return "Android"
+	case strings.Contains(ua, "harmony"):
+		return "Harmony"
+	case strings.Contains(ua, "linux"):
+		return "Linux"
+	case strings.Contains(ua, "iphone") || strings.Contains(ua, "ipad"):
+		return "iPhone"
+	default:
+		return "Unknown"
+	}
+}
+
+func GetIPUa(r *http.Request) (string, *useragent.UserAgent) {
+	ip := GetClientIP(r)
+	userAgentStr := r.Header.Get("User-Agent")
+	ua := useragent.New(userAgentStr)
+	return ip, ua
 }

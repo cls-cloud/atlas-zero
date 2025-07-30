@@ -6,6 +6,7 @@ require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/google/uuid v1.6.0
+	github.com/mssola/useragent v1.0.0
 	github.com/stretchr/testify v1.10.0
 	github.com/zeromicro/go-zero v1.8.3
 	golang.org/x/crypto v0.33.0
