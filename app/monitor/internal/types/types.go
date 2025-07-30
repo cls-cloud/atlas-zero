@@ -113,3 +113,14 @@ type PageSetLogininforResp struct {
 	Rows  []*LogininforBase `json:"rows"`
 	Total int64             `json:"total"`
 }
+
+type RedisMonitorResp struct {
+	Info         map[string]string `json:"info"`
+	DbSize       int64             `json:"dbSize"`
+	CommandStats []CommandState    `json:"commandStats"`
+}
+
+type CommandState struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}

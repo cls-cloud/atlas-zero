@@ -10,9 +10,13 @@ import (
 
 const (
 	// 上下文字段
-	UserIDKey   = "userId"
-	TenantIDKey = "tenantId"
-	ClientIDKey = "clientId"
+	UserIDKey       = "userId"
+	TenantIDKey     = "tenantId"
+	ClientIDKey     = "clientId"
+	DataScopeKey    = "dataScope"
+	CurrentDeptKey  = "currentDept"
+	BellowDeptKey   = "bellowDept"
+	CustomerDeptKey = "customerDept"
 
 	// Redis key 模板
 	TokenKey = "token:%s:%s" // clientId + userId

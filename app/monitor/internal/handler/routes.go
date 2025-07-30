@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	logininfor "monitor/internal/handler/logininfor"
+	monitor "monitor/internal/handler/monitor"
 	operLog "monitor/internal/handler/operLog"
 	"monitor/internal/svc"
 
@@ -60,5 +61,19 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/monitor/logininfor"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/cache",
+					Handler: monitor.RedisMonitorHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/monitor"),
 	)
 }
