@@ -8,7 +8,9 @@
 
 ## 在线体验
 > 账号密码：admin/admin
-+ 演示地址：https://vben5.go-atlas.dev/
++ 演示地址：
+  + https://vben5.go-atlas.dev/ (vben5版本)
+  + https://vue3.go-atlas.dev/ (vue3版本)
 + 文档地址：https://go-atlas.dev/
 
 ## 内置功能
