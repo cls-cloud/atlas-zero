@@ -150,7 +150,7 @@ func (l *LoginLogic) LoginInfo(msg string, status bool, req *types.LoginReq, log
 	logx.Info("请求 IP: ", cuRip)
 	if !ip.IsPrivateIP(cuRip) {
 		ipData, _ := ip.LookupIP(cuRip)
-		location = fmt.Sprintf("%s|%s|%s", ipData.Country, ipData.Region, ipData.City)
+		location = fmt.Sprintf("%s|%s|%s|%s", ipData.Country, ipData.Region, ipData.City, ipData.ISP)
 		ipAddr = cuRip
 	} else {
 		ipAddr = "内网IP"
