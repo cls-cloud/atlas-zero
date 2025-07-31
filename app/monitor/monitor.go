@@ -12,6 +12,7 @@ import (
 	operlogrpcServer "monitor/internal/server/operlogrpc"
 	"monitor/pb/monitor"
 	"toolkit/helper"
+	"toolkit/middlewares"
 	middle "toolkit/pkg/middleware"
 	"toolkit/utils"
 
@@ -43,7 +44,7 @@ func main() {
 	handler.RegisterHandlers(server, ctx)
 	// 注册中间件
 	//server.Use(middleware.LogMiddleware)
-	//server.Use(middleware.ApiMiddleware(c))
+	server.Use(middlewares.ApiMiddleware(c.RestConf.Mode))
 	server.Use(middle.CorsMiddleware)
 
 	rpc := zrpc.MustNewServer(c.RpcConf, func(grpcServer *grpc.Server) {
