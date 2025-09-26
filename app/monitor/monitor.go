@@ -3,18 +3,18 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/zeromicro/go-zero/core/service"
-	"github.com/zeromicro/go-zero/rest/httpx"
-	"github.com/zeromicro/go-zero/zrpc"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 	logininforpcServer "monitor/internal/server/logininforpc"
 	operlogrpcServer "monitor/internal/server/operlogrpc"
 	"monitor/pb/monitor"
 	"toolkit/helper"
 	"toolkit/middlewares"
-	middle "toolkit/pkg/middleware"
 	"toolkit/utils"
+
+	"github.com/zeromicro/go-zero/core/service"
+	"github.com/zeromicro/go-zero/rest/httpx"
+	"github.com/zeromicro/go-zero/zrpc"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 
 	"monitor/internal/config"
 	"monitor/internal/handler"
@@ -35,7 +35,7 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
-	server := rest.MustNewServer(c.RestConf)
+	server := rest.MustNewServer(c.RestConf, rest.WithCors("*"))
 
 	httpx.SetOkHandler(helper.OkHandler)
 	httpx.SetErrorHandlerCtx(helper.ErrHandler(c.RestConf.Name))
@@ -45,7 +45,6 @@ func main() {
 	// 注册中间件
 	//server.Use(middleware.LogMiddleware)
 	server.Use(middlewares.ApiMiddleware(c.RestConf.Mode))
-	server.Use(middle.CorsMiddleware)
 
 	rpc := zrpc.MustNewServer(c.RpcConf, func(grpcServer *grpc.Server) {
 		monitor.RegisterLoginInfoRpcServer(grpcServer, logininforpcServer.NewLoginInfoRpcServer(ctx))

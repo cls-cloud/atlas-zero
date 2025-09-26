@@ -49,6 +49,10 @@ type (
     middleware: Auth
 )
 service System {
+
+    @handler GetDeptTree
+    get /deptTree returns ([]DeptTree)
+
     // 根据所属部门选择岗位
     @handler OptionSelect
     get /optionselect (PostQuery) returns ([]PostBase)
@@ -67,4 +71,6 @@ service System {
 
     @handler PageSet
     get /list (PageSetRoleReq) returns (PageSetRoleResp)
+
+
 }

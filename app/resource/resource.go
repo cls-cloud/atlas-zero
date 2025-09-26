@@ -3,11 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	"toolkit/helper"
+	"toolkit/utils"
+
 	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"toolkit/helper"
-	middle "toolkit/pkg/middleware"
-	"toolkit/utils"
 
 	"resource/internal/config"
 	"resource/internal/handler"
@@ -29,7 +29,7 @@ func main() {
 	conf.MustLoad(*configFile, &c)
 
 	// 创建服务器并传入自定义的 UnauthorizedCallback
-	server := rest.MustNewServer(c.RestConf)
+	server := rest.MustNewServer(c.RestConf, rest.WithCors("*"))
 
 	// 使用拦截器
 	httpx.SetOkHandler(helper.OkHandler)
@@ -37,8 +37,6 @@ func main() {
 
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
-	// 注册中间件
-	server.Use(middle.CorsMiddleware)
 
 	group := service.NewServiceGroup()
 	group.Add(server)

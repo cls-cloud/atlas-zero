@@ -3,11 +3,11 @@
 
 ## 平台简介
 + 提供了完整的权限系统、多租户支持、RBAC 权限控制、菜单管理等功能，适合快速搭建企业级后台管理系统。
-+ 前端项目：基于 [Ruoyi-Plus-Vben5](https://gitee.com/dapppp/ruoyi-plus-vben5.git) 
++ 前端项目：基于 [Ruoyi-Plus-Vben5](https://gitee.com/dapppp/ruoyi-plus-vben5.git)
 + 后端项目：基于 [RuoYi-Vue-Plus](https://gitee.com/dromara/RuoYi-Vue-Plus.git) 的功能模型，使用 Go-Zero 重写。
 
 ## 在线体验
-> 账号密码：admin/admin
+> 账号密码：admin/admin123
 + 演示地址：
   + https://vben5.go-atlas.dev/ (vben5版本)
   + https://vue3.go-atlas.dev/ (vue3版本)
@@ -31,7 +31,7 @@
 + [ ] 代码生成，需结合代码生成器（采用GoLand插件形式，仅实现后端生成功能）
 
 ## 快速启动（开发环境）
-> 后端需安装 Go 1.24+，数据库为 MySQL（推荐 8.0+） 
+> 后端需安装 Go 1.24+，数据库为 MySQL（推荐 8.0+）
 
 ### 后端运行
 ```shell
@@ -49,4 +49,3 @@ cd atlas-zero/app/resource && go mod tidy
 cd atlas-zero/app
 ./bin/traefik/traefik --configfile=./bin/traefik/traefik.yaml
 ```
-

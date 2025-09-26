@@ -3,16 +3,16 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/zeromicro/go-zero/core/service"
-	"github.com/zeromicro/go-zero/rest/httpx"
 	"system/internal/config"
 	"system/internal/handler"
 	"system/internal/middleware"
 	"system/internal/svc"
 	"toolkit/helper"
 	"toolkit/middlewares"
-	middle "toolkit/pkg/middleware"
 	"toolkit/utils"
+
+	"github.com/zeromicro/go-zero/core/service"
+	"github.com/zeromicro/go-zero/rest/httpx"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
@@ -30,7 +30,7 @@ func main() {
 	conf.MustLoad(*configFile, &c)
 
 	// 创建服务器并传入自定义的 UnauthorizedCallback
-	server := rest.MustNewServer(c.RestConf)
+	server := rest.MustNewServer(c.RestConf, rest.WithCors("*"))
 
 	// 使用拦截器
 	httpx.SetOkHandler(helper.OkHandler)
@@ -41,7 +41,6 @@ func main() {
 	// 注册中间件
 	server.Use(middleware.LogMiddleware)
 	server.Use(middlewares.ApiMiddleware(c.RestConf.Mode))
-	server.Use(middle.CorsMiddleware)
 
 	//rpc := zrpc.MustNewServer(c.RpcConf, func(grpcServer *grpc.Server) {
 	//	system.RegisterUserRpcServer(grpcServer, userServer.NewUserRpcServer(ctx))
