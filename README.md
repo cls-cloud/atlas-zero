@@ -11,7 +11,9 @@
 + 演示地址：
   + https://vben5.go-atlas.dev/ (vben5版本)
   + https://vue3.go-atlas.dev/ (vue3版本)
-+ 文档地址：https://portal.go-atlas.dev/
++ 文档地址：
+  + https://go-atlas.dev/
+  + https://portal.go-atlas.dev/ (备用)
 
 ## 内置功能
 1.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
