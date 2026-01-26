@@ -96,3 +96,15 @@ func (l *SysMenuDal) PageSet(ctx context.Context, pageNum, pageSize int, query *
 	total = count
 	return
 }
+
+func (l *SysMenuDal) ExistChildMenu(ctx context.Context, ids []string) (bool, error) {
+	su := l.query.SysMenu
+	count, err := su.
+		WithContext(ctx).
+		Where(su.ParentID.In(ids...), su.MenuID.NotIn(ids...)).
+		Count()
+	if err != nil {
+		return false, errx.GORMErr(err)
+	}
+	return count > 0, nil
+}

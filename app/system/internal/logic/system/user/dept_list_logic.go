@@ -30,7 +30,7 @@ func (l *DeptListLogic) DeptList(req *types.IdReq) (resp []*types.UserBase, err 
 	sysUsers, err := q.SysUser.WithContext(l.ctx).
 		LeftJoin(q.SysDept, q.SysDept.DeptID.EqCol(q.SysUser.DeptID)).
 		Where(q.SysDept.DeptID.Eq(req.Id)).
-		Order(q.SysUser.CreateTime.Asc()).Find()
+		Order(q.SysUser.CreateTime.Desc()).Find()
 	if err != nil {
 		return nil, errx.GORMErr(err)
 	}

@@ -68,7 +68,6 @@ type (
     middleware: Auth
 )
 service System {
-
     @handler SyncTenantDict
     get /syncTenantDict
 
@@ -92,6 +91,9 @@ service System {
 
     @handler PageSet
     get /list (PageSetTenantReq) returns (PageSetTenantResp)
+
+    @handler Clear
+    get /dynamic/clear
 
     @handler Dynamic
     get /dynamic/:id (IdReq)

@@ -434,7 +434,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodDelete,
-					Path:    "/:ids",
+					Path:    "/:id",
 					Handler: systemmenu.DeleteHandler(serverCtx),
 				},
 				{
@@ -608,6 +608,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodGet,
 					Path:    "/dynamic/:id",
 					Handler: systemtenant.DynamicHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/dynamic/clear",
+					Handler: systemtenant.ClearHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodGet,

@@ -97,7 +97,9 @@ func (l *QueryPageUserListLogic) QueryPageUserList(req *types.QueryPageUserListR
 	if tenantId != "" {
 		do = do.Where(sysUser.TenantID.Eq(tenantId))
 	}
-	err = do.Offset(int(offset)).Limit(int(req.PageSize)).Scan(&result)
+	err = do.Offset(int(offset)).Limit(int(req.PageSize)).
+		Order(sysUser.UpdateTime.Desc(), sysUser.CreateTime.Desc()).
+		Scan(&result)
 	if err != nil {
 		return nil, err
 	}

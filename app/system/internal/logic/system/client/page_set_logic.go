@@ -46,7 +46,7 @@ func (l *PageSetLogic) PageSet(req *types.PageSetClientReq) (resp *ListResp, err
 	if req.Status != "" {
 		do = do.Where(q.SysClient.Status.Eq(req.Status))
 	}
-	result, count, err := do.Order(q.SysClient.ID.Asc()).FindByPage(int(offset), int(req.PageSize))
+	result, count, err := do.Order(q.SysClient.ID.Asc(), q.SysClient.CreateTime.Desc()).FindByPage(int(offset), int(req.PageSize))
 	if err != nil {
 		return nil, errx.GORMErr(err)
 	}
