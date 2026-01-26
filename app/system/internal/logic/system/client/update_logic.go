@@ -5,6 +5,7 @@ import (
 	"ovra/app/system/internal/dal/model"
 	"ovra/app/system/internal/svc"
 	"ovra/app/system/internal/types"
+	"strings"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,6 +25,9 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 }
 
 func (l *UpdateLogic) Update(req *types.ModifyClientReq) error {
+	if len(req.GrantTypeList) != 0 {
+		req.GrantType = strings.Join(req.GrantTypeList, ",")
+	}
 	if err := l.svcCtx.Dal.SysClientDal.Update(l.ctx, &model.SysClient{
 		ID:            req.ID,
 		ClientID:      req.ClientID,

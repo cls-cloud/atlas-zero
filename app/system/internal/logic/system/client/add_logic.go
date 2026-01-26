@@ -31,6 +31,9 @@ func (l *AddLogic) Add(req *types.ModifyClientReq) error {
 	if req.ClientID == "" {
 		req.ClientID = strings.ReplaceAll(uuid.NewString(), "-", "")
 	}
+	if len(req.GrantTypeList) != 0 {
+		req.GrantType = strings.Join(req.GrantTypeList, ",")
+	}
 	client := &model.SysClient{
 		ID:            utils.GetID(),
 		ClientID:      req.ClientID,

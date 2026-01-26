@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"ovra/toolkit/errx"
+	"strings"
 
 	"github.com/jinzhu/copier"
 
@@ -58,6 +59,9 @@ func (l *PageSetLogic) PageSet(req *types.PageSetClientReq) (resp *ListResp, err
 		client := new(types.ClientBase)
 		if err = copier.Copy(&client, item); err != nil {
 			return nil, err
+		}
+		if item.GrantType != "" {
+			client.GrantTypeList = strings.Split(item.GrantType, ",")
 		}
 		var toMap map[string]interface{}
 		bs, err := json.Marshal(client)
