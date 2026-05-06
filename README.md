@@ -308,6 +308,7 @@ kubectl -n ovra-zero exec redis-0 -- redis-cli -a 'Pl@1221view' cluster nodes
 
 - [Helm Chart 说明](deploy/helm/ovra-zero/HELM_CHART.md)
 - [Redis 与 etcd 安装部署文档](deploy/helm/ovra-zero/INSTALL_REDIS_ETCD.md)
+- [Docker 重启后恢复手册](deploy/helm/ovra-zero/RECOVERY_AFTER_DOCKER_RESTART.md)
 - [Helm Chart README](deploy/helm/ovra-zero/README.md)
 
 其中 `INSTALL_REDIS_ETCD.md` 同时包含 Linux 裸机部署方式。

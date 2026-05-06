@@ -70,3 +70,9 @@ For detailed Helm chart structure, values, upgrade, and troubleshooting notes, s
 ```text
 deploy/helm/ovra-zero/HELM_CHART.md
 ```
+
+For recovery steps after Docker Desktop or Docker daemon restarts, see:
+
+```text
+deploy/helm/ovra-zero/RECOVERY_AFTER_DOCKER_RESTART.md
+```
