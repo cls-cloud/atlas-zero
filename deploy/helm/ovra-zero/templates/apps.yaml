@@ -1,0 +1,66 @@
+{{- range $name, $service := .Values.services }}
+{{- if $service.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  labels:
+    app.kubernetes.io/component: {{ $name }}
+    {{- include "ovra-zero.labels" $ | nindent 4 }}
+spec:
+  replicas: {{ $service.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: {{ $name }}
+      {{- include "ovra-zero.selectorLabels" $ | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ printf "%s%s%s" (tpl ($.Files.Get "files/config/auth.yaml.gotmpl") $) (tpl ($.Files.Get "files/config/system.yaml.gotmpl") $) (tpl ($.Files.Get "files/config/demo.yaml.gotmpl") $) | sha256sum }}
+      labels:
+        app.kubernetes.io/component: {{ $name }}
+        {{- include "ovra-zero.selectorLabels" $ | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ $name }}
+          image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          command:
+            - {{ $service.command | quote }}
+          ports:
+            {{- range $portName, $port := $service.ports }}
+            - name: {{ $portName }}
+              containerPort: {{ $port }}
+            {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: {{ $.Values.config.mountPath }}
+          readinessProbe:
+            tcpSocket:
+              port: {{ $service.readinessPort }}
+            initialDelaySeconds: 10
+            periodSeconds: 5
+      volumes:
+        - name: config
+          configMap:
+            name: {{ $.Values.config.name }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "ovra-zero.labels" $ | nindent 4 }}
+spec:
+  ports:
+    {{- range $portName, $port := $service.ports }}
+    - name: {{ $portName }}
+      port: {{ $port }}
+      targetPort: {{ $port }}
+    {{- end }}
+  selector:
+    app.kubernetes.io/component: {{ $name }}
+    {{- include "ovra-zero.selectorLabels" $ | nindent 4 }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ovra-zero
+description: Ovra-Zero services for local k3d
+type: application
+version: 0.1.0
+appVersion: local

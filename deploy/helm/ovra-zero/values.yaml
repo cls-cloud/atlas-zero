@@ -1,0 +1,95 @@
+config:
+  name: ovra-zero-config
+  mountPath: /app/etc/k3d
+
+image:
+  repository: ovra-zero
+  tag: local
+  pullPolicy: IfNotPresent
+
+mysql:
+  name: mysql
+  port: 3306
+  external:
+    enabled: true
+    endpointSliceName: mysql-external
+    ip: 172.18.0.2
+  internal:
+    enabled: false
+    image: mysql:8.4
+    imagePullPolicy: IfNotPresent
+    rootPassword: Pl@1221view
+    database: ovra_zero
+    initSqlConfigMap: ""
+
+redis:
+  name: redis
+  enabled: true
+  image: redis:7-alpine
+  imagePullPolicy: IfNotPresent
+  password: Pl@1221view
+  port: 6379
+  busPort: 16379
+  headlessServiceName: redis-headless
+  cluster:
+    enabled: true
+    replicas: 3
+    replicasPerMaster: 0
+    nodeTimeout: 5000
+
+etcd:
+  name: etcd
+  enabled: true
+  image: quay.io/coreos/etcd:v3.5.13
+  imagePullPolicy: IfNotPresent
+  port: 2379
+  peerPort: 2380
+  replicas: 3
+  headlessServiceName: etcd-headless
+  initialClusterToken: ovra-zero-etcd
+
+services:
+  auth:
+    enabled: true
+    replicas: 1
+    command: /app/app-auth
+    ports:
+      http: 8091
+    readinessPort: 8091
+  system:
+    enabled: true
+    replicas: 1
+    command: /app/app-system
+    ports:
+      http: 8092
+      grpc: 9092
+    readinessPort: 8092
+  demo:
+    enabled: true
+    replicas: 1
+    command: /app/app-demo
+    ports:
+      http: 8099
+      grpc: 9099
+    readinessPort: 8099
+
+ingress:
+  enabled: true
+  className: traefik
+  host: ovra-zero.localhost
+  paths:
+    - path: /auth
+      service: auth
+      port: 8091
+    - path: /system
+      service: system
+      port: 8092
+    - path: /monitor
+      service: system
+      port: 8092
+    - path: /resource
+      service: system
+      port: 8092
+    - path: /demo
+      service: demo
+      port: 8099

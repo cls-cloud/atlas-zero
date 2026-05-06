@@ -1,0 +1,179 @@
+{{- if .Values.redis.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.redis.name }}
+  labels:
+    {{- include "ovra-zero.labels" . | nindent 4 }}
+spec:
+  ports:
+    - name: redis
+      port: {{ .Values.redis.port }}
+      targetPort: {{ .Values.redis.port }}
+  selector:
+    app.kubernetes.io/component: redis
+    {{- include "ovra-zero.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.redis.headlessServiceName }}
+  labels:
+    {{- include "ovra-zero.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+    - name: redis
+      port: {{ .Values.redis.port }}
+      targetPort: {{ .Values.redis.port }}
+    - name: cluster-bus
+      port: {{ .Values.redis.busPort }}
+      targetPort: {{ .Values.redis.busPort }}
+  selector:
+    app.kubernetes.io/component: redis
+    {{- include "ovra-zero.selectorLabels" . | nindent 4 }}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.redis.name }}
+  labels:
+    app.kubernetes.io/component: redis
+    {{- include "ovra-zero.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.redis.cluster.replicas }}
+  podManagementPolicy: Parallel
+  serviceName: {{ .Values.redis.headlessServiceName }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: redis
+      {{- include "ovra-zero.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: redis
+        {{- include "ovra-zero.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: redis
+          image: {{ .Values.redis.image | quote }}
+          imagePullPolicy: {{ .Values.redis.imagePullPolicy }}
+          command:
+            - redis-server
+          args:
+            - --port
+            - {{ .Values.redis.port | quote }}
+            - --cluster-enabled
+            - "yes"
+            - --cluster-config-file
+            - nodes.conf
+            - --cluster-node-timeout
+            - {{ .Values.redis.cluster.nodeTimeout | quote }}
+            - --cluster-announce-hostname
+            - $(POD_NAME).{{ .Values.redis.headlessServiceName }}.$(POD_NAMESPACE).svc.cluster.local
+            - --cluster-announce-port
+            - {{ .Values.redis.port | quote }}
+            - --cluster-announce-bus-port
+            - {{ .Values.redis.busPort | quote }}
+            - --appendonly
+            - "yes"
+            - --protected-mode
+            - "no"
+            - --requirepass
+            - {{ .Values.redis.password | quote }}
+            - --masterauth
+            - {{ .Values.redis.password | quote }}
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          ports:
+            - name: redis
+              containerPort: {{ .Values.redis.port }}
+            - name: cluster-bus
+              containerPort: {{ .Values.redis.busPort }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          readinessProbe:
+            exec:
+              command:
+                - redis-cli
+                - -a
+                - {{ .Values.redis.password | quote }}
+                - ping
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      volumes:
+        - name: data
+          emptyDir: {}
+{{- if .Values.redis.cluster.enabled }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.redis.name }}-cluster-init
+  labels:
+    app.kubernetes.io/component: redis-cluster-init
+    {{- include "ovra-zero.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 12
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: redis-cluster-init
+        {{- include "ovra-zero.selectorLabels" . | nindent 8 }}
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: redis-cluster-init
+          image: {{ .Values.redis.image | quote }}
+          imagePullPolicy: {{ .Values.redis.imagePullPolicy }}
+          env:
+            - name: REDIS_PASSWORD
+              value: {{ .Values.redis.password | quote }}
+            - name: REDIS_REPLICAS
+              value: {{ .Values.redis.cluster.replicas | quote }}
+            - name: REDIS_REPLICAS_PER_MASTER
+              value: {{ .Values.redis.cluster.replicasPerMaster | quote }}
+            - name: REDIS_PORT
+              value: {{ .Values.redis.port | quote }}
+            - name: REDIS_HEADLESS_SERVICE
+              value: {{ .Values.redis.headlessServiceName | quote }}
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          command:
+            - sh
+            - -ec
+            - |
+              first="${HOSTNAME_PREFIX:-{{ .Values.redis.name }}}-0.${REDIS_HEADLESS_SERVICE}.${POD_NAMESPACE}.svc.cluster.local"
+              nodes=""
+              for i in $(seq 0 $((REDIS_REPLICAS - 1))); do
+                host="{{ .Values.redis.name }}-${i}.${REDIS_HEADLESS_SERVICE}.${POD_NAMESPACE}.svc.cluster.local"
+                until redis-cli -h "${host}" -p "${REDIS_PORT}" -a "${REDIS_PASSWORD}" ping >/dev/null 2>&1; do
+                  echo "waiting for ${host}:${REDIS_PORT}"
+                  sleep 2
+                done
+                nodes="${nodes} ${host}:${REDIS_PORT}"
+              done
+
+              state="$(redis-cli -h "${first}" -p "${REDIS_PORT}" -a "${REDIS_PASSWORD}" cluster info 2>/dev/null | awk -F: '/cluster_state/ {gsub(/\r/, "", $2); print $2}' || true)"
+              if [ "${state}" = "ok" ]; then
+                echo "redis cluster is already healthy"
+                exit 0
+              fi
+
+              redis-cli --cluster create ${nodes} --cluster-replicas "${REDIS_REPLICAS_PER_MASTER}" -a "${REDIS_PASSWORD}" --cluster-yes
+{{- end }}
+{{- end }}

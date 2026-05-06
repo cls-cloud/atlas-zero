@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.config.name }}
+  labels:
+    {{- include "ovra-zero.labels" . | nindent 4 }}
+data:
+  auth.yaml: |
+{{ tpl (.Files.Get "files/config/auth.yaml.gotmpl") . | indent 4 }}
+  system.yaml: |
+{{ tpl (.Files.Get "files/config/system.yaml.gotmpl") . | indent 4 }}
+  demo.yaml: |
+{{ tpl (.Files.Get "files/config/demo.yaml.gotmpl") . | indent 4 }}

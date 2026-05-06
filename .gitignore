@@ -42,6 +42,7 @@ yarn.lock
 *.key
 *.log
 deploy/bin/
+.deploy/
 log/
 keystore
 bin/traefik/traefik
