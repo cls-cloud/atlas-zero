@@ -18,7 +18,8 @@ type Config struct {
 		AccessExpire         int64
 		MultipleLoginDevices bool
 	}
-	ApiDecrypt struct {
+	Idempotency IdempotencyConfig
+	ApiDecrypt  struct {
 		Enabled    bool
 		HeaderFlag string
 		PublicKey  string
@@ -31,4 +32,12 @@ type Config struct {
 
 type DataConfig struct {
 	Redis redis.RedisConf
+}
+
+type IdempotencyConfig struct {
+	Enabled       bool
+	Header        string
+	ExpireSeconds int
+	IncludePaths  []string
+	ExcludePaths  []string
 }

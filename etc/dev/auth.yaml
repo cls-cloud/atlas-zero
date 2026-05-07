@@ -25,6 +25,14 @@ JwtAuth:
 Captcha:
   Enabled: false
 
+Idempotency:
+  Enabled: true
+  Header: "Idempotency-Key"
+  ExpireSeconds: 10
+  IncludePaths:
+    - /auth/code
+  ExcludePaths: []
+
 ApiDecrypt:
   Enabled: true
   HeaderFlag: "X-Access-Token"
@@ -38,7 +46,4 @@ Data:
     Host: 127.0.0.1:6379
     Type: node
     Tls: false
-
-
-
 

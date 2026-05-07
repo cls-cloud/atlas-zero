@@ -27,6 +27,13 @@ JwtAuth:
 Captcha:
   Enabled: false
 
+Idempotency:
+  Enabled: true
+  Header: "Idempotency-Key"
+  ExpireSeconds: 10
+  IncludePaths: []
+  ExcludePaths: []
+
 ApiDecrypt:
   Enabled: true
   HeaderFlag: "X-Access-Token"

@@ -53,6 +53,7 @@ func main() {
 	handler.RegisterHandlers(server, ctx)
 	// 注册中间件
 	//server.Use(middleware.LogMiddleware)
+	server.Use(middlewares.IdempotencyMiddleware(ctx.Rds, middlewares.IdempotencyConfig(c.Idempotency)))
 	server.Use(middlewares.ApiMiddleware(c.RestConf.Mode))
 
 	group := service.NewServiceGroup()
