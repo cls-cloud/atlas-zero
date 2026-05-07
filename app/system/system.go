@@ -10,6 +10,7 @@ import (
 	rpcServer "ovra/app/system/internal/server/sysrpc"
 	"ovra/app/system/internal/svc"
 	"ovra/app/system/pb/system"
+	"ovra/toolkit/configloader"
 	"ovra/toolkit/helper"
 	"ovra/toolkit/middlewares"
 	"ovra/toolkit/utils"
@@ -21,7 +22,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
 )
 
@@ -45,7 +45,7 @@ func main() {
 		return
 	}
 	var c config.Config
-	conf.MustLoad(*configFile, &c)
+	configloader.MustLoad(*configFile, &c)
 
 	// 创建服务器并传入自定义的 UnauthorizedCallback
 	server := rest.MustNewServer(c.RestConf, rest.WithCors("*"))

@@ -4,40 +4,19 @@
 package config
 
 import (
-	"github.com/zeromicro/go-zero/core/stores/redis"
+	"ovra/toolkit/configshared"
+
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
 )
 
 type Config struct {
-	RestConf  rest.RestConf
-	Data      DataConfig
-	SystemRpc zrpc.RpcClientConf
-	JwtAuth   struct {
-		AccessSecret         string
-		AccessExpire         int64
-		MultipleLoginDevices bool
-	}
-	Idempotency IdempotencyConfig
-	ApiDecrypt  struct {
-		Enabled    bool
-		HeaderFlag string
-		PublicKey  string
-		PrivateKey string
-	}
-	Captcha struct {
-		Enabled bool
-	}
-}
-
-type DataConfig struct {
-	Redis redis.RedisConf
-}
-
-type IdempotencyConfig struct {
-	Enabled       bool
-	Header        string
-	ExpireSeconds int
-	IncludePaths  []string
-	ExcludePaths  []string
+	RestConf    rest.RestConf
+	Data        configshared.DataConfig
+	SystemRpc   zrpc.RpcClientConf
+	ClientRpc   zrpc.RpcClientConf
+	JwtAuth     configshared.JwtAuthConfig
+	ApiDecrypt  configshared.ApiDecryptConfig
+	Captcha     configshared.CaptchaConfig
+	Idempotency configshared.IdempotencyConfig
 }

@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"ovra/toolkit/configloader"
 	"ovra/toolkit/helper"
 	"ovra/toolkit/middlewares"
 	"ovra/toolkit/utils"
@@ -16,7 +17,6 @@ import (
 	"ovra/app/auth/internal/handler"
 	"ovra/app/auth/internal/svc"
 
-	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -42,7 +42,7 @@ func main() {
 		return
 	}
 	var c config.Config
-	conf.MustLoad(*configFile, &c)
+	configloader.MustLoad(*configFile, &c)
 
 	server := rest.MustNewServer(c.RestConf, rest.WithCors("*"))
 

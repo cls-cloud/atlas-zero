@@ -10,7 +10,6 @@ require (
 	github.com/jinzhu/copier v0.4.0
 	github.com/mojocn/base64Captcha v1.3.8
 	github.com/mssola/useragent v1.0.0
-	github.com/ovra-cloud/ovra-toolkit v1.0.4
 	github.com/redis/go-redis/v9 v9.17.2
 	github.com/stretchr/testify v1.11.1
 	github.com/zeromicro/go-zero v1.9.4
