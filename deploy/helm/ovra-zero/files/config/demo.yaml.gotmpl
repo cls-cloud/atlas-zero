@@ -27,6 +27,9 @@ JwtAuth:
 Captcha:
   Enabled: false
 
+Sign:
+  Enabled: false
+
 Idempotency:
   Enabled: true
   Header: "Idempotency-Key"
@@ -47,11 +50,14 @@ Tenant:
 
 Data:
   Database:
+    Logger: ""
+    Driver: ""
     Username: root
     Password: Pl@1221view
     Host: mysql
     Port: 3306
     Database: ovra_zero
+    Ssl: false
   Redis:
     Pass: Pl@1221view
     Host: {{ include "ovra-zero.redisClusterHosts" . }}

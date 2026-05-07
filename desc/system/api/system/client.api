@@ -53,7 +53,7 @@ type (
     tags: "系统授权"
     group: system/client
     prefix: /system/client
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
     @handler Info

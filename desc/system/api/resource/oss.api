@@ -46,7 +46,7 @@ type (
     tags: "OSS对象存储"
     group: resource/oss
     prefix: /resource/oss
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
     @handler Upload

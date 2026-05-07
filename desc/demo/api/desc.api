@@ -9,3 +9,16 @@ info (
 
 import "demo.api"
 import "tree.api"
+
+type HealthResp {
+	status string `json:"status"`
+}
+
+@server (
+	group: health
+)
+service demo {
+	@handler Health
+	get /health returns (HealthResp)
+}
+

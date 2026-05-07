@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"net/http"
-	"ovra/app/system/internal/config"
+	"ovra/app/demo/internal/config"
 	"ovra/toolkit/middlewares"
 
 	"github.com/zeromicro/go-zero/core/stores/redis"

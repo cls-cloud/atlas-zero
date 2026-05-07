@@ -82,7 +82,7 @@ type (
 @server(
     group: system/user
     prefix: /system/user
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
     @handler GetDeptTree

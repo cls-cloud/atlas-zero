@@ -54,7 +54,7 @@ type (
     tags: "租户套餐"
     group: system/tenant/_package
     prefix: /system/tenant/package
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
     @handler Info

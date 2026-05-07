@@ -15,5 +15,6 @@ type Config struct {
 	JwtAuth     configshared.JwtAuthConfig
 	ApiDecrypt  configshared.ApiDecryptConfig
 	Captcha     configshared.CaptchaConfig
-	Idempotency IdempotencyConfig
+	Idempotency configshared.IdempotencyConfig
+	Sign        configshared.SignConfig
 }

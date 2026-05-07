@@ -6,8 +6,8 @@ import (
 	"ovra/app/demo/internal/dal/query"
 	"ovra/app/demo/internal/types"
 
-	"github.com/ovra-cloud/ovra-toolkit/errx"
-	"github.com/ovra-cloud/ovra-toolkit/utils"
+	"ovra/toolkit/errx"
+	"ovra/toolkit/utils"
 
 	"gorm.io/gorm"
 )

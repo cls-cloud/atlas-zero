@@ -25,6 +25,9 @@ JwtAuth:
 Captcha:
   Enabled: false
 
+Sign:
+  Enabled: false
+
 Idempotency:
   Enabled: true
   Header: "Idempotency-Key"
@@ -40,8 +43,19 @@ ApiDecrypt:
   PrivateKey: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlDWEFJQkFBS0JnUURQbExrMk5HNUN4cSt6V29tSXkzMzhoVldNdmdFdkY4T1JlZENTdHI2dWxOWFlBVjhuCnhDVjJpbnZzV3JzNE1Bd1VwVzd6K2pyRjgyaS96T2VKVFdMODlMZW4vN3ZaYWp2YURnODdiUTMyNnZSVEtSRXkKdVJnRVZSU0I5SmhhL2NucnpnbHgraFVZMWVxN3d4STI0eWw3SGlNODkyeWZyRHViWWllK3J2ZGxxd0lEQVFBQgpBb0dBQjdvZzFKTktOYndqWURiSjJtMVF4RWdVRFFncG9iRUFEZmZYQkh6UlIzR001TnlMbzRlK3FVTWdicXFqCnJjVEVHY2s0Y0VIOTVUdzB4NVMyRWsybGxsQ29FWTR6RDU0T3lpU0dMa1NlenR0V1FteW1leTFuU2ZOdVFlK04KZEZ4SU5JellkNGNDdFY0WDZVcXlHZXZ4QVNyWmpUMFRmYTFIVEovV1pER2xRcEVDUVFEdjg0a0VsbjVYb2x5cQpTaHFmUXVRV3h1RzJJUUJraEJVZ1ZDd0JwZEcxSjlkNGFveUpzc2Z4UUY2c2JrM3hmcGVHQ09nbVNmQjNydllDCnptZEZ5K1BqQWtFQTNYYVdhaHpEZjdaTmR5aUtzbE5rRHNHUjduZHhtUUpBUkI1aC9vQnV1NWduTUZ5N05BMDhUVThHa3JySgpycjlrYy9vUlNDSjM1eks1VThFRHhxK1BYV2pGdDdQVXdzTUtadzJ1UWZocG9NQjFySlJGOHlXUHV3SkFOTngrCkRaNlFBR1FuTG5HUE5iVkpJeVZjWFFGcXVlM2tqakN0elVtOEpWUDhSb05YT2lTbVpLNmxNRkRSQ0ZVRFNRbWYKcGZDVVlvcExHTWFWYWFFekNRSkJBS3pIeEVWNjBTaVpRY1ExM3NxZE5RTGhVMXB0SVBQd29SMzdMdTJRM3FXLwpPRC9Lcm1USStmQjFpc3M2a0wweHZuV0ZGemM0bGc0RnVOaHd0bHRPM1VzPQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
 
 Data:
+  Database:
+    Logger: ""
+    Driver: ""
+    Username: ""
+    Password: ""
+    Host: ""
+    Port: 0
+    Database: ""
+    Ssl: false
   Redis:
     Pass: Pl@1221view
     Host: {{ include "ovra-zero.redisClusterHosts" . }}
     Type: cluster
     Tls: false
+  Cache:
+    Expire: 3600

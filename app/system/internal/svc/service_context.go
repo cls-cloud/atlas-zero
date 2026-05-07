@@ -31,7 +31,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Db:     db,
 		Query:  query.Use(db),
 		Auth:   middleware.NewAuthMiddleware(c, rds).Handle,
-		Sign:   middleware.NewSignMiddleware(rds).Handle,
+		Sign:   middleware.NewSignMiddleware(c, rds).Handle,
 		Dal:    dal.NewDal(db, query.Use(db), c),
 	}
 }

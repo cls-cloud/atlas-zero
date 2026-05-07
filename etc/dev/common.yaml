@@ -29,6 +29,9 @@ JwtAuth:
 Captcha:
   Enabled: false
 
+Sign:
+  Enabled: true
+
 Tenant:
   Enabled: false
 

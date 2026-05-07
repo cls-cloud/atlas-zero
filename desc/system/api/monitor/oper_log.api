@@ -47,7 +47,7 @@ type (
     tags: "操作日志记录"
     group: monitor/operLog
     prefix: /monitor/operlog
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
 

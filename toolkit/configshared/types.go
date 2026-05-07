@@ -19,6 +19,10 @@ type CaptchaConfig struct {
 	Enabled bool
 }
 
+type SignConfig struct {
+	Enabled bool
+}
+
 type TenantConfig struct {
 	Enabled      bool
 	IgnoreTables []string

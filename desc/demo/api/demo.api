@@ -44,7 +44,7 @@ type (
     tags: "测试单"
     group: demo/demo
     prefix: demo/demo
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service demo {
     @handler Info

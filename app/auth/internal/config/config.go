@@ -19,4 +19,5 @@ type Config struct {
 	ApiDecrypt  configshared.ApiDecryptConfig
 	Captcha     configshared.CaptchaConfig
 	Idempotency configshared.IdempotencyConfig
+	Sign        configshared.SignConfig
 }

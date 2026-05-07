@@ -41,7 +41,7 @@ type (
     tags: "系统访问记录"
     group: monitor/logininfor
     prefix: /monitor/logininfor
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
 

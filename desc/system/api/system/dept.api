@@ -46,7 +46,7 @@ type (
     tags: "部门"
     group: system/dept
     prefix: /system/dept
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
     @handler Info
