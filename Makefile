@@ -18,6 +18,11 @@ DEMO_NAME := demo
 AUTH_NAME := auth
 
 # ========================
+# 脚本路径
+# ========================
+REPLACE_SCRIPT := scripts/replace.sh
+
+# ========================
 # 初始化工具
 # ========================
 .PHONY: init
@@ -59,6 +64,7 @@ grpc-$(1):
 # db-$(1)       生成 $(1) 模块的数据库代码
 db-$(1):
 	gentool -c "gen/$(1)/gen.yaml"
+	$(REPLACE_SCRIPT) $($(shell echo $(1) | tr a-z A-Z)_PATH)
 
 # -------- 构建模块 --------
 .PHONY: build-$(1)
@@ -113,6 +119,14 @@ gen-all:
 		echo ">>> Generating DB for $$mod"; \
 		$(MAKE) db-$$mod; \
 	done
+
+# ========================
+# 替换生成 model 的软删除字段
+# ========================
+.PHONY: replace
+# replace       将生成 model 的 DelFlag 替换为 gorm soft_delete 类型
+replace:
+	$(REPLACE_SCRIPT) .
 
 # ========================
 # 后台运行所有模块
