@@ -1,37 +1,14 @@
 # Ovra-Zero Helm chart
 
-This chart deploys the local k3d version of Ovra-Zero.
+This chart deploys Ovra-Zero to a standard Kubernetes cluster.
 
 By default it creates:
 
-- a 3-member etcd StatefulSet
-- a 3-node Redis Cluster StatefulSet with 3 masters
 - auth, system, and demo application Deployments
-
-## Build and import the app image
-
-```sh
-mkdir -p .deploy/k3d/bin
-GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -ldflags='-s -w' -tags no_k8s -o .deploy/k3d/bin/app-auth app/auth/auth.go
-GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -ldflags='-s -w' -tags no_k8s -o .deploy/k3d/bin/app-system app/system/system.go
-GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -ldflags='-s -w' -tags no_k8s -o .deploy/k3d/bin/app-demo app/demo/demo.go
-docker build --platform linux/arm64 -t ovra-zero:local -f deploy/k3d/Dockerfile .
-k3d image import ovra-zero:local -c ovra
-```
-
-## MySQL for local k3d
-
-The default values expect a MySQL container on the `k3d-ovra` Docker network:
-
-```sh
-docker run -d --name ovra-zero-mysql --network k3d-ovra \
-  -e MYSQL_ROOT_PASSWORD='Pl@1221view' \
-  -e MYSQL_DATABASE=ovra_zero \
-  -v "$PWD/bin/sql/ovra_zero.sql:/docker-entrypoint-initdb.d/ovra_zero.sql:ro" \
-  mysql:8.4
-```
-
-Set `mysql.external.ip` in `values.yaml` if Docker gives that container a different IP.
+- a 3-member etcd StatefulSet
+- a 3-node Redis Cluster StatefulSet
+- an internal MySQL Deployment and Service
+- an optional Ingress
 
 ## Install
 
@@ -43,36 +20,56 @@ helm upgrade --install ovra-zero deploy/helm/ovra-zero \
   --timeout 5m
 ```
 
-Then open:
+## Image
 
-```text
-http://ovra-zero.localhost:18080/auth/code
-```
-
-## Verify clusters
+Set the application image repository and tag for your registry:
 
 ```sh
-kubectl -n ovra-zero exec etcd-0 -- etcdctl \
-  --endpoints=http://etcd-0.etcd-headless.ovra-zero.svc.cluster.local:2379,http://etcd-1.etcd-headless.ovra-zero.svc.cluster.local:2379,http://etcd-2.etcd-headless.ovra-zero.svc.cluster.local:2379 \
-  member list
-
-kubectl -n ovra-zero exec redis-0 -- redis-cli -a 'Pl@1221view' cluster info
+helm upgrade --install ovra-zero deploy/helm/ovra-zero \
+  --namespace ovra-zero \
+  --create-namespace \
+  --set image.repository=registry.example.com/ovra-zero \
+  --set image.tag=1.0.0
 ```
 
-For detailed Kubernetes and bare-metal Linux installation steps, see:
+## External MySQL
+
+The chart uses the internal MySQL Deployment by default. To point the `mysql`
+Service at an existing database endpoint, disable the internal deployment and
+provide an endpoint IP:
+
+```sh
+helm upgrade --install ovra-zero deploy/helm/ovra-zero \
+  --namespace ovra-zero \
+  --create-namespace \
+  --set mysql.internal.enabled=false \
+  --set mysql.external.enabled=true \
+  --set mysql.external.ip=10.0.0.10
+```
+
+## Ingress
+
+Set your ingress class and host as needed:
+
+```sh
+helm upgrade --install ovra-zero deploy/helm/ovra-zero \
+  --namespace ovra-zero \
+  --create-namespace \
+  --set ingress.className=nginx \
+  --set ingress.host=ovra-zero.example.com
+```
+
+## Verify
+
+```sh
+kubectl -n ovra-zero get pods,svc,ingress
+kubectl -n ovra-zero rollout status deployment/auth
+kubectl -n ovra-zero rollout status deployment/system
+kubectl -n ovra-zero rollout status deployment/demo
+```
+
+For Redis and etcd installation notes, see:
 
 ```text
 deploy/helm/ovra-zero/INSTALL_REDIS_ETCD.md
-```
-
-For detailed Helm chart structure, values, upgrade, and troubleshooting notes, see:
-
-```text
-deploy/helm/ovra-zero/HELM_CHART.md
-```
-
-For recovery steps after Docker Desktop or Docker daemon restarts, see:
-
-```text
-deploy/helm/ovra-zero/RECOVERY_AFTER_DOCKER_RESTART.md
 ```

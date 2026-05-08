@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: {{ printf "%s%s%s" (tpl ($.Files.Get "files/config/auth.yaml.gotmpl") $) (tpl ($.Files.Get "files/config/system.yaml.gotmpl") $) (tpl ($.Files.Get "files/config/demo.yaml.gotmpl") $) | sha256sum }}
+        checksum/config: {{ printf "%s%s%s%s" (tpl ($.Files.Get "files/config/common.yaml.gotmpl") $) (tpl ($.Files.Get "files/config/auth.yaml.gotmpl") $) (tpl ($.Files.Get "files/config/system.yaml.gotmpl") $) (tpl ($.Files.Get "files/config/demo.yaml.gotmpl") $) | sha256sum }}
       labels:
         app.kubernetes.io/component: {{ $name }}
         {{- include "ovra-zero.selectorLabels" $ | nindent 8 }}
@@ -28,6 +28,11 @@ spec:
           imagePullPolicy: {{ $.Values.image.pullPolicy }}
           command:
             - {{ $service.command | quote }}
+          {{- if $service.configFile }}
+          args:
+            - "-f"
+            - {{ $service.configFile | quote }}
+          {{- end }}
           ports:
             {{- range $portName, $port := $service.ports }}
             - name: {{ $portName }}

@@ -5,6 +5,8 @@ metadata:
   labels:
     {{- include "ovra-zero.labels" . | nindent 4 }}
 data:
+  common.yaml: |
+{{ tpl (.Files.Get "files/config/common.yaml.gotmpl") . | indent 4 }}
   auth.yaml: |
 {{ tpl (.Files.Get "files/config/auth.yaml.gotmpl") . | indent 4 }}
   system.yaml: |

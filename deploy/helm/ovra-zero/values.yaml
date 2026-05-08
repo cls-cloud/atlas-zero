@@ -1,21 +1,21 @@
 config:
   name: ovra-zero-config
-  mountPath: /app/etc/k3d
+  mountPath: /app/etc/config
 
 image:
   repository: ovra-zero
-  tag: local
+  tag: latest
   pullPolicy: IfNotPresent
 
 mysql:
   name: mysql
   port: 3306
   external:
-    enabled: true
-    endpointSliceName: mysql-external
-    ip: 172.18.0.2
-  internal:
     enabled: false
+    endpointSliceName: mysql-external
+    ip: ""
+  internal:
+    enabled: true
     image: mysql:8.4
     imagePullPolicy: IfNotPresent
     rootPassword: Pl@1221view
@@ -53,6 +53,7 @@ services:
     enabled: true
     replicas: 1
     command: /app/app-auth
+    configFile: /app/etc/config/auth.yaml
     ports:
       http: 8091
     readinessPort: 8091
@@ -60,6 +61,7 @@ services:
     enabled: true
     replicas: 1
     command: /app/app-system
+    configFile: /app/etc/config/system.yaml
     ports:
       http: 8092
       grpc: 9092
@@ -68,6 +70,7 @@ services:
     enabled: true
     replicas: 1
     command: /app/app-demo
+    configFile: /app/etc/config/demo.yaml
     ports:
       http: 8099
       grpc: 9099
@@ -75,8 +78,8 @@ services:
 
 ingress:
   enabled: true
-  className: traefik
-  host: ovra-zero.localhost
+  className: ""
+  host: ovra-zero.example.com
   paths:
     - path: /auth
       service: auth

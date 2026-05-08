@@ -6,9 +6,11 @@ metadata:
   labels:
     {{- include "ovra-zero.labels" . | nindent 4 }}
 spec:
+  {{- if .Values.ingress.className }}
   ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
   rules:
-    - host: {{ .Values.ingress.host }}
+    - host: {{ .Values.ingress.host | quote }}
       http:
         paths:
           {{- range .Values.ingress.paths }}

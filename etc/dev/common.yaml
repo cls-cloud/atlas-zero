@@ -9,17 +9,12 @@ RestConf:
 RpcConf:
   Etcd:
     Hosts:
-      - etcd-svc:2379
+      - 127.0.0.1:2379
 
 SystemRpc:
   Etcd:
     Hosts:
-      - etcd-svc:2379
-
-ClientRpc:
-  Etcd:
-    Hosts:
-      - etcd-svc:2379
+      - 127.0.0.1:2379
 
 JwtAuth:
   AccessSecret: YXTsYXMtYWRtaW4=
