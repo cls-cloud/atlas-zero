@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 	"ovra/app/system/internal/config"
 	"ovra/app/system/internal/handler"
@@ -48,7 +49,7 @@ func main() {
 	configloader.MustLoad(*configFile, &c)
 
 	// 创建服务器并传入自定义的 UnauthorizedCallback
-	server := rest.MustNewServer(c.RestConf, rest.WithCors("*"))
+	server := rest.MustNewServer(c.RestConf, rest.WithCustomCors(apiEncryptCors, nil, "*"))
 
 	// 使用拦截器
 	httpx.SetOkHandler(helper.OkHandler)
@@ -57,6 +58,7 @@ func main() {
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
 	// 注册中间件
+	server.Use(middlewares.ApiEncryptMiddleware(c.ApiDecrypt))
 	server.Use(middlewares.IdempotencyMiddleware(ctx.Rds, middlewares.IdempotencyConfig(c.Idempotency)))
 	server.Use(middleware.LogMiddleware)
 	server.Use(middlewares.ApiMiddleware(c.RestConf.Mode))
@@ -75,4 +77,9 @@ func main() {
 	fmt.Printf("Starting server at %s:%d...\n", c.RestConf.Host, c.RestConf.Port)
 	fmt.Printf("Starting rpc server at %s...\n", c.RpcConf.ListenOn)
 	group.Start()
+}
+
+func apiEncryptCors(header http.Header) {
+	header.Set("Access-Control-Allow-Headers", "Content-Type, Origin, X-CSRF-Token, Authorization, AccessToken, Token, Range, ClientID, encrypt-key")
+	header.Set("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, encrypt-key")
 }
