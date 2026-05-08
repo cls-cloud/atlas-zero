@@ -20,6 +20,7 @@ type ServiceContext struct {
 	Db     *gorm.DB
 	Rds    *redis.Redis
 	Auth   rest.Middleware
+	Sign   rest.Middleware
 	Dal    *dal.Dal
 }
 
@@ -31,6 +32,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Rds:    rds,
 		Db:     db,
 		Auth:   middleware.NewAuthMiddleware(c, rds).Handle,
+		Sign:   middleware.NewSignMiddleware(c, rds).Handle,
 		Dal:    dal.NewDal(db, query.Use(db), c),
 	}
 }

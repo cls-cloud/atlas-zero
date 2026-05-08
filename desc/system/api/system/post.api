@@ -46,7 +46,7 @@ type (
     tags: "岗位信息"
     group: system/_post
     prefix: system/post
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
 

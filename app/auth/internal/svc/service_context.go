@@ -17,6 +17,7 @@ type ServiceContext struct {
 	Config    config.Config
 	Rds       *redis.Redis
 	Auth      rest.Middleware
+	Sign      rest.Middleware
 	SysClient sysrpc.SysRpc
 }
 
@@ -26,6 +27,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Config:    c,
 		Rds:       rds,
 		Auth:      middleware.NewAuthMiddleware(c, rds).Handle,
+		Sign:      middleware.NewSignMiddleware(c, rds).Handle,
 		SysClient: sysrpc.NewSysRpc(zrpc.MustNewClient(c.SystemRpc)),
 	}
 }

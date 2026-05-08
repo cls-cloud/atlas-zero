@@ -51,7 +51,7 @@ type (
     tags: "参数配置"
     group: system/_config
     prefix: /system/config
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
     @handler ConfigKey

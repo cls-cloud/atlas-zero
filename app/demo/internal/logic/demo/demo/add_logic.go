@@ -9,8 +9,8 @@ import (
 	"ovra/app/demo/internal/svc"
 	"ovra/app/demo/internal/types"
 
-	"github.com/ovra-cloud/ovra-toolkit/auth"
-	"github.com/ovra-cloud/ovra-toolkit/utils"
+	"ovra/toolkit/auth"
+	"ovra/toolkit/utils"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

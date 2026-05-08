@@ -1,0 +1,20 @@
+RestConf:
+  Mode: dev
+  Name: demo
+  Port: 8099
+  Log:
+    ServiceName: demo-api
+  Prometheus:
+    Port: 4009
+
+RpcConf:
+  Mode: dev
+  Name: demo
+  ListenOn: 0.0.0.0:9099
+  Etcd:
+    Key: demo.rpc
+
+Tenant:
+  Enabled: true
+  IgnoreTables:
+    - ignore

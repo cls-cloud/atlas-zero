@@ -9,7 +9,7 @@ import (
 	"ovra/app/demo/internal/types"
 	"strconv"
 
-	"github.com/ovra-cloud/ovra-toolkit/utils"
+	"ovra/toolkit/utils"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

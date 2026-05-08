@@ -11,6 +11,9 @@ type LoginReq {
 }
 
 type (
+	HealthResp {
+		status string `json:"status"`
+	}
 	LoginResp {
 		accessToken     string `json:"access_token"`
 		refreshToken    string `json:"refresh_token"`
@@ -35,8 +38,9 @@ type (
 )
 
 @server (
-	group:  auth
-	prefix: /auth
+	group:      auth
+	prefix:     /auth
+	middleware: Sign
 )
 service auth {
 	@handler login
@@ -50,5 +54,13 @@ service auth {
 
 	@handler TenantList
 	get /tenant/list returns (TenantResp)
+}
+
+@server (
+	group: health
+)
+service auth {
+	@handler Health
+	get /health returns (HealthResp)
 }
 

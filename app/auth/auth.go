@@ -6,7 +6,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
+	"ovra/toolkit/configloader"
 	"ovra/toolkit/helper"
 	"ovra/toolkit/middlewares"
 	"ovra/toolkit/utils"
@@ -16,7 +18,6 @@ import (
 	"ovra/app/auth/internal/handler"
 	"ovra/app/auth/internal/svc"
 
-	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -42,9 +43,9 @@ func main() {
 		return
 	}
 	var c config.Config
-	conf.MustLoad(*configFile, &c)
+	configloader.MustLoad(*configFile, &c)
 
-	server := rest.MustNewServer(c.RestConf, rest.WithCors("*"))
+	server := rest.MustNewServer(c.RestConf, rest.WithCustomCors(apiEncryptCors, nil, "*"))
 
 	httpx.SetOkHandler(helper.OkHandler)
 	httpx.SetErrorHandlerCtx(helper.ErrHandler(c.RestConf.Name))
@@ -53,6 +54,8 @@ func main() {
 	handler.RegisterHandlers(server, ctx)
 	// 注册中间件
 	//server.Use(middleware.LogMiddleware)
+	server.Use(middlewares.ApiEncryptMiddleware(c.ApiDecrypt))
+	server.Use(middlewares.IdempotencyMiddleware(ctx.Rds, middlewares.IdempotencyConfig(c.Idempotency)))
 	server.Use(middlewares.ApiMiddleware(c.RestConf.Mode))
 
 	group := service.NewServiceGroup()
@@ -60,4 +63,9 @@ func main() {
 	defer group.Stop()
 	fmt.Printf("Starting server at %s:%d...\n", c.RestConf.Host, c.RestConf.Port)
 	group.Start()
+}
+
+func apiEncryptCors(header http.Header) {
+	header.Set("Access-Control-Allow-Headers", "Content-Type, Origin, X-CSRF-Token, Authorization, AccessToken, Token, Range, ClientID, encrypt-key")
+	header.Set("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, encrypt-key")
 }

@@ -76,7 +76,7 @@ type (
 @server(
     group: system/role
     prefix: /system/role
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
     // 分页查询角色信息列表

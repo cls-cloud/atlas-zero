@@ -40,7 +40,7 @@ type (
     tags: "测试树表"
     group: demo/tree
     prefix: demo/tree
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service demo {
     @handler Info

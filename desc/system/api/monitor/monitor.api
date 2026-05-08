@@ -23,7 +23,7 @@ type (
     tags: "监控日志"
     group: monitor/monitor
     prefix: /monitor
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
     @handler RedisMonitor

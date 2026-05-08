@@ -24,3 +24,16 @@ import "monitor/online.api"
 import "monitor/oper_log.api"
 import "monitor/logininfor.api"
 import "monitor/monitor.api"
+
+type HealthResp {
+	status string `json:"status"`
+}
+
+@server (
+	group: health
+)
+service System {
+	@handler Health
+	get /health returns (HealthResp)
+}
+

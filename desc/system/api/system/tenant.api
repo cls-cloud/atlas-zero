@@ -65,7 +65,7 @@ type (
     tags: "租户"
     group: system/tenant
     prefix: /system/tenant
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
     @handler SyncTenantDict

@@ -45,7 +45,7 @@ type (
     tags: "字典类型"
     group: system/dict/_type
     prefix: /system/dict/type
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
     @handler Info

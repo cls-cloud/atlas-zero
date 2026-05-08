@@ -1,0 +1,28 @@
+RestConf:
+  Mode: dev
+  Name: system
+  Port: 8092
+  Log:
+    ServiceName: system-api
+  Prometheus:
+    Port: 4002
+
+RpcConf:
+  Mode: dev
+  Name: system
+  ListenOn: 0.0.0.0:9092
+  Etcd:
+    Key: system.rpc
+
+Tenant:
+  Enabled: true
+  IgnoreTables:
+    - sys_tenant
+    - sys_tenant_package
+    - sys_menu
+    - sys_user_role
+    - sys_user_post
+    - sys_role_menu
+    - sys_role_dept
+    - sys_client
+    - sys_config

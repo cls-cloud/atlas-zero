@@ -1,0 +1,69 @@
+RestConf:
+  Host: 0.0.0.0
+  Log:
+    Level: debug
+  Prometheus:
+    Host: 0.0.0.0
+    Path: /metrics
+
+RpcConf:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+
+SystemRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+
+JwtAuth:
+  AccessSecret: YXTsYXMtYWRtaW4=
+  AccessExpire: 86400
+  MultipleLoginDevices: false # 同账号是否允许多设备登录
+
+Captcha:
+  Enabled: false
+
+Sign:
+  Enabled: false
+
+Tenant:
+  Enabled: false
+
+ApiDecrypt:
+  Enabled: true
+  HeaderFlag: "encrypt-key"
+  # 后端响应加密用：对应前端 VITE_GLOB_RSA_PRIVATE_KEY
+  PublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtzBvyghb9g1zbp//AhiORpKo0jU9K/JhcIisP+EEZWZBS/INfRvm+gmX1pKzzQCugZmxwcnqayGcg4hCrukefY7WYEpn15j/CykjfSJsgmYQ7SVMnmvlFqvGDhVmB+SRiwCyAzs9+wFB03psY5YikSsZbxwWzcHpWb0/Sqrw+csj0DpCdKgldNFBdRi10ZJqBOfjDraYlxCG6sbfmmxWMTsyUksUlp81nevKa9Mt9L5CgcVyKNqz42v6MbHmsgjIXDEhD0qSsEhMsbdQYmjVF47iLAmp0/93f6YO0P/9RvYQkKKAW+Z562Ik/DI0qoVz7e37LgFW8qLHfGWeeZ32QQIDAQAB
+
+  # 后端请求解密用：对应前端 VITE_GLOB_RSA_PUBLIC_KEY
+  PrivateKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1z0Isn7mILmEo3jHk5gT7afXB/I8OnAyKtn0hHpgDqaCpfBy2xzVc6C9pqT/ChrNNiDUfYdMeuO1eqIq8yPxezEbL2X0a+K3A/eOsQpKnGlH8wdX14yImigjXmeXS66tXAU7NSLyyiBWUn50HTgywBTEbrIeg7sOjazQoPU3o7ms2HhBBZL/I9la7LO9vln8rHWnwBSfBWVVnhKD438R6/oBgh1ypWpONyQJnjnDhKPCdQeGs+sWQHBlcBav6SzSO6DY0V47zxgFl1MiGkyTVbrR8FZfELbXa5m6dkZyo/fYaIxDNz2p23bbYIoawlVe/haPm9kcwUVto1q30UCebAgMBAAECggEAHKInMGL5c96mE6sm3X9ygmwWNfaCS1E9Um1aOKiaVV1WPcsbtJecKmUw7mmm7oqLW6cbgrVD7D9AtxtBOmlHAeEXN0yp/OD0cIQr4rnbYfDtv6qBeYfLnZk4ukf1H6pZIktE72TIvy9agr0+nGNo8SHoMY0TET/5VNfx73J0Pj5mSLRRzZYPrUcBsjAOs9IRNz0XkmfGQX6KMnWqsTUwn8W2e6dW9mSgg6in9tfTzcNc4pK1EC9czv5cR2A/pmwZM6oK9tLKgTlICDcekwah9nULwFmIsueuYpPs0OJpu19BzWuLkOOUeBH+2a/Y2twTVJAhy8tnOOobZqVbtnSKgQKBgQDno9bXRuU25I1s/MDc/Jywsie4VzF71BcZwo3DG2DSSNyruU+eocT8gERiz4chtQokaYyLe6U5Wqylp/fKm6y/VpygUja20mDlmgKRf6H4dJMPjdSEKV4mUgvEdkC44aejiTxKo9yYeFPNFaWMHFtaoOiF7TSJlfWEI7yASGGhgQKBgQDI7eV83ZTroqdRKnS7HBxE0qnAvTD2aitvRWDk3Ndu+oddvY6Pl+iOmbXkBjT0bgdxPXQXD3Smem6W6sr5hembT2e7telNmF2sgctGg0KNC1N13s65FtOlWr0KZHLdznsJ1yVtAAp5HEclgTDCaI0F68tNktiL1CQAnzp8vzWfGwKBgCYsKctwM3XIVEYRoPbJ6kh0E3edZtoxKV1lYlc0u8/rkfH6p9RMdFnoCVz/NhWn7/PwMOkLhz7cYncqJvuMi/s8GrOQ2NNn9+/eYW34yohXLaTyioL9Djbibm4Bzsio5ydcBkOGnWPC8IxrdMySH7vfqHHplS7XN45/FSFOzEgBAoGAffDPJQLmMwQSh8dqv1URSvoYOJzdMba+XtJHt2vNBNy3OER2NP7sX2VtIu3ZB1RoCcyRFVs0rJyU8LdeXiRXlmehB4EwKNjV7ii0tw/TCQEOYRU00cLDCiPj1b28WdbwO+zEopuh9OOKnLFrVI+fxRRUq9zdKlff8Rvc1xAqlf0CgYEA0H2bOR9Uc1c3o8RYqAckb+xTkelc4kzKu5rvJT+XnfhHHvjjmBi5KVEAs5moAJur80uBAhLvc9FkYRPOtaahQeTdT16dxGxYSIH90a6UBXnRBFLABKxnlJpG8g/6w3SNu8tKvqzRdnmzmsLt8dOkz2ZcllypzOAufmhtde79VHo=
+
+Data:
+  Database:
+    Logger: INFO
+    Driver: mysql
+    Username: root
+    Password: Pl@1221view
+    Host: 127.0.0.1
+    Port: 3306
+    Database: ovra_zero
+    Ssl: false
+  Redis:
+    Pass: Pl@1221view
+    Host: 127.0.0.1:6379
+    Type: node
+    Tls: false
+  Cache: # 内存缓存配置
+    Expire: 3600
+
+Idempotency:
+  Enabled: true
+  Header: "Idempotency-Key"
+  ExpireSeconds: 10
+  IncludePaths: []
+  ExcludePaths: []
+
+Rsa:
+  PubB64: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsmMSK+PHBNfKyqW/E72Si/mXP15WwseHCylygtU2QYNz9PoAq9+sDM5bxVK5cfKA4DDxTIOniS7at/PHi7kVo6j+8dxQDJArwVrCLRHbC520/GXb3HxwSyQjHI3kY5+ldsb743vXjngPA2vjMONa28/YIyjedbSjjpZB4CXhr7H/yLUQLvaM5yq/ZcHTpZ1LVo3KJ3L78Dx7bMwiAh/hooVm2Nhw1ZpO/5xB+ENG29dHpsWcecl3YbLIY72TmOtX2EhbDohbH/j4p0Z3ubDmkYHExLav5v/Ps9b/ifujXUZsvNp97VF+h8vMNVGvzVKwJuFMr/dcMW6uM87MiINiLwIDAQAB
+  PriB64: MIIEogIBAAKCAQEAsmMSK+PHBNfKyqW/E72Si/mXP15WwseHCylygtU2QYNz9PoAq9+sDM5bxVK5cfKA4DDxTIOniS7at/PHi7kVo6j+8dxQDJArwVrCLRHbC520/GXb3HxwSyQjHI3kY5+ldsb743vXjngPA2vjMONa28/YIyjedbSjjpZB4CXhr7H/yLUQLvaM5yq/ZcHTpZ1LVo3KJ3L78Dx7bMwiAh/hooVm2Nhw1ZpO/5xB+ENG29dHpsWcecl3YbLIY72TmOtX2EhbDohbH/j4p0Z3ubDmkYHExLav5v/Ps9b/ifujXUZsvNp97VF+h8vMNVGvzVKwJuFMr/dcMW6uM87MiINiLwIDAQABAoIBAAyvYi3AJHk3WygD7KLbuohnoZYTqvnDidqFAlaZZiKh1WTDQ7mfzd1EmLQJyOl4btUCcKDvRRef6apmacyJcdInL1HwR7pM+j+P/k+JfdkanYchOybiVnM8Hkm72/+AQm+VgM38EtJXvpbmB3baLq4uM9bJjjWH4zroJnETtd5yHIhNnPwHTOIIY8M7dmnMcYNcwY3R/FSwJ2cHJsKUeYZkJnOLCbnrGpaAZzu7jELhbOSVPQpAdf9rxrcdsvYgeydJ68piQUmEHDM21IaNktpCOzG6DGlusrYvvlwb9chSPcyk9mA8ZdTSJXoxON0aAwhjx4pUMs3SntndEMNAXDECgYEA0155SX7oaiVbAo3bt43lsQSqXlBvtZVAZcvkxemR2mhG4q+38756+VforCiHbmIT3bT4BqsEtXRkYEh5+KLYoG6LeUf8j9kY/b1kh1MNJF8jNtE/3MxPEq5TJmUnU77dd6sLY6jw/gcXLVxvzEN26LtqPgv+j88gE1XRq3if9XkCgYEA2A3B1IzYvz06Xw8hJOdr+zrk0URe1nDbhfjft7M6w6s8/J/YEujlxmWHEYdKd4jG4xGHLveJePdC5m/fbIkCZ5d0iFR8sAZmYIBIrPXcBeG+SzrJ7bzvK2K6OAmMHk+xChP7k+4OGclrA5LE+S6fsdPv6ScgYOZbmuU+jhWFcucCgYBu7vqBFFYuv4RQhtt2LscKbQRtk5HNn5O42ZYsOTYPhwMNHmRRTPuFuhmnoW3TBS6gAcba2Q8TnQ7Bach6Mh23tc0Fzj5D0RFIuwnz7CbNnBEDSDdYTvKBP3TshdJqJZZepCrKF3TEHjyP1h/m+NGDvDk6b1kfaPnQrA3rDNgHIQKBgAr298VPuJhMBTBZ1jbHP+WqIX61V5LOe3WbIc9y2yKfCCNSAWdERpUBBg/Pq+nRGTbg5tltWp62/cAwIUii02pqd1GL6CAO0xdGq2mLuLTbtgqfWywjkIfFJOo/IctQBA4c4YGqbTDF1haCVljHEve1Z9GPWMdSKYf85mXTlcg1AoGABD8uQHYDuaj7hxAhQKu972S5qnkXAenwN7nImwmV8uCgNVWC6/2ACWBSbsSf3oHX9J2wuijARb81XpnTjPdNpPF86fwdc6/qdlBJpWYupUJJeCT0MLE0ZgJQzBv3yeSa3TScfA5l9vFX+ySkywd7Jk6oBk3sxlbgqxKyH7jJwKI=

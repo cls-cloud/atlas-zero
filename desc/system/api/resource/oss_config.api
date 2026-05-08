@@ -59,7 +59,7 @@ type (
     tags: "对象存储配置"
     group: resource/oss/config
     prefix: /resource/oss/config
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
     @handler Info

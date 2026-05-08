@@ -80,7 +80,7 @@ type (
     tags: "菜单权限"
     group: system/menu
     prefix: /system/menu
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
     @handler TreeSelect

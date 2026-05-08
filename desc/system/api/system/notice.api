@@ -46,7 +46,7 @@ type (
     tags: "通知公告"
     group: system/notice
     prefix: /system/notice
-    middleware: Auth
+    middleware: Auth, Sign
 )
 service System {
     @handler Info
